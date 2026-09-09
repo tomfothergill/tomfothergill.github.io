@@ -1,28 +1,32 @@
-/* ---- tokens ---------------------------------------------------------- */
+/* ======================================================================
+   Tangerine — see CLAUDE.md for the full design system.
+   Four colours, three faces, one column, no radii, nothing white.
+   ====================================================================== */
+
+/* ---- 1. Tokens ------------------------------------------------------ */
 :root {
-  --bg:        #fbfaf8;
-  --surface:   #ffffff;
-  --ink:       #17181a;
-  --ink-soft:  #5c5f66;
-  --rule:      #e3e0da;
-  --accent:    #b4491f;
+  --field:    #FF7A1A;  /* page ground                                  */
+  --ink:      #330A37;  /* all type on the field; band + footer grounds */
+  --cream:    #FFE9CC;  /* type on aubergine only                       */
+  --amber:    #FFB86B;  /* secondary type on aubergine only             */
+  --ink-soft: #5C1A62;  /* uppercase labels on the field ONLY (4.53:1)  */
+  --note:     #C0392B;  /* footnote markers and prose links only        */
 
-  --measure: 34rem;
-  --pad: clamp(1.25rem, 5vw, 3rem);
+  --hairline: rgba(51, 10, 55, 0.3);
+  --rule: 1.5px solid var(--ink);
 
-  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --sans:  ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
-}
+  /* Spacing scale — nothing off this list. */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px; --s5: 22px;
+  --s6: 26px; --s7: 34px; --s8: 40px; --s9: 44px; --s10: 64px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg:       #131315;
-    --surface:  #1a1b1e;
-    --ink:      #eceae6;
-    --ink-soft: #9a9ba1;
-    --rule:     #2c2d31;
-    --accent:   #e8794a;
-  }
+  --gutter: var(--s8);
+
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --mono:  "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --read:  Newsreader, Georgia, "Times New Roman", serif;
+
+  --ease-hover: 160ms ease-out;
+  --ease-move: 420ms cubic-bezier(.2, .8, .2, 1);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -31,126 +35,253 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--field);
   color: var(--ink);
-  font: 400 1.0625rem/1.65 var(--sans);
-  font-synthesis-weight: none;
+  font: 300 17px/1.7 var(--read);
   -webkit-font-smoothing: antialiased;
 }
 
-/* ---- layout ---------------------------------------------------------- */
-header.site, main, footer.site {
-  max-width: calc(var(--measure) + var(--pad) * 2);
-  margin-inline: auto;
-  padding-inline: var(--pad);
+/* ---- 2. Shared type roles ------------------------------------------ */
+.eyebrow {
+  font: 500 10px/2 var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s5);
 }
 
-header.site {
+.lede {
+  font: 400 24px/1.35 var(--serif);
+  color: var(--ink);
+  margin: 0 0 var(--s5);
+  max-width: 30ch;
+}
+
+a { color: inherit; text-decoration: none; }
+
+a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* ---- 3. Rule-bar ---------------------------------------------------- */
+.rule-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3) var(--s7);
+  padding: var(--s4) var(--gutter);
+  border-bottom: var(--rule);
+  font: 500 10px/2 var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.rule-bar__nav { display: flex; flex-wrap: wrap; gap: var(--s7); }
+
+.rule-bar a { transition: color var(--ease-hover); }
+.rule-bar a:hover { color: var(--ink-soft); }
+
+/* ---- 4. Statement --------------------------------------------------- */
+.statement { padding: var(--s10) var(--gutter) var(--s9); }
+
+.statement h1 {
+  font: 400 clamp(44px, 9vw, 88px)/0.94 var(--serif);
+  letter-spacing: -0.02em;
+  max-width: 17ch;
+  margin: 0 0 var(--s9);
+  text-wrap: balance;
+}
+
+.statement__pair {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s5) var(--s8);
+}
+
+.statement__prose { max-width: 44ch; margin: 0; }
+
+.statement__meta {
+  margin: 0;
+  text-align: right;
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ---- 5. Metadata band ----------------------------------------------- */
+.band {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s7);
+  background: var(--ink);
+  padding: 11px var(--gutter);
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+/* ---- 6. Work index --------------------------------------------------- */
+.work { padding: var(--s9) 0; }
+.work .eyebrow { padding-inline: var(--gutter); }
+
+.row {
+  display: grid;
+  grid-template-columns: 58px 1fr auto;
+  align-items: baseline;
+  column-gap: 0;
+  row-gap: var(--s2);
+  padding: var(--s5) var(--gutter);
+  border-top: 1px solid var(--hairline);
+  transition: background var(--ease-hover), color var(--ease-hover);
+}
+.row:last-child { border-bottom: 1px solid var(--hairline); }
+
+.row__num {
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  color: var(--ink-soft);
+  transition: color var(--ease-hover);
+}
+
+.row__title {
+  font: 400 clamp(26px, 4.5vw, 36px)/1.1 var(--serif);
+  letter-spacing: -0.015em;
+}
+
+.row__meta {
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-align: right;
+  transition: color var(--ease-hover);
+}
+
+.row__summary {
+  grid-column: 2 / -1;
+  font: 400 12px/1.9 var(--mono);
+  max-width: 60ch;
+}
+
+/* Hover inverts the whole row outright — no intermediate tint. */
+.row:hover,
+.row:focus-visible {
+  background: var(--ink);
+  color: var(--cream);
+}
+.row:hover .row__num,
+.row:hover .row__meta,
+.row:focus-visible .row__num,
+.row:focus-visible .row__meta { color: var(--amber); }
+
+/* ---- 7. Two-up grid -------------------------------------------------- */
+.two-up {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s8);
+  padding: var(--s9) var(--gutter);
+}
+
+.lede-link { margin: 0; }
+.lede-link a {
+  font: 400 12px/1.9 var(--mono);
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--ink);
+  transition: color var(--ease-hover), border-color var(--ease-hover);
+}
+.lede-link a:hover { color: var(--ink-soft); border-bottom-color: var(--ink-soft); }
+
+.notes { list-style: none; margin: 0; padding: 0; }
+
+.notes a {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1.5rem;
-  padding-block: 2rem 0;
+  gap: var(--s8);
+  padding: var(--s3) 0;
+  border-top: 1px solid var(--hairline);
+  transition: color var(--ease-hover);
 }
+.notes li:last-child a { border-bottom: 1px solid var(--hairline); }
+.notes a:hover { color: var(--ink-soft); }
 
-.mark {
-  font: 600 0.8125rem/1 var(--sans);
-  letter-spacing: 0.14em;
-  color: var(--ink-soft);
-}
+.notes__title { font: 400 20px/1.35 var(--serif); }
 
-header.site nav {
-  display: flex;
-  gap: 1.25rem;
-  font-size: 0.9375rem;
-}
-
-main { padding-block: 0 4rem; }
-
-section + section {
-  margin-top: 3.5rem;
-  padding-top: 3.5rem;
-  border-top: 1px solid var(--rule);
-}
-
-/* ---- type ------------------------------------------------------------ */
-h1 {
-  font: 400 clamp(2.25rem, 7vw, 3.25rem)/1.1 var(--serif);
-  letter-spacing: -0.02em;
-  margin: 3.5rem 0 1rem;
-}
-
-h2 {
-  font: 600 0.8125rem/1 var(--sans);
-  letter-spacing: 0.14em;
+.notes time {
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  margin: 0 0 1.75rem;
+  white-space: nowrap;
 }
 
-h3 {
-  font: 500 1.0625rem/1.4 var(--sans);
-  margin: 0 0 0.25rem;
+/* ---- 8. Contact footer ------------------------------------------------ */
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s5) var(--s8);
+  background: var(--ink);
+  color: var(--cream);
+  padding: var(--s9) var(--gutter);
 }
 
-p { margin: 0 0 1rem; max-width: var(--measure); }
+.contact__email {
+  font: 400 clamp(26px, 5vw, 36px)/1.1 var(--serif);
+  letter-spacing: -0.015em;
+  transition: color var(--ease-hover);
+}
+.contact__email:hover { color: var(--field); }
+.contact__email:focus-visible { outline-color: var(--cream); }
 
-.lede {
-  font: 400 1.1875rem/1.6 var(--serif);
-  color: var(--ink-soft);
+.contact__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s7);
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.contact__links a { transition: color var(--ease-hover); }
+.contact__links a:hover { color: var(--field); }
+.contact__links a:focus-visible { outline-color: var(--cream); }
+
+/* ---- 9. Responsive ---------------------------------------------------- */
+@media (max-width: 700px) {
+  :root { --gutter: var(--s5); }
+  .two-up { grid-template-columns: 1fr; gap: var(--s9); }
+  .row { grid-template-columns: 40px 1fr; }
+  .row__meta { grid-column: 2; text-align: left; }
+  .statement__meta { text-align: left; }
 }
 
-/* ---- links ----------------------------------------------------------- */
-a {
-  color: inherit;
-  text-decoration-color: var(--rule);
-  text-underline-offset: 0.2em;
-  text-decoration-thickness: 1px;
-  transition: color 120ms ease, text-decoration-color 120ms ease;
-}
-a:hover { color: var(--accent); text-decoration-color: currentColor; }
-a:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 2px;
-}
-
-/* ---- lists ----------------------------------------------------------- */
-.list, .links { list-style: none; margin: 0; padding: 0; }
-
-.list > li + li {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
-}
-.list p { color: var(--ink-soft); margin: 0; font-size: 0.9375rem; }
-
-.links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
-
-/* ---- footer ---------------------------------------------------------- */
-footer.site {
-  border-top: 1px solid var(--rule);
-  padding-block: 1.5rem 3rem;
-  color: var(--ink-soft);
-  font-size: 0.875rem;
-}
-footer.site p { margin: 0; }
-
-/* ---- a11y ------------------------------------------------------------ */
-.skip {
-  position: absolute;
-  left: -9999px;
-}
+/* ---- 10. Accessibility ------------------------------------------------ */
+.skip { position: absolute; left: -9999px; }
 .skip:focus {
-  left: var(--pad);
-  top: 0.5rem;
+  left: var(--gutter);
+  top: var(--s2);
   z-index: 10;
-  background: var(--surface);
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--rule);
-  border-radius: 4px;
+  background: var(--ink);
+  color: var(--cream);
+  padding: var(--s2) var(--s3);
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
 }
 
+/* Transforms become instant state changes; colour transitions stay. */
 @media (prefers-reduced-motion: reduce) {
-  * { transition-duration: 0.01ms !important; }
+  *, *::before, *::after { transition-duration: 0ms !important; animation: none !important; }
+  .row, .notes a, .contact a, .rule-bar a, .lede-link a {
+    transition: color var(--ease-hover), background var(--ease-hover),
+                border-color var(--ease-hover) !important;
+  }
 }

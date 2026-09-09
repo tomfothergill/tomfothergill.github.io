@@ -4,71 +4,140 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Thomas Fothergill</title>
-<meta name="description" content="Thomas Fothergill — personal site.">
+<meta name="description" content="Thomas Fothergill — data and AI systems for retail.">
+<meta name="theme-color" content="#ff7a1a">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&display=swap">
 <link rel="stylesheet" href="styles.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='%23330a37'/></svg>">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="site">
-  <span class="mark">TF</span>
-  <nav>
+<!-- 1 · Rule-bar ---------------------------------------------------- -->
+<header class="rule-bar">
+  <a class="rule-bar__name" href="/">Thomas Fothergill</a>
+  <nav class="rule-bar__nav" aria-label="Primary">
     <a href="#work">Work</a>
-    <a href="#writing">Writing</a>
+    <a href="#notes">Notes</a>
+    <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
 
 <main id="main">
 
-  <section class="intro">
-    <h1>Thomas&nbsp;Fothergill</h1>
-    <p class="lede">
-      <!-- TODO: one or two sentences on who you are and what you do. -->
-      Building data and AI products in retail. Currently at HyperFinity.
-    </p>
+  <!-- 2 · Statement ------------------------------------------------- -->
+  <section class="statement">
+    <!-- TODO: under 12 words. Name what you do, not your job title. -->
+    <h1>Analytics systems that show their working.</h1>
+    <div class="statement__pair">
+      <p class="statement__prose">
+        <!-- TODO: under 45 words. First person, past tense, specific. -->
+        I build warehouse-backed AI products for retailers — the kind that answer a
+        business question with a number, the SQL that produced it, and an honest note
+        about what the data cannot tell you.
+      </p>
+      <p class="statement__meta">
+        Leeds, UK<br>
+        HyperFinity<br>
+        No analytics
+      </p>
+    </div>
   </section>
 
-  <section id="work">
-    <h2>Work</h2>
-    <ul class="list">
-      <li>
-        <h3><a href="#">Project name</a></h3>
-        <p>One line on what it is and why it mattered.</p>
-      </li>
-      <li>
-        <h3><a href="#">Project name</a></h3>
-        <p>One line on what it is and why it mattered.</p>
-      </li>
-    </ul>
+  <!-- 3 · Metadata band --------------------------------------------- -->
+  <div class="band" aria-label="Working vocabulary">
+    <span>Retrieval</span>
+    <span>Evaluation</span>
+    <span>Agents</span>
+    <span>Warehouse SQL</span>
+    <span>Inference cost</span>
+    <span>Provenance</span>
+  </div>
+
+  <!-- 4 · Work index — three rows, deliberately ---------------------- -->
+  <section id="work" class="work">
+    <h2 class="eyebrow">Selected work</h2>
+
+    <a class="row" href="#">
+      <span class="row__num">01</span>
+      <span class="row__title">Project title goes here</span>
+      <span class="row__meta">Discipline · 2026</span>
+      <span class="row__summary">
+        <!-- TODO: under 20 words. Name the surprising finding, not the tech. -->
+        One line naming what you found, not what you built. →
+      </span>
+    </a>
+
+    <a class="row" href="#">
+      <span class="row__num">02</span>
+      <span class="row__title">Project title goes here</span>
+      <span class="row__meta">Discipline · 2025</span>
+      <span class="row__summary">One line naming what you found, not what you built. →</span>
+    </a>
+
+    <a class="row" href="#">
+      <span class="row__num">03</span>
+      <span class="row__title">Project title goes here</span>
+      <span class="row__meta">Discipline · 2025</span>
+      <span class="row__summary">One line naming what you found, not what you built. →</span>
+    </a>
   </section>
 
-  <section id="writing">
-    <h2>Writing</h2>
-    <ul class="list">
-      <li>
-        <h3><a href="#">Post title</a></h3>
-        <p><time datetime="2026-01-01">January 2026</time></p>
-      </li>
-    </ul>
-  </section>
+  <!-- 5 · Two-up grid ------------------------------------------------ -->
+  <section class="two-up">
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <ul class="links">
-      <li><a href="https://github.com/tomfothergill">GitHub</a></li>
-      <li><a href="#">LinkedIn</a></li>
-      <li><a href="mailto:you@example.com">Email</a></li>
-    </ul>
+    <div id="about">
+      <h2 class="eyebrow">About</h2>
+      <p class="lede">
+        <!-- TODO: one paragraph, under 45 words, 24px serif. -->
+        I have spent the last few years on the unglamorous half of applied AI:
+        grounding models in real warehouses, measuring whether the answers hold up,
+        and deciding what not to ship.
+      </p>
+      <p class="lede-link"><a href="#">Full CV ↓</a></p>
+    </div>
+
+    <div id="notes">
+      <h2 class="eyebrow">Notes</h2>
+      <ul class="notes">
+        <li>
+          <a href="#">
+            <span class="notes__title">Note title goes here</span>
+            <time datetime="2026-09">Sep 2026</time>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="notes__title">Note title goes here</span>
+            <time datetime="2026-07">Jul 2026</time>
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="notes__title">Note title goes here</span>
+            <time datetime="2026-05">May 2026</time>
+          </a>
+        </li>
+      </ul>
+    </div>
+
   </section>
 
 </main>
 
-<footer class="site">
-  <p>&copy; <span id="year">2026</span> Thomas Fothergill</p>
+<!-- 6 · Contact footer --------------------------------------------- -->
+<footer id="contact" class="contact">
+  <a class="contact__email" href="mailto:you@example.com">you@example.com</a>
+  <nav class="contact__links" aria-label="Elsewhere">
+    <a href="https://github.com/tomfothergill">GitHub</a>
+    <a href="#">LinkedIn</a>
+    <span>No newsletter</span>
+  </nav>
 </footer>
 
-<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>
