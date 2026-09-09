@@ -159,6 +159,17 @@ Two at once makes the page restless and cancels the calm the colour is doing.
 There are no icons. Arrows are typed characters — `→` and `↓` in the mono face.
 Bullets are numbers. Nothing in the interface is drawn.
 
+**One drawing per case study** (from `Opener Illustration.dc.html`, placement
+12A): a single-weight line drawing beside the headline, 260px wide, top-aligned
+to the h1, in the space the 24ch headline leaves empty. It faces into the page.
+The file is an alpha-only PNG and the line is filled from `--type` through a CSS
+mask (`.opener__art`, with the page supplying the file via `--art`), so it is ink
+on the cover and cream on an inverted page from one asset. Cream on aubergine
+thickens optically: never below 200px there. Draw what the article is about,
+not the sport in general; no stock line art, nothing generated — both read as
+filler next to prose this specific. One per case study, not a set; the identity
+stays the colour and the type.
+
 Case studies carry real screenshots, diagrams and plots, placed full-bleed within
 the gutters with a 1.5px ink border and a 10px mono caption beneath. Until real
 assets exist, use a diagonal-stripe placeholder in cream and tangerine with a mono

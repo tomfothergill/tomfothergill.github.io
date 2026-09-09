@@ -11,8 +11,31 @@
   font: 400 clamp(34px, 6vw, 52px)/1.02 var(--serif);
   letter-spacing: -0.02em;
   max-width: 24ch;
-  margin: 0 0 var(--s9);
+  margin: 0;
   text-wrap: balance;
+}
+
+/* ---- Opener illustration (Opener Illustration 12A) -----------------------
+   One drawing per case study, beside the headline in the space it leaves
+   empty: 260px wide, top-aligned to the h1. The PNG carries only alpha; the
+   line is filled from --type through a CSS mask, so it is ink on the cover
+   and cream on an inverted page from a single file. Cream on aubergine
+   thickens optically, so it never goes below 200px there. The page supplies
+   the file via --art so each article can carry its own. */
+.opener__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  column-gap: var(--s9);
+  align-items: start;
+  margin-bottom: var(--s9);
+}
+
+.opener__art {
+  width: 260px;
+  aspect-ratio: 443 / 346;
+  background: var(--type);
+  -webkit-mask: var(--art) center / contain no-repeat;
+  mask: var(--art) center / contain no-repeat;
 }
 
 /* ---- Prose sections -------------------------------------------------- */
@@ -428,6 +451,8 @@ tbody tr.lost td { color: var(--type-soft); }
 @media (max-width: 700px) {
   .row2, .row2--wide { grid-template-columns: 1fr; row-gap: var(--s5); }
   .row2__margin:empty { display: none; }
+  .opener__grid { grid-template-columns: 1fr; row-gap: var(--s6); }
+  .opener__art { width: 200px; }
 }
 
 /* ---- Inverted pages (§2, applied page-wide) -----------------------------
