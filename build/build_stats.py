@@ -99,12 +99,15 @@ for d, v in cum:
         max_dd, dd_at = peak - v, d
 
 # ---- leagues ---------------------------------------------------------
-lg = defaultdict(lambda: {"bets": 0, "staked": 0.0, "ret": 0.0})
+lg = defaultdict(lambda: {"bets": 0, "staked": 0.0, "ret": 0.0, "first": None, "last": None})
 for r in rows:
     a = lg[r["league"]]; a["bets"] += 1; a["staked"] += r["stake"]; a["ret"] += r["ret"]
+    if a["first"] is None or r["dt"] < a["first"]: a["first"] = r["dt"]
+    if a["last"] is None or r["dt"] > a["last"]: a["last"] = r["dt"]
 leagues = sorted(
     ({"league": k, "bets": v["bets"], "profit": round(v["ret"] - v["staked"], 2),
-      "roi": round((v["ret"] - v["staked"]) / v["staked"] * 100, 2) if v["staked"] else None}
+      "roi": round((v["ret"] - v["staked"]) / v["staked"] * 100, 2) if v["staked"] else None,
+      "first": v["first"].strftime("%b %Y"), "last": v["last"].strftime("%b %Y")}
      for k, v in lg.items()),
     key=lambda x: -x["bets"])
 

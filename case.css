@@ -301,3 +301,13 @@ tbody tr.lost td { color: var(--ink-soft); }
   .filters { gap: var(--s3) var(--s4); }
   .filters input, .filters select { min-width: 7rem; }
 }
+
+/* ---- Prose links -------------------------------------------------------
+   --note is reserved for footnote markers and links in prose, and nowhere
+   else. This is the only place on the site it appears. */
+.prose p a {
+  color: var(--note);
+  border-bottom: 1px solid var(--note);
+  transition: color var(--ease-hover), border-color var(--ease-hover);
+}
+.prose p a:hover { color: var(--ink); border-bottom-color: var(--ink); }

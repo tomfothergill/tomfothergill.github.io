@@ -176,11 +176,11 @@ def monthly_svg():
 def league_rows():
     out = ""
     for l in S["leagues"]:
-        if l["bets"] < 10:
+        if l["bets"] < 100:
             continue
-        out += ('<tr><td>%s</td><td class="n">%s</td><td class="n">%s</td>'
-                '<td class="n">%s%%</td></tr>'
-                % (esc(l["league"]), "{:,}".format(l["bets"]),
+        out += ('<tr><td>%s</td><td>%s</td><td>%s</td><td class="n">%s</td>'
+                '<td class="n">%s</td><td class="n">%s%%</td></tr>'
+                % (esc(l["league"]), l["first"], l["last"], "{:,}".format(l["bets"]),
                    money(l["profit"]), money(l["roi"])))
     return out
 
@@ -206,8 +206,8 @@ HTML = u"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ten thousand table tennis bets</title>
-<meta name="description" content="A flat-staked Elo model on lockdown-era Eastern European table tennis: 10,382 bets, +1,222 units, 11.77% return. The full log.">
+<title>How I built a table tennis model that beat the bookies</title>
+<meta name="description" content="A lockdown project that got slightly out of hand: a model run every day for three years against Eastern European table tennis leagues. 10,382 flat-stake bets, an 11.8% return. Every bet is on the page.">
 <meta name="theme-color" content="#ff7a1a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -233,12 +233,12 @@ HTML = u"""<!doctype html>
 
   <section class="opener">
     <p class="eyebrow">Case study &middot; 01 &middot; @@first@@ to @@last@@</p>
-    <h1>Ten thousand table tennis bets.</h1>
+    <h1>How I built a table tennis model that beat the bookies.</h1>
     <div class="statement__pair">
       <p class="statement__prose">
-        <!-- TODO: your lede. Under 45 words. Why table tennis, and why 2021. -->
-        Placeholder. The COVID origin story goes here: why these leagues existed,
-        why they were mispriced, and what made a simple rating model enough.
+        A lockdown project that got slightly out of hand: a model run every day
+        for three years against Eastern European table tennis leagues.
+        @@bets@@ flat-stake bets, an @@roi1@@% return.
       </p>
       <p class="statement__meta">
         @@bets@@ bets<br>
@@ -255,12 +255,63 @@ HTML = u"""<!doctype html>
   </div>
 
   <section class="prose">
-    <h2 class="eyebrow">The record</h2>
     <p>
-      <!-- TODO: replace. Every number on this page is computed from the log below. -->
-      Placeholder prose. The argument: the edge was not in finding long shots,
-      it was in being slightly less wrong than the market, ten thousand times.
+      Between March 2021 and April 2024 I placed @@bets@@ bets on low-level
+      table tennis, one unit on every one, and finished @@profit_plain@@ units up,
+      which is an @@roi@@% return on turnover. Only @@hit@@% of the bets won, at
+      an average price of @@mean@@, which tells you the model leaned towards
+      outsiders. It was never as simple as backing the longer price, though, and
+      the bets were only ever a small fraction of the matches on offer.
     </p>
+    <p>
+      It started in the middle of Covid. Nearly all proper sport had shut down,
+      and a smaller and much stranger set of sports started to thrive in its
+      place. Small Eastern European table tennis leagues sprang up to feed people
+      who needed something to bet on. Forbes ran
+      <a href="https://www.forbes.com/sites/barrycollins/2020/06/13/anyone-for-ukrainian-table-tennis-the-shady-sport-that-feeds-online-gambling/">a piece on it in June 2020</a>
+      that tells that side of the story better than I can.
+    </p>
+    <p>
+      I started watching. One player in red, one in blue, in an empty sports hall
+      with no crowd, and a referee sat to one side who at times looked on the
+      verge of falling asleep. The players were often extremely out of shape and
+      frequently around 60 years old. They were playing seven or eight matches a
+      day, and they did not appear to care much about them. When I had money on
+      someone I would sometimes look them up online, with results that did not
+      inspire confidence.
+    </p>
+    <p>
+      What I saw, because I'm like this, was a modelling opportunity. Thousands of
+      players. Random pairings. No tournament structure, no variance in
+      conditions. And matches all day, every day, in enormous volumes, with
+      enormous volumes of errant odds to pick off. In modelling terms it was close
+      to ideal. In every other sense it was odd.
+    </p>
+    <p>
+      The model I settled on was a simple Elo rating system, the same idea chess
+      uses to rank its players. Every player carries a rating, and the difference
+      between two players' ratings gives you an expected probability of each of
+      them winning. After a match, both ratings move by an amount proportional to
+      how far the result was from that expectation, scaled by a constant called
+      the K-factor, so a win that was expected shifts the ratings very little and
+      an upset shifts them a lot. I used a K-factor of 10, started every new
+      player at 1,500, updated on matches rather than individual games, and pooled
+      the ratings across all the leagues, because keeping them separate per league
+      threw away too much information. Once you have two ratings you have a
+      probability, and once you have a probability you have a price of your own to
+      set against the bookmaker's. Neither of you is obviously right about any one
+      match; you only find out who is more accurate over thousands of them.
+    </p>
+    <p>
+      I set up a daily process. Each day's results went into the engine and the
+      ratings updated, the model then priced the next day's fixtures, and where my
+      price differed enough from the bookmaker's it emailed me to go and place the
+      bet. All of this ran in the cloud on PythonAnywhere. Every bet was tracked,
+      every result was logged, and the model was tweaked accordingly, which is why
+      this page has real numbers on it rather than remembered ones.
+    </p>
+    <!-- TODO: what "differed enough" meant in practice (the edge threshold), and
+         whether the bets were then placed by hand. -->
 
     <figure class="plot">
       <p class="plot__title">Cumulative profit, units</p>
@@ -277,11 +328,57 @@ HTML = u"""<!doctype html>
       <figcaption>Flat 1-unit stakes throughout. @@first@@ to @@last@@. The dashed
       span is nine months in which no bets were placed at all.</figcaption>
     </figure>
+  </section>
 
+  <section class="prose">
+    <p>It worked, and it worked fairly evenly.</p>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>League</th><th>First bet</th><th>Last bet</th><th class="n">Bets</th>
+        <th class="n">Units</th><th class="n">ROI</th></tr></thead>
+        <tbody>@@leaguerows@@</tbody>
+      </table>
+    </div>
+    <p class="fine">Leagues with fewer than 100 bets are omitted.</p>
     <p>
-      <!-- TODO: what happened in 2023, and what happened in April 2024. -->
-      Placeholder. Only you can say whether the dormant stretch was the market
-      or you.
+      Four of the six came back between 13% and 16%, which is remarkably
+      consistent for a model that had no idea which league it was looking at. On
+      the women's Setka Cup the identical approach produced essentially nothing:
+      630 bets, three units up. On the Czech Liga Pro it lost money. I didn't look
+      into why at the time and I'm not going to guess now.
+    </p>
+    <!-- TODO: any recollection of why the Czech and women's leagues behaved
+         differently, or confirm "I never looked" and leave the sentence as is. -->
+    <p>
+      The standard of play was rarely high, and I noticed a number of cases where
+      the odds behaved in ways I could not account for from the table tennis. A
+      player would be available at 3.00 before the match, win the first game, and
+      then drift out to 5.00 or 6.00, in a best-of-three format where winning the
+      first game should be a strong position. I never found out what was going on
+      in those matches, and I'll leave you to draw your own conclusions. It is also
+      worth saying that a player on their eighth match of the day, who does not
+      appear to care much whether they win it, is not well described by a rating.
+    </p>
+  </section>
+
+  <section class="prose">
+    <p>
+      Then Russia invaded Ukraine. The TT Cup Ukraine, my second-largest league by
+      volume and my best by return, placed its last bet two days before the
+      invasion and never came back, the Russian Liga Pro followed within a
+      fortnight, and the Czech Liga Pro was gone a few weeks after that, replaced
+      by a new league, TT Cup. Within about six weeks I had gone from six leagues
+      to two, with the Setka Cup carrying most of the volume, and the return
+      roughly halved. After ten months like that, keeping it going stopped being
+      worth the effort and I switched it off.
+    </p>
+    <p>
+      The nice thing about a model that emails you is that switching it off is
+      easy, and so is switching it back on, which I did the best part of a year
+      later for no better reason than that I fancied it again. The frustration
+      came back with it. The market I'd returned to was narrower still, almost
+      entirely Setka Cup, and while the model itself was fine, still returning
+      around 12%, there were far fewer places to point it.
     </p>
 
     <figure class="plot">
@@ -302,15 +399,21 @@ HTML = u"""<!doctype html>
       <figcaption>Losing months are hollow and hatched, hanging below the zero line.
       Both sides share one scale. Hairlines mark months with no bets.</figcaption>
     </figure>
+
+    <p>
+      In the end my betting adventures were ruined by the (some might say immoral)
+      practices of betting companies. My accounts were limited to bets of a penny,
+      and that was that. The log stops there.
+    </p>
   </section>
 
   <section class="prose">
-    <h2 class="eyebrow">Where the edge was</h2>
     <p>
-      <!-- TODO: this table is the strongest evidence on the page. -->
-      Placeholder. The model beat the market's implied probability in every price
-      band it bet in volume &mdash; and the gap widened as the price lengthened,
-      until it inverted completely above 8.00.
+      It's only now, with the whole log in front of me, that I can see what it was
+      actually doing. My working theory while it ran, which I never got round to
+      testing properly, was that the outsiders were where the value was, and I put
+      it down to punters liking a favourite. The log agrees with me, which is
+      nice, right up to the point where it falls off a cliff.
     </p>
     <div class="scroll">
       <table>
@@ -321,24 +424,21 @@ HTML = u"""<!doctype html>
     </div>
     <p class="fine">Implied is the mean of 1/price across the band; actual is the realised
     strike rate. Bands with fewer than 50 bets are omitted.</p>
-
-    <h2 class="eyebrow" style="margin-top:44px">By league</h2>
-    <div class="scroll">
-      <table>
-        <thead><tr><th>League</th><th class="n">Bets</th><th class="n">Profit</th>
-        <th class="n">ROI</th></tr></thead>
-        <tbody>@@leaguerows@@</tbody>
-      </table>
-    </div>
-    <p class="fine">Leagues with fewer than 10 bets are omitted.</p>
+    <p>
+      Overall a particularly fun and enjoyable experience building this, and a
+      useful one: it's the only model I've built where I can point at @@bets@@
+      out-of-sample outcomes and say exactly where it was right and exactly where
+      it was not.
+    </p>
   </section>
 
   <section class="prose">
     <h2 class="eyebrow">Every bet</h2>
     <p>
       The whole log, unfiltered and unedited: every match, the price taken, the
-      scoreline and the return. @@voids@@ abandoned matches are recorded as full
-      losses rather than voids, which understates the return slightly.
+      scoreline and the return. Flat one unit throughout, so nothing here is
+      Kelly-inflated. @@voids@@ abandoned matches are recorded as full losses
+      rather than voids, which understates the return slightly.
     </p>
     <p class="lede-link"><a href="#" id="load">Load the full log &mdash; @@bets@@ rows, 768&nbsp;KB &darr;</a></p>
 
@@ -593,8 +693,11 @@ vals = {
     "bets": fmt(S["bets"]),
     "profit": money(S["profit"]),
     "roi": "%.2f" % S["roi"],
+    "roi1": "%.1f" % S["roi"],
+    "hit": "%.2f" % S["hit_rate"],
+    "profit_plain": "{:,.2f}".format(S["profit"]),
     "active": str(S["active_months"]),
-    "leagues": str(len([l for l in S["leagues"] if l["bets"] >= 10])),
+    "leagues": str(len([l for l in S["leagues"] if l["bets"] >= 100])),
     "mean": "%.2f" % S["mean_price"],
     "dd": "%.0f" % S["max_drawdown"],
     "voids": str(S["voids"]),
