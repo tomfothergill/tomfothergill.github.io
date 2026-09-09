@@ -67,10 +67,15 @@
   max-width: 70ch;
 }
 
-/* The data surface: full content width, square, no border, no shadow. */
+/* The data surface (9.1, treatment 7A -- full-bleed band).
+   The panel breaks out of the prose gutters to span the whole content width,
+   so the orange stops being a frame around a card and becomes the page again.
+   Its inner horizontal padding is the gutter, so chart content still lines up
+   with the text column above it. Square, no border, no shadow. */
 .panel {
   background: var(--chart-ground);
-  padding: var(--s7);
+  margin-inline: calc(var(--gutter) * -1);
+  padding: var(--s7) var(--gutter);
 }
 
 .panel__head {
@@ -185,7 +190,7 @@
 }
 
 @media (max-width: 700px) {
-  .panel { padding: var(--s5); }
+  .panel { padding: var(--s6) var(--gutter); }
   .panel__head { margin-bottom: var(--s3); }
   .readout__value { font-size: 20px; }
 }

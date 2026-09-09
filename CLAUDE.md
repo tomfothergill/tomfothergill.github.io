@@ -193,6 +193,21 @@ Panel padding is 26px, or 34px when there is a readout slot. Eyebrow, chart titl
 and source note live **outside** the panel, in field colours, using the existing
 type roles.
 
+**The panel-to-field join: treatment 7A, full-bleed band.** "Full content width"
+means the panel breaks out of the page gutters entirely and runs edge to edge —
+an inset on all four sides makes it a card dropped on the page, which is the
+thing this rule exists to prevent. The gutter becomes the panel's *inner*
+horizontal padding instead, so chart content still lines up with the text column
+above it. In CSS that is `margin-inline: calc(var(--gutter) * -1)` plus
+`padding: var(--s7) var(--gutter)`.
+
+Chosen from `Chart Panel Treatments.dc.html` over the hard-offset, hatched-shim,
+notched and passe-partout alternatives. Its known weakness is that at wide
+viewports the band can read as a hole punched in the page; if that becomes a
+problem the fallback is 7B (a cream slab misregistered 8px down-right), not a
+shadow. Explicitly refused: soft drop shadows, noise or paper grain, gradients
+or inner glows on the panel, and rounded corners.
+
 ### 9.2 Tokens — extend, don't invent
 
 The series ramp is the existing palette redeployed as ink on aubergine. Three of
