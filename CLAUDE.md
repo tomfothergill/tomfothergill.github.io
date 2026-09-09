@@ -312,7 +312,15 @@ one object. Never split a table and its chart across two grounds.
 
 - `index.html` — the home page, one section per band in the order above.
 - `styles.css` — tokens first, then one numbered block per band. Comments cite the rules.
+- `case.css` — case-study additions: the 52px opener, the chart layer (§9), tables, and the filterable log.
+- `table-tennis/` — case study 01. **Generated** — see below.
+- `build/` — the generators for the table tennis page, plus their README.
 - `.nojekyll` — tells GitHub Pages to serve the files as-is rather than running Jekyll.
+
+`table-tennis/index.html` is written by `build/render_page.py` and its charts are
+SVG generated at build time, so the page needs no chart library. Do not edit that
+file directly — edit the template inside `render_page.py` and re-render, or your
+changes are overwritten. `build/README.md` has the commands.
 
 No build step and no dependencies. Fonts come from Google Fonts; everything else is
 local. Edit, commit, push to `main`, and Pages redeploys within about a minute.
