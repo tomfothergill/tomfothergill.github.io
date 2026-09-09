@@ -328,19 +328,29 @@ tbody tr.lost td { color: var(--type-soft); }
 
 .row2 {
   display: grid;
-  grid-template-columns: minmax(0, 46ch) minmax(0, 26ch);
+  /* Prose takes two-thirds of the width, the margin the final third, so the
+     page fills the screen on a laptop instead of leaving the right side
+     empty. The prose size grows with the viewport (below) so the line stays
+     near 80 characters as the column widens. */
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   column-gap: var(--s9);
   padding: var(--s7) 0;
   border-top: 1px solid var(--hairline);
 }
 
-.row2--wide { grid-template-columns: minmax(0, 46ch) minmax(0, 30ch); }
+.row2--wide { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
 
 /* The row after a chart or table carries its caption; no rule between them. */
 .row2--after { border-top: 0; }
 
 .row2__prose { display: flex; flex-direction: column; gap: var(--s4); }
-.row2__prose p { margin: 0; max-width: none; }
+.row2__prose p {
+  margin: 0;
+  max-width: none;
+  /* 17px at 1000px wide, 22px from 1440px; the column is two-thirds of the
+     screen, so this holds the measure at roughly 80ch rather than 100ch. */
+  font-size: clamp(17px, 1.14vw + 5.6px, 22px);
+}
 
 .row2__margin {
   margin: 0;
@@ -369,7 +379,8 @@ tbody tr.lost td { color: var(--type-soft); }
 }
 .m-label + * { margin-top: calc(var(--s5) * -1 + var(--s1)); }
 
-.m-rows { margin: 0; }
+.m-rows { margin: 0; max-width: 36ch; }
+.m-lines, .m-note { max-width: 36ch; }
 .m-row {
   display: flex;
   justify-content: space-between;
@@ -381,8 +392,8 @@ tbody tr.lost td { color: var(--type-soft); }
 .m-row:last-child { border-bottom: 1px solid var(--hairline); }
 .m-row--dim span:first-child { color: var(--type-soft); }
 
-.m-lines { font: 400 11px/1.9 var(--mono); color: var(--type); margin: 0; max-width: none; }
-.m-note  { font: 400 11px/1.8 var(--mono); color: var(--type-soft); margin: 0; max-width: none; }
+.m-lines { font: 400 11px/1.9 var(--mono); color: var(--type); margin: 0; }
+.m-note  { font: 400 11px/1.8 var(--mono); color: var(--type-soft); margin: 0; }
 
 .m-fig {
   font: 400 52px/0.9 var(--serif);

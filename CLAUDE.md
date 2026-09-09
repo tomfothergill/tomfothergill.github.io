@@ -336,11 +336,15 @@ one object. Never split a table and its chart across two grounds.
 
 ## 11. Article layout
 
-Case-study prose stays at 46ch; reading a 100ch line of Newsreader at 17px is
-genuinely worse. The space beside it is a **margin column**: 26ch of mono holding
-figures, definitions and sources, or 30ch when it holds a scoreboard. From
-`Article Layout Ideas.dc.html`, treatments 9A, 9B and 9D. In CSS: `.article`,
-`.row2`, `.row2__margin`.
+Case-study prose takes **two-thirds of the content width**, and the **margin
+column** — figures, definitions, sources, scoreboards — takes the final third, so
+the page fills a laptop screen rather than leaving the right side empty. The
+prose size is fluid, 17px at 1000px wide rising to 22px from 1440px, so the line
+stays near 70–80 characters as the column widens instead of running to 100.
+Margin items are capped at 36ch so a label/value row does not stretch across the
+whole third. (The artboards in `Article Layout Ideas.dc.html` drew fixed 46ch and
+26ch columns; Thomas asked for the fill, 2026-09-09.) Treatments 9A, 9B and 9D.
+In CSS: `.article`, `.row2`, `.row2__margin`.
 
 **The margin (9A).** Each row of the article is a grid: prose left, margin right.
 The margin's hairline runs the whole length of every row whether or not there is
