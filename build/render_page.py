@@ -161,7 +161,7 @@ def monthly_svg():
                       % (L + i * slot + slot / 2, H - B + 20, m["month"]))
 
     hatch = ('<defs><pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" '
-             'patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" '
+             'patternTransform="rotate(45)"><line class="hatch" x1="0" y1="0" x2="0" y2="5" '
              'stroke="%s" stroke-width="1"/></pattern></defs>' % HATCH)
     ring = '<rect class="ring" fill="none" hidden/>'
 
@@ -289,7 +289,7 @@ HTML = u"""<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>How I built a table tennis model that beat the bookies</title>
 <meta name="description" content="A lockdown project that got slightly out of hand: a model run every day for three years against Eastern European table tennis leagues. 10,382 flat-stake bets, an 11.8% return. Every bet is on the page.">
-<meta name="theme-color" content="#ff7a1a">
+<meta name="theme-color" content="#330a37">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&amp;display=swap">
@@ -297,7 +297,7 @@ HTML = u"""<!doctype html>
 <link rel="stylesheet" href="../case.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='@@HASH@@ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='@@HASH@@330a37'/></svg>">
 </head>
-<body>
+<body class="inverse">
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="rule-bar">

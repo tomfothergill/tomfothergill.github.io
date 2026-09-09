@@ -58,6 +58,20 @@ swaps ground and ink outright, field-to-aubergine.
 **The inversion, in full:** aubergine grounds get cream type, amber metadata, and
 tangerine only for a link or an arrow.
 
+**Article pages are inverted.** The home page is tangerine; article pages carry
+`class="inverse"` on `<body>` and go aubergine: cream type, amber labels and
+metadata, tangerine prose links (`--note` is 2.4:1 on aubergine and unusable
+there), hairlines at `rgba(255,233,204,0.22)`, and the bands and footer invert
+back to tangerine with ink type so they still read as bands. This is §2's
+inversion rule applied page-wide, not a new palette: ink on tangerine is 6.5:1
+and fine for 45 words; cream on aubergine is 14.4:1 and is the long-read
+surface. Cover orange, pages aubergine.
+
+In CSS the colour tokens (`--field`, `--ink`, …) never change. Six role tokens
+sit on top — `--ground`, `--type`, `--type-soft`, `--link`, `--rule`, and the
+`--inverse-*` set for bands and footer — and `.inverse` remaps them once. Style
+with roles, never with colours directly.
+
 There is no dark mode. The palette is the design; do not add a
 `prefers-color-scheme` variant.
 
@@ -75,7 +89,7 @@ prose, where mono would be unkind past a paragraph.
 | Page title | Instrument Serif | 52 / 1.02 | Case-study openers, 24ch measure |
 | Row title | Instrument Serif | 36 / 1.1 | Work index rows |
 | Section lede | Instrument Serif | 24 / 1.35 | About block; note titles at 20 |
-| Body / prose | Newsreader 300 | 17 / 1.7 | Max 46ch on field, 62ch on cream |
+| Body / prose | Newsreader 400 | 17 / 1.7 | Max 46ch on field, 62ch on cream. Was 300; too light to read at length |
 | UI body | IBM Plex Mono | 13 / 1.9 | Home supporting text; row summaries at 12 |
 | Eyebrow / meta | IBM Plex Mono | 10 / 2.0 | Uppercase, 0.20–0.22em tracking |
 
@@ -289,7 +303,18 @@ radius or a gradient. Past about 40 categories the chart becomes a line.
 A cumulative line is the one chart type where the zero line is load-bearing even
 when nothing goes below it, because the whole claim is distance from zero.
 
-### 9.6 The inherited pattern
+### 9.6 Charts on inverted pages
+
+On an article page the panel goes **tangerine with ink marks** — the chart
+tokens are remapped under `.inverse`: ground = field, series-1 = ink, gridlines
+and recede = the field hairline value, hatch = ink at 0.38. That means exactly
+one usable series, because amber and cream have no contrast on orange. Both
+current charts are single-series (the bars encode sign by fill), so nothing is
+lost here; a future two-series comparison on an inverted page needs small
+multiples, or a decision to reopen this section. Do not put an aubergine panel on
+an aubergine page — it has no edge without a border or shadow.
+
+### 9.7 The inherited pattern
 
 Aubergine panel, series assigned in fixed order, sign by fill, context receding
 rather than subject changing, and one readout in a fixed slot. A scatter, a

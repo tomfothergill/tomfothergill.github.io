@@ -13,7 +13,19 @@
   --note:     #C0392B;  /* footnote markers and prose links only        */
 
   --hairline: rgba(51, 10, 55, 0.3);
-  --rule: 1.5px solid var(--ink);
+
+  /* Role tokens. The colour tokens above never change; the roles are what a
+     page remaps. The home page reads them as written; article pages carry
+     `.inverse` on <body> (see case.css) and swap ground for ink. */
+  --ground:         var(--field);
+  --type:           var(--ink);
+  --type-soft:      var(--ink-soft);
+  --link:           var(--note);
+  --rule:           1.5px solid var(--type);
+  --inverse-ground: var(--ink);     /* bands and the footer                */
+  --inverse-type:   var(--cream);
+  --inverse-soft:   var(--amber);
+  --inverse-hover:  var(--field);
 
   /* Spacing scale — nothing off this list. */
   --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px; --s5: 22px;
@@ -35,9 +47,9 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--field);
-  color: var(--ink);
-  font: 300 17px/1.7 var(--read);
+  background: var(--ground);
+  color: var(--type);
+  font: 400 17px/1.7 var(--read);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -46,13 +58,13 @@ body {
   font: 500 10px/2 var(--mono);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--type-soft);
   margin: 0 0 var(--s5);
 }
 
 .lede {
   font: 400 24px/1.35 var(--serif);
-  color: var(--ink);
+  color: var(--type);
   margin: 0 0 var(--s5);
   max-width: 30ch;
 }
@@ -60,7 +72,7 @@ body {
 a { color: inherit; text-decoration: none; }
 
 a:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid var(--type);
   outline-offset: 2px;
 }
 
@@ -81,7 +93,7 @@ a:focus-visible {
 .rule-bar__nav { display: flex; flex-wrap: wrap; gap: var(--s7); }
 
 .rule-bar a { transition: color var(--ease-hover); }
-.rule-bar a:hover { color: var(--ink-soft); }
+.rule-bar a:hover { color: var(--type-soft); }
 
 /* ---- 4. Statement --------------------------------------------------- */
 .statement { padding: var(--s10) var(--gutter) var(--s9); }
@@ -110,7 +122,7 @@ a:focus-visible {
   font: 400 10px/2 var(--mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--type-soft);
 }
 
 /* ---- 5. Metadata band ----------------------------------------------- */
@@ -118,12 +130,12 @@ a:focus-visible {
   display: flex;
   flex-wrap: wrap;
   gap: var(--s2) var(--s7);
-  background: var(--ink);
+  background: var(--inverse-ground);
   padding: 11px var(--gutter);
   font: 400 10px/2 var(--mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--amber);
+  color: var(--inverse-soft);
 }
 
 /* ---- 6. Work index --------------------------------------------------- */
@@ -145,7 +157,7 @@ a:focus-visible {
 .row__num {
   font: 400 10px/2 var(--mono);
   letter-spacing: 0.2em;
-  color: var(--ink-soft);
+  color: var(--type-soft);
   transition: color var(--ease-hover);
 }
 
@@ -158,7 +170,7 @@ a:focus-visible {
   font: 400 10px/2 var(--mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--type-soft);
   text-align: right;
   transition: color var(--ease-hover);
 }
@@ -172,13 +184,13 @@ a:focus-visible {
 /* Hover inverts the whole row outright — no intermediate tint. */
 .row:hover,
 .row:focus-visible {
-  background: var(--ink);
-  color: var(--cream);
+  background: var(--inverse-ground);
+  color: var(--inverse-type);
 }
 .row:hover .row__num,
 .row:hover .row__meta,
 .row:focus-visible .row__num,
-.row:focus-visible .row__meta { color: var(--amber); }
+.row:focus-visible .row__meta { color: var(--inverse-soft); }
 
 /* ---- 7. Two-up grid -------------------------------------------------- */
 .two-up {
@@ -192,10 +204,10 @@ a:focus-visible {
 .lede-link a {
   font: 400 12px/1.9 var(--mono);
   letter-spacing: 0.06em;
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 1px solid var(--type);
   transition: color var(--ease-hover), border-color var(--ease-hover);
 }
-.lede-link a:hover { color: var(--ink-soft); border-bottom-color: var(--ink-soft); }
+.lede-link a:hover { color: var(--type-soft); border-bottom-color: var(--type-soft); }
 
 .notes { list-style: none; margin: 0; padding: 0; }
 
@@ -209,7 +221,7 @@ a:focus-visible {
   transition: color var(--ease-hover);
 }
 .notes li:last-child a { border-bottom: 1px solid var(--hairline); }
-.notes a:hover { color: var(--ink-soft); }
+.notes a:hover { color: var(--type-soft); }
 
 .notes__title { font: 400 20px/1.35 var(--serif); }
 
@@ -217,7 +229,7 @@ a:focus-visible {
   font: 400 10px/2 var(--mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--type-soft);
   white-space: nowrap;
 }
 
@@ -228,8 +240,8 @@ a:focus-visible {
   align-items: baseline;
   justify-content: space-between;
   gap: var(--s5) var(--s8);
-  background: var(--ink);
-  color: var(--cream);
+  background: var(--inverse-ground);
+  color: var(--inverse-type);
   padding: var(--s9) var(--gutter);
 }
 
@@ -238,8 +250,8 @@ a:focus-visible {
   letter-spacing: -0.015em;
   transition: color var(--ease-hover);
 }
-.contact__email:hover { color: var(--field); }
-.contact__email:focus-visible { outline-color: var(--cream); }
+.contact__email:hover { color: var(--inverse-hover); }
+.contact__email:focus-visible { outline-color: var(--inverse-type); }
 
 .contact__links {
   display: flex;
@@ -248,11 +260,11 @@ a:focus-visible {
   font: 400 10px/2 var(--mono);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--amber);
+  color: var(--inverse-soft);
 }
 .contact__links a { transition: color var(--ease-hover); }
-.contact__links a:hover { color: var(--field); }
-.contact__links a:focus-visible { outline-color: var(--cream); }
+.contact__links a:hover { color: var(--inverse-hover); }
+.contact__links a:focus-visible { outline-color: var(--inverse-type); }
 
 /* ---- 9. Responsive ---------------------------------------------------- */
 @media (max-width: 700px) {
@@ -269,8 +281,8 @@ a:focus-visible {
   left: var(--gutter);
   top: var(--s2);
   z-index: 10;
-  background: var(--ink);
-  color: var(--cream);
+  background: var(--inverse-ground);
+  color: var(--inverse-type);
   padding: var(--s2) var(--s3);
   font: 400 10px/2 var(--mono);
   letter-spacing: 0.2em;
