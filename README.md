@@ -1,6 +1,7 @@
 # tomfothergill.github.io
 
-My personal site. Plain HTML and CSS — no build step, no dependencies.
+My personal site. Plain HTML and CSS — no build step, no dependencies. Built on the **Tangerine**
+design system; the rules live in [CLAUDE.md](CLAUDE.md).
 
 Live at <https://tomfothergill.github.io>.
 
@@ -9,7 +10,8 @@ Live at <https://tomfothergill.github.io>.
 | File | Purpose |
 | --- | --- |
 | `index.html` | The whole page. Content lives here. |
-| `styles.css` | Design tokens at the top, then layout and type. Light and dark themes both defined. |
+| `styles.css` | Tangerine tokens at the top, then one numbered block per band. |
+| `CLAUDE.md` | The Tangerine design system in full. Read it before changing anything visual. |
 | `.nojekyll` | Tells GitHub Pages to serve the files as-is instead of running them through Jekyll. |
 
 ## Editing
