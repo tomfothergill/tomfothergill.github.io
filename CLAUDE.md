@@ -167,7 +167,134 @@ of the voice, not decoration.
 **Length:** a statement is under 12 words, a row summary under 20, an about
 paragraph under 45.
 
-## 9. Don't
+## 9. Charts
+
+Charts were the first thing to break the system, for a diagnosable reason: on the
+field there is exactly one usable ink, so every mark is the same colour as every
+other mark and value can only be encoded by position. That is enough for one
+series and nothing more. The fix is not more hues on the field — it is moving
+data onto a ground that has a value range in it.
+
+### 9.1 Amendment to §4 — the data surface
+
+Every chart sits on an aubergine panel. §4 forbids light panels on the field and
+reserves aubergine for full-bleed bands; this amends the second half of that rule
+rather than breaking it. Aubergine is legal as a contained ground when it is a
+**data surface**, subject to three conditions: it spans the full content width
+between the gutters, so it still reads as a band and not a card; it is
+square-cornered with no border and no shadow; and it contains only marks, axes
+and one readout — no prose, no headings, no buttons.
+
+The only exception is a single-series sparkline: under 60px tall, drawn in ink
+directly on the field, with no axes, gridlines or tick labels. If it needs a
+label, it needs a panel.
+
+Panel padding is 26px, or 34px when there is a readout slot. Eyebrow, chart title
+and source note live **outside** the panel, in field colours, using the existing
+type roles.
+
+### 9.2 Tokens — extend, don't invent
+
+The series ramp is the existing palette redeployed as ink on aubergine. Three of
+the four series colours are tokens you already have; one hue is added, and it is
+the only addition the chart layer is permitted. The system stops reading as
+Tangerine the moment a second new hue appears — so the hard rule is **four series
+maximum**, and if the data needs more, the chart is wrong and the answer is small
+multiples.
+
+| Token | Value | Role |
+| --- | --- | --- |
+| `--chart-ground` | `#330A37` (= `--ink`) | Panel ground. No other ground is legal. |
+| `--series-1` | `#FFE9CC` (= `--cream`) | Primary series. Single-series charts use only this. |
+| `--series-2` | `#FFB86B` (= `--amber`) | Comparison — prior period, forecast, benchmark. |
+| `--series-3` | `#FF7A1A` (= `--field`) | Third series. The field colour becomes data ink here. |
+| `--series-4` | `#C98FBF` **(new)** | Fourth and last. The one permitted addition. |
+| `--chart-recede` | `#5C1A62` (= `--ink-soft`) | Unfocused marks during a focus state. |
+| `--chart-grid` | `rgba(255,233,204,0.22)` **(new)** | Gridlines. The aubergine twin of the field hairline. |
+| `--chart-hatch` | 45°, cream at 0.38, 1px on 5px | Negative-value fill. Not a colour — a texture. |
+
+Series order is fixed: assign 1, then 2, then 3, then 4 — never pick by taste.
+Contrast on `--chart-ground`: series-1 14.4:1, series-2 9.9:1, series-3 6.5:1,
+series-4 6.6:1, recede 1.44:1 (intentionally illegible — it is context, not
+content).
+
+`--note` (`#C0392B`) stays out of charts entirely. It is the footnote marker, and
+if it also meant "loss" then a link in a case-study paragraph would start looking
+like a data statement.
+
+### 9.3 Positive and negative
+
+Sign is encoded by **fill, not hue**: positive is solid, negative is hollow — a
+1px cream outline with the hatch texture inside. This survives greyscale
+printing, survives every form of colour blindness, and keeps the series colour
+free to mean *which series* rather than *which direction*.
+
+Sign is always double-encoded. Negative marks hang below a 1.5px cream zero line
+and their labels carry a minus. For lines, a negative or drawdown span switches
+from solid to a 3px dash at the same colour and weight — the line never changes
+colour mid-series.
+
+### 9.4 Focus, not hover
+
+The inversion rule in §6 governs interactive rows and blocks. It does **not**
+apply to data marks, and applying it would be actively wrong — inverting a bar
+swaps it with the panel and destroys the comparison the chart exists to make.
+
+Charts get a focus state instead, and the distinction is that the subject is
+never touched: on hover of a mark, every **other** mark drops to `--chart-recede`
+at 160ms ease-out while the focused mark keeps its exact colour.
+
+The value appears in a fixed readout slot in the panel's top-right — **never a
+floating tooltip**, which would need a radius, a shadow and a light ground, all
+forbidden. The slot is always present and shows the series total when nothing is
+focused, so nothing shifts when it changes. Keyboard: arrow keys step focus along
+the series, 2px cream outline at 2px offset. Under reduced motion the recede is
+instant.
+
+### 9.5 Axes, gridlines, labels
+
+The existing weights carry over with one substitution. The 1.5px structural rule
+becomes the zero line, in cream, and it is the only 1.5px stroke in a chart. The
+field hairline does not carry over — it is defined against orange and vanishes on
+aubergine, hence `--chart-grid`.
+
+- **Zero line** — 1.5px `--series-1`, full width.
+- **Gridlines** — 1px `--chart-grid`, horizontal only, four maximum.
+- **Axis lines** — not drawn. The labels do that work.
+- **Tick labels** — 10px Plex Mono uppercase, 0.16em, `--amber`, every third category at most.
+- **Value annotation** — 11px Plex Mono cream with a 1px cream leader, one per chart, no arrowhead.
+- **Axis titles** — none. Use the 10px eyebrow above the panel.
+
+Legends are inline mono labels at the top of the panel with a 10px square swatch,
+never a boxed key in a corner. One series means no legend at all.
+
+Bar gaps are 4px at 24 categories and 8px at 12 or fewer; bars never carry a
+radius or a gradient. Past about 40 categories the chart becomes a line.
+
+A cumulative line is the one chart type where the zero line is load-bearing even
+when nothing goes below it, because the whole claim is distance from zero.
+
+### 9.6 The inherited pattern
+
+Aubergine panel, series assigned in fixed order, sign by fill, context receding
+rather than subject changing, and one readout in a fixed slot. A scatter, a
+histogram or a small-multiple grid needs no new decisions. A chart type that
+genuinely cannot be expressed this way is the signal to come back to this
+section, not to add a colour.
+
+## 10. Tables
+
+Tables go on the field, not on a panel — the opposite of charts, for the opposite
+reason. A chart needs a value range to separate marks; a table separates its
+content by position and alignment, so one ink is all it ever needed. Ink on
+tangerine at 6.5:1 is a good reading surface for figures, and the flatness that
+ruins a chart is exactly right here.
+
+The one exception: a table that exists to itemise a chart directly above it moves
+onto the same aubergine panel and adopts the chart tokens, so the pair reads as
+one object. Never split a table and its chart across two grounds.
+
+## 11. Don't
 
 - Put a white or cream panel on the field to hold body text. Type goes directly on the orange.
 - Introduce a fifth colour, a gradient, a drop shadow, or a rounded corner.
@@ -175,6 +302,9 @@ paragraph under 45.
 - Add a hero image behind the statement. The colour is the hero image.
 - Use opacity to make a secondary colour. Use `--ink-soft` or `--amber`, which are real tokens.
 - Add a fourth project to the home page. The index is deliberately three deep.
+- Draw a chart on the field with more than one series, or on any ground other than aubergine.
+- Encode gain and loss by hue, or bring `--note` into a chart.
+- Invert a data mark on hover, or replace the readout slot with a floating tooltip.
 
 ---
 

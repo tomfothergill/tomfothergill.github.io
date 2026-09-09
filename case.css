@@ -30,26 +30,32 @@
   margin: var(--s3) 0 0;
 }
 
-/* ---- Plots ----------------------------------------------------------- */
-.plot {
-  margin: var(--s7) 0;
+/* ---- Charts (Tangerine 9) --------------------------------------------
+   Data lives on an aubergine surface because the field has exactly one
+   usable ink. Series colours are the existing palette redeployed as ink on
+   that ground; sign is fill, not hue; interaction is focus, not inversion. */
+
+:root {
+  --chart-ground: var(--ink);
+  --series-1: var(--cream);      /* primary series                        */
+  --series-2: var(--amber);      /* comparison                            */
+  --series-3: var(--field);      /* third                                 */
+  --series-4: #C98FBF;           /* fourth and last: the one addition     */
+  --chart-recede: var(--ink-soft);
+  --chart-grid: rgba(255, 233, 204, 0.22);
+  --chart-hatch: rgba(255, 233, 204, 0.38);
+}
+
+.plot { margin: var(--s7) 0; max-width: none; }
+
+/* Title and source note sit outside the panel, in field colours. */
+.plot__title {
+  font: 500 10px/2 var(--mono);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s2);
   max-width: none;
-}
-
-.plot svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  border: var(--rule);
-  background: none;
-}
-
-/* Axis labels inside the generated SVGs. */
-.plot .ax {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  fill: var(--ink-soft);
 }
 
 .plot figcaption {
@@ -59,6 +65,129 @@
   color: var(--ink-soft);
   padding-top: var(--s2);
   max-width: 70ch;
+}
+
+/* The data surface: full content width, square, no border, no shadow. */
+.panel {
+  background: var(--chart-ground);
+  padding: var(--s7);
+}
+
+.panel__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s3) var(--s5);
+  margin-bottom: var(--s5);
+}
+
+/* Legend: inline mono labels with a square swatch, never a boxed key. */
+.legend { display: flex; gap: var(--s5); margin: 0; max-width: none; }
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--series-2);
+}
+
+.key::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: var(--series-1);
+}
+
+.key--neg::before {
+  background: var(--chart-hatch);
+  box-shadow: inset 0 0 0 1px var(--series-1);
+}
+
+/* Readout slot: always present, so nothing shifts when it changes. */
+.readout { margin: 0; text-align: right; max-width: none; }
+
+.readout__label {
+  display: block;
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--series-2);
+  /* The slot must not change height when it changes content. */
+  white-space: nowrap;
+}
+
+.readout__value {
+  display: block;
+  font: 400 24px/1.15 var(--serif);
+  color: var(--series-1);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Marks ------------------------------------------------------------ */
+.chart { display: block; width: 100%; height: auto; }
+.chart:focus { outline: none; }
+.chart:focus-visible { outline: 2px solid var(--series-1); outline-offset: 2px; }
+.chart .hit { cursor: crosshair; }
+
+.grid { stroke: var(--chart-grid); stroke-width: 1; }
+.zero { stroke: var(--series-1); stroke-width: 1.5; }
+
+.tick {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  fill: var(--series-2);
+}
+
+.annot {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  fill: var(--series-1);
+}
+
+.leader { stroke: var(--series-1); stroke-width: 1; }
+
+.line {
+  fill: none;
+  stroke: var(--series-1);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+}
+
+/* A change of state, not of subject: same colour, same weight, dashed. */
+.line--dash { stroke-dasharray: 3 3; }
+
+.guide { stroke: var(--series-1); stroke-width: 1; stroke-dasharray: 2 3; }
+.dot { fill: var(--series-1); }
+
+.bar--pos { fill: var(--series-1); }
+.bar--neg { fill: url(#hatch); stroke: var(--series-1); stroke-width: 1; }
+
+.ring { stroke: var(--series-1); stroke-width: 2; }
+
+/* ---- Focus, not hover (9.4) ------------------------------------------- */
+/* The subject is never touched; the context recedes around it. */
+.chart--bars .bar { transition: fill var(--ease-hover), stroke var(--ease-hover); }
+
+.chart--bars.is-focusing .bar--pos:not(.is-focus) { fill: var(--chart-recede); }
+.chart--bars.is-focusing .bar--neg:not(.is-focus) {
+  fill: none;
+  stroke: var(--chart-recede);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart--bars .bar { transition: none; }
+}
+
+@media (max-width: 700px) {
+  .panel { padding: var(--s5); }
+  .panel__head { margin-bottom: var(--s3); }
+  .readout__value { font-size: 20px; }
 }
 
 /* ---- Tables ---------------------------------------------------------- */
@@ -166,43 +295,4 @@ tbody tr.lost td { color: var(--ink-soft); }
 @media (max-width: 700px) {
   .filters { gap: var(--s3) var(--s4); }
   .filters input, .filters select { min-width: 7rem; }
-}
-
-/* ---- Chart interaction ------------------------------------------------ */
-/* The readout is an inverted surface, so it follows the inversion rule:
-   aubergine ground, cream figure, amber supporting detail. */
-.tip {
-  position: fixed;
-  z-index: 20;
-  pointer-events: none;
-  background: var(--ink);
-  padding: var(--s2) var(--s3);
-  max-width: 22rem;
-}
-
-.tip b {
-  display: block;
-  font: 400 19px/1.25 var(--serif);
-  color: var(--cream);
-}
-
-.tip i {
-  display: block;
-  font: 400 10px/2 var(--mono);
-  font-style: normal;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--amber);
-}
-
-.chart .hit { cursor: crosshair; }
-
-/* Hovering a bar swaps its state outright — solid becomes outline and back —
-   which is the system's hover rule applied to a mark rather than a row. */
-.chart--bars .bar { transition: fill var(--ease-hover); }
-.chart--bars .bar[data-sign="pos"].is-on { fill: none; stroke: var(--ink); stroke-width: 1.5; }
-.chart--bars .bar[data-sign="neg"].is-on { fill: var(--ink); }
-
-@media (prefers-reduced-motion: reduce) {
-  .chart--bars .bar { transition: none; }
 }
