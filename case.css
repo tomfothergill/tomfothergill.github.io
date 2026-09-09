@@ -311,3 +311,108 @@ tbody tr.lost td { color: var(--ink-soft); }
   transition: color var(--ease-hover), border-color var(--ease-hover);
 }
 .prose p a:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* ---- Article grid (Article Layout Ideas 9A/9B/9D) ------------------------
+   Prose stays at 46ch. Beside it, a 26ch mono margin holds figures, asides
+   and sources; the margin's hairline runs the full length whether or not
+   there is anything in it, so it reads as structure rather than boxes. At
+   story points the same column holds a scoreboard on a 1.5px ink rule.
+   Charts and tables break out to the full width and the margin resumes
+   underneath, carrying the caption. Roughly one margin item per two
+   paragraphs. Values snapped to the spacing scale: 34px row padding, 44px
+   column gap, 26px rail inset. */
+
+.article { padding: 0 var(--gutter) var(--s9); }
+
+.row2 {
+  display: grid;
+  grid-template-columns: minmax(0, 46ch) minmax(0, 26ch);
+  column-gap: var(--s9);
+  padding: var(--s7) 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.row2--wide { grid-template-columns: minmax(0, 46ch) minmax(0, 30ch); }
+
+/* The row after a chart or table carries its caption; no rule between them. */
+.row2--after { border-top: 0; }
+
+.row2__prose { display: flex; flex-direction: column; gap: var(--s4); }
+.row2__prose p { margin: 0; max-width: none; }
+
+.row2__margin {
+  margin: 0;
+  border-left: 1px solid var(--hairline);
+  padding-left: var(--s6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  min-width: 0;
+}
+
+/* 9D: the scoreboard opens on a structural rule and does not stretch. */
+.row2__margin--rule {
+  border-left: var(--rule);
+  align-self: start;
+  gap: var(--s3);
+}
+
+.m-label {
+  font: 500 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 var(--s1);
+  max-width: none;
+}
+.m-label + * { margin-top: calc(var(--s5) * -1 + var(--s1)); }
+
+.m-rows { margin: 0; }
+.m-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s3);
+  font: 400 11px/2 var(--mono);
+  color: var(--ink);
+  border-top: 1px solid var(--hairline);
+}
+.m-row:last-child { border-bottom: 1px solid var(--hairline); }
+.m-row--dim span:first-child { color: var(--ink-soft); }
+
+.m-lines { font: 400 11px/1.9 var(--mono); color: var(--ink); margin: 0; max-width: none; }
+.m-note  { font: 400 11px/1.8 var(--mono); color: var(--ink-soft); margin: 0; max-width: none; }
+
+.m-fig {
+  font: 400 52px/0.9 var(--serif);
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+  max-width: none;
+  font-variant-numeric: tabular-nums;
+}
+.m-sub {
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: none;
+}
+
+/* Sparkline: the month you are reading about keeps its ink; the rest recede
+   to the hairline value. A single series under 60px, drawn on the field, is
+   the one chart the system allows off a panel (9.1). */
+.m-spark { display: block; width: 100%; height: 30px; }
+.sp { fill: var(--hairline); }
+.sp--on { fill: var(--ink); }
+
+/* Charts and tables inside the article: the rows above and below provide the
+   vertical rhythm, so the figure carries none of its own. */
+.article .plot { margin: 0; }
+.article .scroll { margin: 0; }
+.article .fine { margin: var(--s3) 0 0; }
+
+@media (max-width: 700px) {
+  .row2, .row2--wide { grid-template-columns: 1fr; row-gap: var(--s5); }
+  .row2__margin:empty { display: none; }
+}

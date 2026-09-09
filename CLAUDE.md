@@ -309,7 +309,48 @@ The one exception: a table that exists to itemise a chart directly above it move
 onto the same aubergine panel and adopts the chart tokens, so the pair reads as
 one object. Never split a table and its chart across two grounds.
 
-## 11. Don't
+## 11. Article layout
+
+Case-study prose stays at 46ch; reading a 100ch line of Newsreader at 17px is
+genuinely worse. The space beside it is a **margin column**: 26ch of mono holding
+figures, definitions and sources, or 30ch when it holds a scoreboard. From
+`Article Layout Ideas.dc.html`, treatments 9A, 9B and 9D. In CSS: `.article`,
+`.row2`, `.row2__margin`.
+
+**The margin (9A).** Each row of the article is a grid: prose left, margin right.
+The margin's hairline runs the whole length of every row whether or not there is
+anything in it, so the column reads as structure rather than as floating boxes;
+an empty margin is fine and most rows should have one. Rows are separated by the
+same hairline used between work rows. Aim for roughly one margin item per two
+paragraphs — more and it competes with the prose. Items are a 10px mono eyebrow
+label and then either label/value rows with hairline rules, plain 11px mono
+lines, or an 11px ink-soft note. Instrument Serif is not used in the margin
+below 20px.
+
+**When a chart or table arrives (9B).** It breaks out to the full content width
+exactly as §9 builds it; the margin simply stops for its height and resumes
+underneath. The caption moves into the margin of the next row, labelled "Above",
+and that row carries no hairline above it, so the figure sits tight against the
+prose on both sides. Figures inside the article carry no vertical margin of their
+own — the rows do that work.
+
+**The scoreboard (9D).** At story points the same margin column holds the
+figures as they stood then: a 1.5px ink rule opens the rail, an "As of" eyebrow,
+the cumulative figure at 52px in the serif (it has no dark ground to carry it, so
+it goes up a size), a 10px mono sub-label, three or four hairline rows with
+ink-soft labels, and a single-series sparkline under 30px. The month the reader
+is at keeps its ink; the rest recede to the hairline value, which is the chart
+focus rule reused. This is the *no-card* version — the aubergine-card scoreboard
+was rejected because §9.1 reserves aubergine for full-width data surfaces. It
+does not scroll or swap; it is placed statically where the story reaches that
+moment.
+
+**Values snapped to the spacing scale.** The artboards used 36px row padding,
+56px column gap and 24px rail inset; the build uses 34, 44 and 26 so nothing is
+off-scale. Below 700px the margin collapses beneath the prose and empty margins
+disappear.
+
+## 12. Don't
 
 - Put a white or cream panel on the field to hold body text. Type goes directly on the orange.
 - Introduce a fifth colour, a gradient, a drop shadow, or a rounded corner.
@@ -327,7 +368,7 @@ one object. Never split a table and its chart across two grounds.
 
 - `index.html` — the home page, one section per band in the order above.
 - `styles.css` — tokens first, then one numbered block per band. Comments cite the rules.
-- `case.css` — case-study additions: the 52px opener, the chart layer (§9), tables, and the filterable log.
+- `case.css` — case-study additions: the 52px opener, the chart layer (§9), the article grid and margin (§11), tables, and the filterable log.
 - `table-tennis/` — case study 01. **Generated** — see below.
 - `build/` — the generators for the table tennis page, plus their README.
 - `.nojekyll` — tells GitHub Pages to serve the files as-is rather than running Jekyll.

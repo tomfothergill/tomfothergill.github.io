@@ -84,16 +84,20 @@ for m in full.values():
 
 # ---- daily cumulative ------------------------------------------------
 daily = defaultdict(float)
+daily_n = defaultdict(int)
 for r in rows:
-    daily[r["dt"].strftime("%Y-%m-%d")] += r["ret"] - r["stake"]
-cum, run = [], 0.0
+    k = r["dt"].strftime("%Y-%m-%d")
+    daily[k] += r["ret"] - r["stake"]
+    daily_n[k] += 1
+cum, run, n_run = [], 0.0, 0
 for d in sorted(daily):
     run += daily[d]
-    cum.append([d, round(run, 2)])
+    n_run += daily_n[d]
+    cum.append([d, round(run, 2), n_run])
 
 # ---- drawdown --------------------------------------------------------
 peak, max_dd, dd_at = -1e9, 0.0, None
-for d, v in cum:
+for d, v, _ in cum:
     peak = max(peak, v)
     if peak - v > max_dd:
         max_dd, dd_at = peak - v, d
