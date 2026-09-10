@@ -328,7 +328,8 @@ HTML = u"""<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&amp;display=swap">
 <link rel="stylesheet" href="../styles.css">
-<link rel="stylesheet" href="../case.css?v=20260910-rewrite-2">
+<link rel="stylesheet" href="../case.css?v=20260910-contact">
+<script src="../contact-strip.js?v=20260910-contact" defer></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='@@HASH@@ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='@@HASH@@330a37'/></svg>">
 </head>
 <body class="inverse">
@@ -387,8 +388,9 @@ HTML = u"""<!doctype html>
 </main>
 
 <footer class="contact">
-  <a class="contact__email" href="mailto:you@example.com">you@example.com</a>
+  <a class="contact__email" href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
   <nav class="contact__links" aria-label="Elsewhere">
+    <a href="https://www.linkedin.com/in/tom-f-778358113/">LinkedIn</a>
     <a href="https://github.com/tomfothergill/tabletennis">The log on GitHub</a>
     <a href="../">Index</a>
     <span>No newsletter</span>

@@ -39,6 +39,67 @@
 }
 
 /* ---- Prose sections -------------------------------------------------- */
+.contact-strip {
+  display: flex;
+  align-items: stretch;
+  background: var(--field);
+  color: var(--ink);
+  font: 400 12px/2 var(--mono);
+  letter-spacing: 0.08em;
+}
+.contact-strip__window { flex: 1; min-width: 0; overflow: hidden; }
+.contact-strip__track { display: flex; width: max-content; min-width: 100%; }
+.contact-strip__group {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex: 0 0 auto;
+  gap: var(--s7);
+  min-width: var(--contact-width, 100%);
+  padding: 12px var(--s4);
+}
+.contact-strip__group > * { white-space: nowrap; }
+.contact-strip__group > span:first-child { text-transform: uppercase; }
+.contact-strip a { text-decoration: underline; text-underline-offset: 0.2em; }
+.contact-strip a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+.contact-strip__toggle {
+  flex: 0 0 auto;
+  border: 0;
+  border-left: 1px solid var(--ink);
+  padding: 0 var(--s4);
+  background: var(--field);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.contact-strip__toggle[hidden] { display: none; }
+.contact-strip__toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: -5px; }
+.contact-strip.is-ready .contact-strip__track {
+  animation: contact-scroll var(--contact-duration, 35s) linear infinite;
+}
+.contact-strip:is(:hover, :focus-within, .is-paused) .contact-strip__track {
+  animation-play-state: paused;
+}
+.contact-strip:has(a:focus-visible) .contact-strip__track {
+  animation: none;
+  transform: none;
+}
+@keyframes contact-scroll {
+  to { transform: translateX(calc(-1 * var(--contact-distance))); }
+}
+.contact-strip.is-static .contact-strip__track { width: 100%; animation: none; }
+.contact-strip.is-static .contact-strip__group {
+  min-width: 0;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+}
+.contact-strip.is-static .contact-strip__group > * { white-space: normal; overflow-wrap: anywhere; }
+.contact-strip.is-static .contact-strip__group[aria-hidden] { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .contact-strip .contact-strip__track { animation: none; }
+}
+
 .prose {
   padding: var(--s9) var(--gutter);
   border-top: 1px solid var(--hairline);
