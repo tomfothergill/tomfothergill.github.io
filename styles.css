@@ -146,8 +146,8 @@ a:focus-visible {
   flex-wrap: wrap;
   gap: 32px;
   padding: 15px var(--gutter);
-  background: var(--field);
-  color: var(--ink);
+  background: var(--inverse-ground);
+  color: var(--inverse-type);
   font: 500 13px/1.7 var(--mono);
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -159,14 +159,14 @@ a:focus-visible {
   gap: 16px 34px;
 }
 .contact-bar__links a {
-  color: var(--ink);
+  color: inherit;
   border-bottom: 1px solid currentColor;
   padding-bottom: 2px;
   text-decoration: none;
 }
 .contact-bar__links a:hover { border-bottom-width: 2px; padding-bottom: 1px; }
 .contact-bar__links a:focus-visible {
-  outline: 2px solid var(--ink);
+  outline: 2px solid currentColor;
   outline-offset: 5px;
 }
 @media (max-width: 700px) {
