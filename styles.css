@@ -138,6 +138,42 @@ a:focus-visible {
   color: var(--inverse-soft);
 }
 
+/* Contact Bar Ideas 1A: label left, static links right, shared by both pages. */
+.contact-bar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding: 15px var(--gutter);
+  background: var(--field);
+  color: var(--ink);
+  font: 500 13px/1.7 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.contact-bar__links {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 16px 34px;
+}
+.contact-bar__links a {
+  color: var(--ink);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  text-decoration: none;
+}
+.contact-bar__links a:hover { border-bottom-width: 2px; padding-bottom: 1px; }
+.contact-bar__links a:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 5px;
+}
+@media (max-width: 700px) {
+  .contact-bar { row-gap: 16px; }
+  .contact-bar__label { flex-basis: 100%; }
+}
+
 /* ---- 6. Work index --------------------------------------------------- */
 .work { padding: var(--s9) 0; }
 .work .eyebrow { padding-inline: var(--gutter); }
