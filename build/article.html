@@ -1,0 +1,213 @@
+  <section class="opener" style="--art: url(/table-tennis/player.png)">
+    <div class="opener__grid">
+      <div>
+        <p class="eyebrow">Case study &middot; 2021&ndash;2024</p>
+        <h1>Ten thousand table tennis bets.</h1>
+      </div>
+      <div class="opener__art" role="img"
+           aria-label="Line drawing of a table tennis player mid-forehand"></div>
+    </div>
+    <div class="statement__pair">
+      <p class="statement__prose">
+        I built a betting model during lockdown and kept it running, with a few
+        breaks, until 2024. This is how it worked, what it earned and why I stopped.
+      </p>
+      <p class="statement__meta">
+        @@bets@@ bets<br>
+        @@profit@@ units<br>
+        @@roi@@% return
+      </p>
+    </div>
+  </section>
+
+  <div class="band">
+    <span>Elo ratings</span><span>One unit per bet</span>
+    <span>@@active@@ months with bets</span><span>Full log below</span>
+  </div>
+
+  <div class="article article--centred article--rewrite">
+    <div class="col">
+      <p>
+        During lockdown I found myself watching table tennis in otherwise empty
+        sports halls. There would be a player in red, another in blue and a referee
+        who occasionally looked close to falling asleep. Some players appeared
+        to be in their sixties, playing seven or eight matches a day. Once I had
+        money on them, I sometimes looked them up online, which wasn't always
+        reassuring.
+      </p>
+      <p>
+        Much of the usual sporting calendar had stopped, and these small Eastern
+        European leagues had found an audience among people looking for something
+        to bet on. This
+        <a href="https://www.forbes.com/sites/barrycollins/2020/06/13/anyone-for-ukrainian-table-tennis-the-shady-sport-that-feeds-online-gambling/">Forbes piece from June 2020</a>
+        gives some of the background. What interested me was the volume of matches:
+        thousands of players, fairly consistent conditions and a continuous supply
+        of results and odds. It seemed a good place to try building a model.
+      </p>
+      <p>
+        Between March 2021 and April 2024, I placed @@bets@@ bets based on its
+        recommendations. With the same stake on each bet, the log records a profit
+        of @@profit_plain@@ units, or @@roi@@% of the total amount staked. The model
+        won @@hit@@% of its bets, which takes a little explaining.
+      </p>
+
+      <h2>Choosing a price worth taking</h2>
+      <p>
+        I used Elo, the rating system familiar from chess, to estimate each
+        player's chance of winning. Each player started with a rating of 1,500.
+        After a match, the winner gained rating points and the loser gave them up,
+        with a larger adjustment when the result was unexpected. I used a
+        K-factor of 10 to control those adjustments, updated after whole matches
+        and shared the ratings across leagues.
+      </p>
+      <p>
+        The difference between two players' ratings gave me a win probability,
+        which I converted into odds. I could then compare my price with the
+        bookmaker's and look for a large enough difference to justify a bet.
+        A player could be unlikely to win and still be worth backing if the
+        payout was high enough for the chance I thought they had.
+      </p>
+      <p>
+        I also chose to concentrate on outsiders. For most of the project, a
+        minimum-odds filter excluded anything below 3.00, although I lowered it
+        at times to experiment with shorter prices. That was an explicit part
+        of the selection process, so the high proportion of long-priced bets
+        in the results largely reflects how I configured the system.
+      </p>
+      <p>
+        The daily routine ran on PythonAnywhere. It took in the latest results,
+        updated the ratings, priced the next day's fixtures and emailed me the
+        bets that passed the filters. I placed the bets, logged the results and
+        made adjustments as the project went along.
+      </p>
+      <p>
+        The average odds taken were @@mean@@. With decimal odds, a winning bet
+        at 4.00 returns four units including the stake, so it covers three
+        one-unit losses. The actual prices varied, but that is how a system
+        winning fewer than one bet in three could finish ahead.
+      </p>
+    </div>
+
+    <figure class="plot plot--step">
+      <p class="plot__title">Profit across the full run</p>
+      <div class="panel">
+        <div class="panel__head">
+          <p class="legend">Cumulative profit &middot; units</p>
+          <p class="readout" data-default-label="Final" data-default-value="@@profit@@">
+            <span class="readout__label">Final</span>
+            <span class="readout__value">@@profit@@</span>
+          </p>
+        </div>
+        @@cum@@
+      </div>
+      <figcaption class="plot__caption">One unit staked on every bet, @@first@@ to @@last@@.
+      Dashed lines bridge breaks in betting; the longest lasted about nine months.</figcaption>
+    </figure>
+
+    <div class="col">
+      <h2>Where the returns came from</h2>
+      <p>
+        The overall return hides some substantial differences. Setka Cup supplied
+        5,773 bets and 776.19 units of profit, making it the largest contributor.
+        TT Cup Ukraine and the Russian Liga Pro also performed well. The same
+        approach was roughly break-even on the women's Setka Cup and lost money
+        on Czech Liga Pro. I didn't investigate those differences at the time,
+        so I can't offer an explanation for them now.
+      </p>
+      <p>
+        The odds breakdown is revealing too. Bets from 5.00 up to, but not
+        including, 8.00 returned 25.48% across 1,346 selections. At 8.00 and above,
+        just two of 94 bets won, losing 77 units. Longer odds clearly weren't
+        enough on their own.
+      </p>
+    </div>
+
+    <div class="step">
+      <div class="scroll">
+        <table>
+          <caption>Results by odds taken</caption>
+          <thead><tr><th>Decimal odds</th><th class="n">Bets</th>
+          <th class="n">Won</th><th class="n">Profit, units</th><th class="n">Return</th></tr></thead>
+          <tbody>@@price_results@@</tbody>
+        </table>
+      </div>
+      <p class="fine">Each range includes its lower bound and excludes its upper bound.
+      All bets are included, including the single bet below 1.75.</p>
+    </div>
+
+    <div class="col">
+      <p>
+        I had suspected that punters' preference for favourites might leave value
+        in outsiders. These results describe the bets I selected, but they don't
+        establish why the prices were available. They also can't show what would
+        have happened with a different minimum-odds filter, because the log only
+        contains the bets I placed.
+      </p>
+      <p>
+        Watching the matches raised other questions. A player could start at
+        3.00, win the first game and then drift to 5.00 or 6.00. It sometimes
+        felt as though other people betting knew more about the eventual result
+        than the scoreline could tell them. Players' apparent levels of effort
+        varied as well, and a rating based on past results couldn't directly
+        account for how interested someone was in their eighth match of the day.
+      </p>
+
+      <h2>A smaller market to work with</h2>
+      <p>
+        Unfortunately, the range of leagues I was betting on narrowed around the
+        time Russia invaded Ukraine. My final TT Cup Ukraine bet was two days
+        before the invasion. Bets on the Russian Liga Pro stopped within a
+        fortnight, and Czech Liga Pro followed a few weeks later. TT Cup appeared
+        in the log in April, but most of my bets were now on Setka Cup.
+      </p>
+      <p>
+        The change shows up in both the number of bets and the return. From
+        March 2021 through February 2022, I placed 7,168 bets for a 13.47% return.
+        Over the rest of 2022, I placed 1,849 bets and returned 5.16%. By December,
+        keeping it going no longer felt worth the effort.
+      </p>
+    </div>
+
+    <div class="step">
+      <div class="scroll">
+        <table>
+          <caption>Three periods in the betting log</caption>
+          <thead><tr><th>Period</th><th class="n">Bets</th>
+          <th class="n">Profit, units</th><th class="n">Return</th></tr></thead>
+          <tbody>@@period_results@@</tbody>
+        </table>
+      </div>
+      <p class="fine">Periods use calendar-month boundaries. No bets were logged from
+      January through September 2023. Return is profit divided by the amount staked.</p>
+    </div>
+
+    <div class="col">
+      <p>
+        I restarted in October 2023 because I fancied giving it another go.
+        The daily process was easy to switch back on, and the return recovered:
+        the final 1,365 bets earned 160.42 units, or 11.75%. There were still
+        fewer matches to bet on, with almost all the selections on Setka Cup.
+        Eventually, the bookmakers limited my accounts to penny stakes, bringing
+        the project to an end in April 2024.
+      </p>
+
+      <h2>What I can take from it</h2>
+      <p>
+        I ended up with a fairly simple model that made money over a substantial
+        number of bets. I also spent enough time running it to see how much the
+        result depended on the markets available and the bets I could actually
+        place. A return of around 12% was less useful when there were fewer
+        opportunities, and penny stakes made it impractical to continue.
+      </p>
+      <p>
+        Having the full log makes this an unusually satisfying project to revisit.
+        I can follow the profit through individual bets, separate the leagues
+        and compare different parts of the run. It records the results of a
+        system I adjusted over time; it isn't a test of one unchanged model.
+        There are still things I would like to understand, particularly the
+        differences between leagues, but the record gives me somewhere concrete
+        to start.
+      </p>
+    </div>
+  </div>
+

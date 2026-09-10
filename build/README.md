@@ -35,11 +35,16 @@ byte for byte.
 
 ## Editing the prose
 
-Don't. The prose lives in the `HTML` template inside `render_page.py`, and
-`render_page.py` overwrites `table-tennis/index.html` wholesale — edits made
-directly to the published page are lost on the next render. Every prose block
-in the template is marked `<!-- TODO -->` with the length constraint the voice
-section imposes.
+Edit `article.html` for the article body, or the `HTML` template in
+`render_page.py` for page metadata and the bet-log section. Then run
+`python build/render_page.py`. The renderer overwrites `table-tennis/index.html`,
+so direct edits to that generated page will be lost.
+
+The period comparison reads `table-tennis/bets.json` to avoid adding rounded
+monthly profits. Other figures use `stats.json`. Both inputs are committed.
+
+The approved version before the full rewrite is at `table-tennis/baseline.html`,
+with its original styles and generator saved in `build/baselines/table-tennis/`.
 
 ## Two things worth knowing
 

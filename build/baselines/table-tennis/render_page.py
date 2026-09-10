@@ -280,38 +280,6 @@ def bucket_rows():
     return out
 
 
-def price_result_rows():
-    """Include every price band, even the single shortest-priced bet."""
-    return "".join(
-        '<tr><td>%s</td><td class="n">%s</td><td class="n">%.1f%%</td>'
-        '<td class="n">%s</td><td class="n">%s%%</td></tr>'
-        % (esc(b["label"]), fmt(b["bets"]), b["hit"],
-           money(b["profit"]), money(b["roi"]))
-        for b in S["buckets"])
-
-
-def period_result_rows():
-    """Calculate period totals from the log, avoiding rounded monthly sums."""
-    from decimal import Decimal
-    with io.open(os.path.join(SITE, "table-tennis", "bets.json"), encoding="utf-8") as fh:
-        bets = json.load(fh)["rows"]
-    periods = [
-        ("Mar 2021 – Feb 2022", "2021-03", "2022-03"),
-        ("Mar – Dec 2022", "2022-03", "2023-01"),
-        ("Oct 2023 – Apr 2024", "2023-10", "2024-05"),
-    ]
-    rows = []
-    for label, start, end in periods:
-        selected = [b for b in bets if start <= b[0] < end]
-        profit = sum(Decimal(str(b[7])) - 1 for b in selected)
-        roi = profit / len(selected) * 100
-        rows.append(
-            '<tr><td>%s</td><td class="n">%s</td><td class="n">%s</td>'
-            '<td class="n">%s%%</td></tr>'
-            % (esc(label), fmt(len(selected)), money(profit), money(roi)))
-    return "".join(rows)
-
-
 def fmt(n):
     return "{:,}".format(n)
 
@@ -321,14 +289,14 @@ HTML = u"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ten thousand table tennis bets</title>
-<meta name="description" content="How I built and ran an Elo betting model: 10,382 table tennis bets, an 11.77% return, and the full record of how the results changed between 2021 and 2024.">
+<title>How I built a table tennis model that beat the bookies</title>
+<meta name="description" content="A lockdown project that got slightly out of hand: using Elo ratings to bet on Eastern European table tennis between 2021 and 2024. 10,382 flat-stake bets, an 11.8% return, and the full bet log.">
 <meta name="theme-color" content="#330a37">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&amp;display=swap">
 <link rel="stylesheet" href="../styles.css">
-<link rel="stylesheet" href="../case.css?v=20260910-rewrite-2">
+<link rel="stylesheet" href="../case.css?v=20260910-links">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='@@HASH@@ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='@@HASH@@330a37'/></svg>">
 </head>
 <body class="inverse">
@@ -346,7 +314,227 @@ HTML = u"""<!doctype html>
 
 <main id="main">
 
-@@article@@
+  <section class="opener" style="--art: url(/table-tennis/player.png)">
+    <div class="opener__grid">
+      <div>
+        <p class="eyebrow">Case study &middot; 01 &middot; @@first@@ to @@last@@</p>
+        <h1>How I built a table tennis model that beat the bookies.</h1>
+      </div>
+      <div class="opener__art" role="img"
+           aria-label="Line drawing of a table tennis player mid-forehand"></div>
+    </div>
+    <div class="statement__pair">
+      <p class="statement__prose">
+        A lockdown project that got slightly out of hand: using Elo ratings to
+        bet on Eastern European table tennis between 2021 and 2024.
+      </p>
+      <p class="statement__meta">
+        @@bets@@ bets<br>
+        @@profit@@ units<br>
+        @@roi@@% return
+      </p>
+    </div>
+  </section>
+
+  <div class="band">
+    <span>Elo</span><span>Flat stakes</span><span>@@active@@ active months</span>
+    <span>@@leagues@@ leagues</span><span>Mean price @@mean@@</span>
+    <span>Max drawdown @@dd@@ units</span>
+  </div>
+
+  <div class="article article--centred">
+
+    <div class="col">
+      <p>
+        I built a model to pick bets on low-level table tennis and ran it between
+        March 2021 and April 2024, staking the same amount on each bet. I set it
+        up to focus on outsiders. It won @@hit@@% of its bets at average decimal
+        odds of @@mean@@ and selected only a small fraction of the matches
+        available and returned a profit of @@roi1@@% of the total amount staked.
+      </p>
+      @@m_record@@
+      <p>
+        The project started during Covid, when much of the usual sporting calendar
+        had stopped and small Eastern European table tennis leagues were attracting
+        people looking for something to bet on. A
+        <a href="https://www.forbes.com/sites/barrycollins/2020/06/13/anyone-for-ukrainian-table-tennis-the-shady-sport-that-feeds-online-gambling/">Forbes article from June 2020</a>
+        gives some background on how these leagues became part of the betting market.
+      </p>
+      <p>
+        When I started watching, the setup was usually one player in red and one
+        in blue, in an empty sports hall with a referee who sometimes looked on
+        the verge of falling asleep. Many of the players appeared to be in their
+        sixties and were playing seven or eight matches a day, often without
+        looking particularly interested in the result. When I had money on
+        someone, I would sometimes look them up online, which didn't always
+        improve my confidence.
+      </p>
+      <p>
+        It was an appealing setup for a modelling project. There were thousands
+        of players, fairly consistent conditions and matches all day, every day,
+        without the complications of a tournament structure. That gave me plenty
+        of results to build a model from and plenty of bookmaker odds to compare
+        it against.
+      </p>
+      <p>
+        I settled on a simple Elo rating system, like the one used in chess.
+        Each player has a rating, and the difference between two ratings gives
+        an estimated probability of winning. Both ratings update after each
+        match, with an expected result changing them a little and an upset
+        changing them more. A setting called the K-factor controls the size
+        of those adjustments.
+      </p>
+      <p>
+        I used a K-factor of 10, started new players at 1,500 and updated the
+        ratings after each match rather than each individual game. I also pooled
+        ratings across the leagues, because keeping them separate threw away too
+        much information. I then converted the win probabilities into odds to
+        compare with the bookmaker's prices.
+      </p>
+      @@m_settings@@
+      <p>
+        Each day, a job running on PythonAnywhere updated the ratings with the
+        latest results and priced the next day's fixtures. When the bookmaker's
+        odds were sufficiently higher than mine, it emailed me the bet to place.
+        For most of the project, I also applied a minimum-odds filter of 3.00,
+        so shorter-priced bets weren't considered. I lowered that threshold at
+        times to experiment with shorter odds.
+        I logged every bet and result, and made adjustments to the model as it
+        ran. That log is the source of the figures on this page.
+      </p>
+      <!-- TODO: what "differed enough" meant in practice (the edge threshold), and
+           whether the bets were then placed by hand. -->
+      @@m_ranon@@
+    </div>
+
+    <figure class="plot plot--step">
+      <p class="plot__title">Cumulative profit, units</p>
+      <div class="panel">
+        <div class="panel__head">
+          <p class="legend"></p>
+          <p class="readout" data-default-label="Final" data-default-value="@@profit@@">
+            <span class="readout__label">Final</span>
+            <span class="readout__value">@@profit@@</span>
+          </p>
+        </div>
+        @@cum@@
+      </div>
+      <figcaption class="plot__caption">Flat 1-unit stakes throughout. @@first@@ to @@last@@.
+      Dashed lines mark breaks in betting, including a nine-month pause in 2023.</figcaption>
+    </figure>
+
+    <div class="col">
+      <p>The results varied by league, although most of the larger ones produced
+      similar returns.</p>
+    </div>
+
+    <div class="step">
+      <div class="scroll">
+        <table>
+          <thead><tr><th>League</th><th>First bet</th><th>Last bet</th><th class="n">Bets</th>
+          <th class="n">Units</th><th class="n">ROI</th></tr></thead>
+          <tbody>@@leaguerows@@</tbody>
+        </table>
+      </div>
+      <p class="fine">Leagues with fewer than 100 bets are omitted.</p>
+    </div>
+
+    <div class="col">
+      <p>
+        Four of the six leagues returned between 13% and 16%, using the same
+        rating system throughout. The women's Setka Cup was roughly break-even,
+        finishing three units up after 630 bets, while Czech Liga Pro lost money.
+        I didn't investigate those differences at the time, so I don't have an
+        explanation for them.
+      </p>
+      <!-- TODO: any recollection of why the Czech and women's leagues behaved
+           differently, or confirm "I never looked" and leave the sentence as is. -->
+      <p>
+        Watching the matches also gave me reasons to question how much the ratings
+        could capture. The odds sometimes moved in ways I couldn't explain from
+        the play: a player priced at 3.00 before a match might win the first game,
+        then drift out to 5.00 or 6.00. It did make me wonder whether some of
+        the people betting had a better idea of the eventual result than I did.
+        Players' apparent levels of effort varied too, particularly after several
+        matches in a day, and the model had no way to account for that directly.
+      </p>
+      <p>
+        Unfortunately, the range of leagues I was betting on narrowed around the time Russia
+        invaded Ukraine. My last bet on TT Cup Ukraine, the second-largest league
+        in the log and the best by return, was two days before the invasion.
+        Bets on the Russian Liga Pro stopped within a fortnight, and those on
+        Czech Liga Pro a few weeks later. A new league, TT Cup, appeared in the
+        log in April. By then, most of my bets were on Setka Cup and the return
+        had roughly halved. I kept it running until December 2022, when it no
+        longer felt worth the effort.
+      </p>
+      @@m_score_war@@
+      <p>
+        I switched it back on in October 2023, for no better reason than that I
+        fancied it again. It was easy enough to restart the daily emails, but the
+        market was narrower still, with almost all my bets on Setka Cup. The model
+        returned around 12% over this final period, although there were far fewer
+        matches to bet on.
+      </p>
+      @@m_score_restart@@
+    </div>
+
+    <figure class="plot plot--step">
+      <p class="plot__title">Monthly profit and loss, units</p>
+      <div class="panel">
+        <div class="panel__head">
+          <p class="legend">
+            <span class="key key--pos">Profit</span>
+            <span class="key key--neg">Loss</span>
+          </p>
+          <p class="readout" data-default-label="@@active@@-month net" data-default-value="@@profit@@">
+            <span class="readout__label">@@active@@-month net</span>
+            <span class="readout__value">@@profit@@</span>
+          </p>
+        </div>
+        @@mon@@
+      </div>
+      <figcaption class="plot__caption">Losing months are hollow and hatched, hanging below
+      the zero line. Both sides share one scale. Hairlines mark months with no bets.</figcaption>
+    </figure>
+
+    <div class="col">
+      <p>
+        Eventually, the bookmakers limited my accounts to penny stakes, which
+        brought the project to an end in April 2024.
+      </p>
+      <p>
+        The concentration of bets on outsiders was largely a result of my
+        minimum-odds filter. For most of the run, only bets priced at 3.00 or
+        above were eligible; the shorter-priced bets in the log came from periods
+        when I lowered that threshold. Within the bets I placed, odds between
+        5.00 and 8.00 produced the strongest returns, while those above 8.00 lost
+        heavily. The breakdown shows how those selections performed, but it
+        doesn't tell us how a strategy without the filter would have compared.
+      </p>
+    </div>
+
+    <div class="step">
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Price band</th><th class="n">Bets</th><th class="n">Implied</th>
+          <th class="n">Actual</th><th class="n">Edge</th><th class="n">ROI</th></tr></thead>
+          <tbody>@@buckets@@</tbody>
+        </table>
+      </div>
+      <p class="fine">Implied is the mean of 1/price across the band; actual is the realised
+      strike rate. Bands with fewer than 50 bets are omitted.</p>
+    </div>
+
+    <div class="col">
+      <p>
+        I enjoyed building it, and having the full log has made it just as
+        interesting to revisit. Across @@bets@@ bets, I can see where the model
+        made money, where it lost money and how that changed over time.
+      </p>
+    </div>
+
+  </div>
 
   <section class="prose">
     <h2 class="eyebrow">Every bet</h2>
@@ -605,9 +793,6 @@ HTML = u"""<!doctype html>
 """
 
 vals = {
-    "article": io.open(os.path.join(HERE, "article.html"), encoding="utf-8").read(),
-    "price_results": price_result_rows(),
-    "period_results": period_result_rows(),
     "first": S["first"], "last": S["last"],
     "bets": fmt(S["bets"]),
     "profit": money(S["profit"]),

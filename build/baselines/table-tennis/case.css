@@ -346,25 +346,6 @@ tbody tr.lost td { color: var(--type-soft); }
    34px after one. */
 
 .article--centred { padding: var(--s10) 0; }
-.article--rewrite .col h2 {
-  font: 400 clamp(28px, 4vw, 36px)/1.2 var(--serif);
-  letter-spacing: -0.015em;
-  margin: var(--s8) 0 0;
-}
-.article--rewrite .col h2:first-child { margin-top: 0; }
-.article--rewrite table caption {
-  font: 400 12px/1.6 var(--mono);
-  color: var(--type-soft);
-  text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding-bottom: var(--s4);
-}
-.article--rewrite .step .fine {
-  font: 400 12px/1.7 var(--mono);
-  color: var(--type-soft);
-  margin-top: var(--s4);
-}
 .article .col p a {
   text-decoration: underline;
   text-underline-offset: 0.15em;
