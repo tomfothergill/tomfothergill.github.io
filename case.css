@@ -364,8 +364,7 @@ tbody tr.lost td { color: var(--type-soft); }
   text-wrap: pretty;
 }
 
-/* A figure or table steps out one size. */
-.plot--step,
+/* A table steps out one size, to 900px. */
 .step {
   max-width: 900px;
   margin: var(--s9) auto 0;
@@ -374,7 +373,17 @@ tbody tr.lost td { color: var(--type-soft); }
 .plot--step + .col,
 .step + .col { margin-top: var(--s7); }
 
-.plot--step .panel { margin-inline: 0; padding: var(--s6); }
+/* A chart's panel stays a full-bleed band (7A): the whole width of the
+   page, with the gutter as its inner padding. Only its title and caption
+   sit on the 900px step. */
+.plot--step { max-width: none; margin: var(--s9) 0 0; padding: 0; }
+.plot--step > .plot__title,
+.plot--step > .plot__caption {
+  max-width: 900px;
+  margin-inline: auto;
+  padding-inline: var(--s7);
+}
+.plot--step .panel { margin-inline: 0; padding: var(--s7) var(--gutter); }
 
 .plot__caption {
   font: 400 10px/2 var(--mono);
@@ -455,7 +464,9 @@ tbody tr.lost td { color: var(--type-soft); }
 .sp--on { fill: var(--type); }
 
 @media (max-width: 700px) {
-  .col, .plot--step, .step { padding: 0 var(--gutter); }
+  .col, .step { padding: 0 var(--gutter); }
+  .plot--step > .plot__title, .plot--step > .plot__caption { padding-inline: var(--gutter); }
+  .plot--step .panel { padding: var(--s6) var(--gutter); }
   .col p { font-size: 18px; }
   .stat-rule, .score-rule__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat--big { grid-column: 1 / -1; }

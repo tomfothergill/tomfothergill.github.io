@@ -362,10 +362,11 @@ scoreboard is a rule, an "As of" label, the cumulative figure at 36px with three
 26px stats beside it, and the monthly sparkline beneath — the same content the
 margin held, laid flat.
 
-**Figures step out one size.** A chart or table leaves the 660px measure for a
-900px one, centred, so it reads as a figure rather than an image dropped in the
-text — not full-bleed. The chart title sits above the panel and the caption below
-it, both in the type-soft colour. 44px above a figure, 34px back to prose.
+**Tables step out one size; charts go full-bleed.** A table leaves the 660px
+measure for a 900px one, centred, so it reads as a figure rather than an image
+dropped in the text. A chart's panel is a full-bleed band (7A, §9.1) spanning the
+whole page with the gutter as its inner padding; only its title and caption sit
+on the 900px step. 44px above a figure, 34px back to prose.
 
 **Values on the spacing scale.** The artboard used 32px column inset, 24/28px
 panel padding, 36px after a figure; the build uses 34, 26 and 34. Below 700px the
