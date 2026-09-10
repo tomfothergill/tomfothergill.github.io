@@ -5,6 +5,8 @@
 
 /* ---- 1. Tokens ------------------------------------------------------ */
 :root {
+  /* Preserve the authored palette where browsers honour auto-dark opt-outs. */
+  color-scheme: only light;
   --field:    #FF7A1A;  /* page ground                                  */
   --ink:      #330A37;  /* all type on the field; band + footer grounds */
   --cream:    #FFE9CC;  /* type on aubergine only                       */
