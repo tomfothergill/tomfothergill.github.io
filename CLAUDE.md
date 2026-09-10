@@ -394,6 +394,7 @@ two-up.
 - `case.css` — case-study additions: the 52px opener, the chart layer (§9), the article grid and margin (§11), tables, and the filterable log.
 - `table-tennis/` — case study 01. **Generated** — see below.
 - `build/` — the generators for the table tennis page, plus their README.
+- `docs/article-ideas.md` — the backlog of case studies and notes, as briefs. The prose is Thomas's to write; do not draft articles from it unasked.
 - `.nojekyll` — tells GitHub Pages to serve the files as-is rather than running Jekyll.
 
 `table-tennis/index.html` is written by `build/render_page.py` and its charts are
