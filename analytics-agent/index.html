@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="../styles.css?v=20260910-colour-scheme">
 <link rel="stylesheet" href="../case.css?v=20260910-contact-1a">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='%23330a37'/></svg>">
-<link rel="stylesheet" href="article.css?v=20260910">
+<link rel="stylesheet" href="article.css?v=20260910-diagrams">
 <link rel="canonical" href="https://tomfothergill.github.io/analytics-agent/">
 </head>
 <body class="inverse">
@@ -60,7 +60,162 @@
 <p>You still need to check whether it follows that instruction. The documentation helps it decide what to query; separate checks in the application determine whether that query is allowed to run.</p>
 <h2>Give the investigation a bounded tool loop</h2>
 <p>In an earlier version, I split the investigation between a planner and a set of workers, each with a bounded task. As the models improved, I decided to move to a simpler arrangement for the main analysis: one agent with tools to query the warehouse, run calculations in Python, and load additional guidance. It can inspect a result and decide what to do next.</p>
+</div>
+    <figure class="architecture-figure" aria-labelledby="architecture-title-1">
+      <p class="architecture-figure__title" id="architecture-title-1">Figure 1 · Earlier design: multi-agent orchestration</p>
+      <div class="architecture-figure__panel">
+        <div class="architecture-figure__inner">
+          <div class="architecture-legend" aria-label="Diagram key">
+            <span><i class="architecture-legend__model" aria-hidden="true"></i>Model call</span>
+            <span><i class="architecture-legend__application" aria-hidden="true"></i>Application code</span>
+            <span><i class="architecture-legend__reference" aria-hidden="true"></i>Reference, not flow</span>
+          </div>
+          <p class="architecture-figure__hint" id="architecture-hint-1">Scroll sideways to explore the diagram.</p>
+          <div class="architecture-figure__scroll" tabindex="0" role="region" aria-labelledby="architecture-title-1" aria-describedby="architecture-hint-1">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-label="Earlier design: a planning model defines tasks, an application scheduler dispatches them to SQL workers, results are policy-checked, reviewed and accumulated in investigation state, which either returns to the scheduler or passes to a synthesis model and the shared response format." role="img" viewBox="0 0 980 1052">
+<defs>
+<marker id="ah1" markerHeight="7" markerWidth="7" orient="auto" refX="7.5" refY="4" viewBox="0 0 8 8"><path d="M0,0 L8,4 L0,8 Z" fill="#330A37"></path></marker>
+</defs>
+<g fill="none" marker-end="url(#ah1)" stroke="#330A37" stroke-width="1.5">
+<path d="M460,84 V116"></path>
+<path d="M460,168 V200"></path>
+<path d="M460,252 V284"></path>
+<path d="M460,336 V368"></path>
+<path d="M460,420 V452"></path>
+<path d="M460,504 V536"></path>
+<path d="M460,588 V620"></path>
+<path d="M460,672 V704"></path>
+<path d="M460,756 V800"></path>
+<path d="M460,852 V884"></path>
+<path d="M460,936 V968"></path>
+<path d="M250,730 H28 V310 H250"></path>
+</g>
+<g fill="none" marker-end="url(#ah1)" stroke="#330A37" stroke-dasharray="5 4" stroke-width="1.5">
+<path d="M700,310 H686 V226 H670"></path>
+<path d="M686,310 V394 H670"></path>
+</g>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" x="474" y="784">TASKS FINISHED OR LIMITS REACHED</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" transform="rotate(-90 16 520)" x="16" y="520">MORE PLANNED TASKS READY</text>
+<rect fill="none" height="44" stroke="#330A37" stroke-width="1" width="280" x="320" y="40"></rect>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="11" letter-spacing="1.8" text-anchor="middle" x="460" y="67">BUSINESS QUESTION</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="116"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="147">Intake and clarification</text>
+<rect fill="#330A37" height="52" width="420" x="250" y="200"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="222">Planning model</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="240">DEFINES TASKS AND DEPENDENCIES</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="284"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="306">Scheduler</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="324">DISPATCHES READY TASKS WITHIN LIMITS</text>
+<rect fill="#330A37" height="52" width="420" x="250" y="368"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="390">SQL workers</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="408">WRITE QUERIES FOR SCOPED TASKS</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="452"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="474">SQL policy checks</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="492">AND WAREHOUSE EXECUTION</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="536"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="567">Recorded query results</text>
+<rect fill="#330A37" height="52" width="420" x="250" y="620"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="642">Review model</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="660">INTERPRETS AND CHECKS EVIDENCE</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="704"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="726">Investigation state</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="744">RESULTS, FINDINGS AND CAVEATS</text>
+<rect fill="#330A37" height="52" width="420" x="250" y="800"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="822">Synthesis model</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="840">ASSEMBLES FINAL FINDINGS</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="884"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="915">Shared response format</text>
+<rect fill="none" height="44" stroke="#330A37" stroke-width="1" width="420" x="250" y="968"></rect>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="11" letter-spacing="1.8" text-anchor="middle" x="460" y="995">ANSWER, CHARTS, TABLES AND WORKINGS</text>
+<rect fill="none" height="68" stroke="#330A37" stroke-dasharray="5 4" stroke-width="1" width="170" x="700" y="276"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="12" text-anchor="middle" x="785" y="303">Business definitions</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="785" y="320">AND DATA</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="785" y="334">DOCUMENTATION</text>
+</svg>
+          </div>
+        </div>
+      </div>
+      <figcaption>An upfront plan divides the investigation into tasks. A scheduler assigns ready work to scoped workers, gathers reviewed evidence, and passes the accumulated findings to a final synthesis step. <a href="multi-agent-orchestration.svg">Open full-size diagram &nearr;</a></figcaption>
+    </figure>
+    <div class="col">
 <p>The fixed plan was awkward for the more open-ended questions I wanted it to handle. With the customer-ranking example, an initial spending analysis might lead you to check purchases across stores, investigate unusually active accounts, or reconsider whether category breadth usefully separates the customers at the top. The agent needs to be able to make that sort of adjustment as it gathers evidence, while keeping the chosen ranking method explicit.</p>
+</div>
+    <figure class="architecture-figure" aria-labelledby="architecture-title-2">
+      <p class="architecture-figure__title" id="architecture-title-2">Figure 2 · Current design: single-agent investigation loop</p>
+      <div class="architecture-figure__panel">
+        <div class="architecture-figure__inner">
+          <div class="architecture-legend" aria-label="Diagram key">
+            <span><i class="architecture-legend__model" aria-hidden="true"></i>Model call</span>
+            <span><i class="architecture-legend__application" aria-hidden="true"></i>Application code</span>
+            <span><i class="architecture-legend__reference" aria-hidden="true"></i>Reference, not flow</span>
+          </div>
+          <p class="architecture-figure__hint" id="architecture-hint-2">Scroll sideways to explore the diagram.</p>
+          <div class="architecture-figure__scroll" tabindex="0" role="region" aria-labelledby="architecture-title-2" aria-describedby="architecture-hint-2">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-label="Current design: one analysis agent requests tools through an application tool session that enforces budgets; SQL, Python and reference tools return results, evidence is retained and the agent chooses the next step, then submits the final analysis to the shared response format." role="img" viewBox="0 0 980 736">
+<defs>
+<marker id="ah2" markerHeight="7" markerWidth="7" orient="auto" refX="7.5" refY="4" viewBox="0 0 8 8"><path d="M0,0 L8,4 L0,8 Z" fill="#330A37"></path></marker>
+</defs>
+<g fill="none" stroke="#330A37" stroke-width="1.5">
+<path d="M460,84 V116" marker-end="url(#ah2)"></path>
+<path d="M460,168 V200" marker-end="url(#ah2)"></path>
+<path d="M460,256 V300" marker-end="url(#ah2)"></path>
+<path d="M460,352 V368"></path>
+<path d="M188,368 H732"></path>
+<path d="M188,368 V384" marker-end="url(#ah2)"></path>
+<path d="M460,368 V384" marker-end="url(#ah2)"></path>
+<path d="M732,368 V384" marker-end="url(#ah2)"></path>
+<path d="M188,452 V468"></path><path d="M460,452 V468"></path>
+<path d="M732,452 V468"></path>
+<path d="M188,468 H732"></path>
+<path d="M460,468 V484" marker-end="url(#ah2)"></path>
+<path d="M250,510 H28 V228 H250" marker-end="url(#ah2)"></path>
+<path d="M560,256 V276 H950 V594 H670" marker-end="url(#ah2)"></path>
+<path d="M460,620 V652" marker-end="url(#ah2)"></path>
+</g>
+<path d="M700,228 H670" fill="none" marker-end="url(#ah2)" stroke="#330A37" stroke-dasharray="5 4" stroke-width="1.5"></path>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="end" x="446" y="282">REQUESTS TOOLS</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" x="576" y="294">SUBMITS FINAL ANALYSIS</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" transform="rotate(-90 16 380)" x="16" y="380">CHOOSES NEXT STEP</text>
+<rect fill="none" height="44" stroke="#330A37" stroke-width="1" width="280" x="320" y="40"></rect>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="11" letter-spacing="1.8" text-anchor="middle" x="460" y="67">BUSINESS QUESTION</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="116"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="147">Intake and clarification</text>
+<rect fill="#330A37" height="56" width="420" x="250" y="200"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="224">Analysis agent</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="242">CHOOSES NEXT STEP, INSPECTS RESULTS</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="300"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="322">Tool session</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="340">ENFORCES EXECUTION BUDGETS</text>
+<rect fill="none" height="68" stroke="#330A37" stroke-width="1.5" width="256" x="60" y="384"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="188" y="410">SQL tool</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="188" y="428">POLICY CHECKS AND</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="188" y="442">WAREHOUSE EXECUTION</text>
+<rect fill="none" height="68" stroke="#330A37" stroke-width="1.5" width="256" x="332" y="384"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="410">Python tool</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="460" y="428">CALCULATIONS OVER</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="460" y="442">GATHERED RESULTS</text>
+<rect fill="none" height="68" stroke="#330A37" stroke-width="1.5" width="256" x="604" y="384"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="732" y="410">Reference tools</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="732" y="428">METADATA AND</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="732" y="442">METHOD GUIDANCE</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="484"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="506">Tool results returned</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="524">EVIDENCE RETAINED</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="568"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="599">Shared response format</text>
+<rect fill="none" height="44" stroke="#330A37" stroke-width="1" width="420" x="250" y="652"></rect>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="11" letter-spacing="1.8" text-anchor="middle" x="460" y="679">ANSWER, CHARTS, TABLES AND WORKINGS</text>
+<rect fill="none" height="64" stroke="#330A37" stroke-dasharray="5 4" stroke-width="1" width="170" x="700" y="196"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="12" text-anchor="middle" x="785" y="222">Business definitions</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="785" y="239">AND COMPACT DATA</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="785" y="253">DOCUMENTATION</text>
+</svg>
+          </div>
+        </div>
+      </div>
+      <figcaption>One analysis agent chooses what to investigate next using the results already gathered. The application executes its tools within defined limits and retains the evidence used to assemble the answer. <a href="single-agent-loop.svg">Open full-size diagram &nearr;</a></figcaption>
+    </figure>
+    <div class="col">
 <p>I kept intake and clarification ahead of the investigation, and put limits around how much work the analysis agent can do. It has a budget for queries, Python runs and tool rounds, and it finishes by submitting a structured response containing its answer, findings and caveats. Other model calls still have roles in the product, but the investigation itself belongs to one agent.</p>
 <p>The main interfaces are small enough to describe directly:</p>
 <table>

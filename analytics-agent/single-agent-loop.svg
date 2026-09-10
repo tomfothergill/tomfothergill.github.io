@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="Current design: one analysis agent requests tools through an application tool session that enforces budgets; SQL, Python and reference tools return results, evidence is retained and the agent chooses the next step, then submits the final analysis to the shared response format." style="background:#FF7A1A" role="img" viewBox="0 0 980 736">
+<defs>
+<marker id="ah2" markerHeight="7" markerWidth="7" orient="auto" refX="7.5" refY="4" viewBox="0 0 8 8"><path d="M0,0 L8,4 L0,8 Z" fill="#330A37"></path></marker>
+</defs>
+<g fill="none" stroke="#330A37" stroke-width="1.5">
+<path d="M460,84 V116" marker-end="url(#ah2)"></path>
+<path d="M460,168 V200" marker-end="url(#ah2)"></path>
+<path d="M460,256 V300" marker-end="url(#ah2)"></path>
+<path d="M460,352 V368"></path>
+<path d="M188,368 H732"></path>
+<path d="M188,368 V384" marker-end="url(#ah2)"></path>
+<path d="M460,368 V384" marker-end="url(#ah2)"></path>
+<path d="M732,368 V384" marker-end="url(#ah2)"></path>
+<path d="M188,452 V468"></path><path d="M460,452 V468"></path>
+<path d="M732,452 V468"></path>
+<path d="M188,468 H732"></path>
+<path d="M460,468 V484" marker-end="url(#ah2)"></path>
+<path d="M250,510 H28 V228 H250" marker-end="url(#ah2)"></path>
+<path d="M560,256 V276 H950 V594 H670" marker-end="url(#ah2)"></path>
+<path d="M460,620 V652" marker-end="url(#ah2)"></path>
+</g>
+<path d="M700,228 H670" fill="none" marker-end="url(#ah2)" stroke="#330A37" stroke-dasharray="5 4" stroke-width="1.5"></path>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="end" x="446" y="282">REQUESTS TOOLS</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" x="576" y="294">SUBMITS FINAL ANALYSIS</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" transform="rotate(-90 16 380)" x="16" y="380">CHOOSES NEXT STEP</text>
+<rect fill="none" height="44" stroke="#330A37" stroke-width="1" width="280" x="320" y="40"></rect>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="11" letter-spacing="1.8" text-anchor="middle" x="460" y="67">BUSINESS QUESTION</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="116"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="147">Intake and clarification</text>
+<rect fill="#330A37" height="56" width="420" x="250" y="200"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="224">Analysis agent</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="242">CHOOSES NEXT STEP, INSPECTS RESULTS</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="300"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="322">Tool session</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="340">ENFORCES EXECUTION BUDGETS</text>
+<rect fill="none" height="68" stroke="#330A37" stroke-width="1.5" width="256" x="60" y="384"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="188" y="410">SQL tool</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="188" y="428">POLICY CHECKS AND</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="188" y="442">WAREHOUSE EXECUTION</text>
+<rect fill="none" height="68" stroke="#330A37" stroke-width="1.5" width="256" x="332" y="384"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="410">Python tool</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="460" y="428">CALCULATIONS OVER</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="460" y="442">GATHERED RESULTS</text>
+<rect fill="none" height="68" stroke="#330A37" stroke-width="1.5" width="256" x="604" y="384"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="732" y="410">Reference tools</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="732" y="428">METADATA AND</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="732" y="442">METHOD GUIDANCE</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="484"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="506">Tool results returned</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="524">EVIDENCE RETAINED</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="568"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="599">Shared response format</text>
+<rect fill="none" height="44" stroke="#330A37" stroke-width="1" width="420" x="250" y="652"></rect>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="11" letter-spacing="1.8" text-anchor="middle" x="460" y="679">ANSWER, CHARTS, TABLES AND WORKINGS</text>
+<rect fill="none" height="64" stroke="#330A37" stroke-dasharray="5 4" stroke-width="1" width="170" x="700" y="196"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="12" text-anchor="middle" x="785" y="222">Business definitions</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="785" y="239">AND COMPACT DATA</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="785" y="253">DOCUMENTATION</text>
+</svg>

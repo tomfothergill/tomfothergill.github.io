@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" aria-label="Earlier design: a planning model defines tasks, an application scheduler dispatches them to SQL workers, results are policy-checked, reviewed and accumulated in investigation state, which either returns to the scheduler or passes to a synthesis model and the shared response format." style="background:#FF7A1A" role="img" viewBox="0 0 980 1052">
+<defs>
+<marker id="ah1" markerHeight="7" markerWidth="7" orient="auto" refX="7.5" refY="4" viewBox="0 0 8 8"><path d="M0,0 L8,4 L0,8 Z" fill="#330A37"></path></marker>
+</defs>
+<g fill="none" marker-end="url(#ah1)" stroke="#330A37" stroke-width="1.5">
+<path d="M460,84 V116"></path>
+<path d="M460,168 V200"></path>
+<path d="M460,252 V284"></path>
+<path d="M460,336 V368"></path>
+<path d="M460,420 V452"></path>
+<path d="M460,504 V536"></path>
+<path d="M460,588 V620"></path>
+<path d="M460,672 V704"></path>
+<path d="M460,756 V800"></path>
+<path d="M460,852 V884"></path>
+<path d="M460,936 V968"></path>
+<path d="M250,730 H28 V310 H250"></path>
+</g>
+<g fill="none" marker-end="url(#ah1)" stroke="#330A37" stroke-dasharray="5 4" stroke-width="1.5">
+<path d="M700,310 H686 V226 H670"></path>
+<path d="M686,310 V394 H670"></path>
+</g>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" x="474" y="784">TASKS FINISHED OR LIMITS REACHED</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" transform="rotate(-90 16 520)" x="16" y="520">MORE PLANNED TASKS READY</text>
+<rect fill="none" height="44" stroke="#330A37" stroke-width="1" width="280" x="320" y="40"></rect>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="11" letter-spacing="1.8" text-anchor="middle" x="460" y="67">BUSINESS QUESTION</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="116"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="147">Intake and clarification</text>
+<rect fill="#330A37" height="52" width="420" x="250" y="200"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="222">Planning model</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="240">DEFINES TASKS AND DEPENDENCIES</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="284"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="306">Scheduler</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="324">DISPATCHES READY TASKS WITHIN LIMITS</text>
+<rect fill="#330A37" height="52" width="420" x="250" y="368"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="390">SQL workers</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="408">WRITE QUERIES FOR SCOPED TASKS</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="452"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="474">SQL policy checks</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="492">AND WAREHOUSE EXECUTION</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="536"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="567">Recorded query results</text>
+<rect fill="#330A37" height="52" width="420" x="250" y="620"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="642">Review model</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="660">INTERPRETS AND CHECKS EVIDENCE</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="704"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="726">Investigation state</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="744">RESULTS, FINDINGS AND CAVEATS</text>
+<rect fill="#330A37" height="52" width="420" x="250" y="800"></rect>
+<text fill="#FFE9CC" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="822">Synthesis model</text>
+<text fill="#FFB86B" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.6" text-anchor="middle" x="460" y="840">ASSEMBLES FINAL FINDINGS</text>
+<rect fill="none" height="52" stroke="#330A37" stroke-width="1.5" width="420" x="250" y="884"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="13" text-anchor="middle" x="460" y="915">Shared response format</text>
+<rect fill="none" height="44" stroke="#330A37" stroke-width="1" width="420" x="250" y="968"></rect>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="11" letter-spacing="1.8" text-anchor="middle" x="460" y="995">ANSWER, CHARTS, TABLES AND WORKINGS</text>
+<rect fill="none" height="68" stroke="#330A37" stroke-dasharray="5 4" stroke-width="1" width="170" x="700" y="276"></rect>
+<text fill="#330A37" font-family="'IBM Plex Mono',monospace" font-size="12" text-anchor="middle" x="785" y="303">Business definitions</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="785" y="320">AND DATA</text>
+<text fill="#5C1A62" font-family="'IBM Plex Mono',monospace" font-size="10" letter-spacing="1.4" text-anchor="middle" x="785" y="334">DOCUMENTATION</text>
+</svg>
