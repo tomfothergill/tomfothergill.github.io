@@ -347,48 +347,30 @@ one object. Never split a table and its chart across two grounds.
 
 ## 11. Article layout
 
-Case-study prose takes **two-thirds of the content width**, and the **margin
-column** — figures, definitions, sources, scoreboards — takes the final third, so
-the page fills a laptop screen rather than leaving the right side empty. The
-prose size is fluid, 17px at 1000px wide rising to 22px from 1440px, so the line
-stays near 70–80 characters as the column widens instead of running to 100.
-Margin items are capped at 36ch so a label/value row does not stretch across the
-whole third. (The artboards in `Article Layout Ideas.dc.html` drew fixed 46ch and
-26ch columns; Thomas asked for the fill, 2026-09-09.) Treatments 9A, 9B and 9D.
-In CSS: `.article`, `.row2`, `.row2__margin`.
+Case-study prose runs in **one centred column, 660px wide, with no side rail**
+(from `Article Layout Ideas.dc.html`, treatment 10A, chosen 2026-09-10; it
+replaces the margin-column treatments 9A/9B/9D and the two-thirds fill that
+followed them). The measure is fixed, so it holds at any monitor width — about
+60 characters of Newsreader at 20px/1.65, the long-read size. In CSS:
+`.article--centred`, `.col`, `.step`, `.plot--step`.
 
-**The margin (9A).** Each row of the article is a grid: prose left, margin right.
-The margin's hairline runs the whole length of every row whether or not there is
-anything in it, so the column reads as structure rather than as floating boxes;
-an empty margin is fine and most rows should have one. Rows are separated by the
-same hairline used between work rows. Aim for roughly one margin item per two
-paragraphs — more and it competes with the prose. Items are a 10px mono eyebrow
-label and then either label/value rows with hairline rules, plain 11px mono
-lines, or an 11px ink-soft note. Instrument Serif is not used in the margin
-below 20px.
+**Notes in the flow.** What used to sit in the margin sits in the column, as
+mono blocks between hairline rules. The record is a four-up stat rule: 10px mono
+label over a 26px serif figure, rules above and below. Settings and the like are
+a single 12px mono line under a rule, items separated by middle dots. A
+scoreboard is a rule, an "As of" label, the cumulative figure at 36px with three
+26px stats beside it, and the monthly sparkline beneath — the same content the
+margin held, laid flat.
 
-**When a chart or table arrives (9B).** It breaks out to the full content width
-exactly as §9 builds it; the margin simply stops for its height and resumes
-underneath. The caption moves into the margin of the next row, labelled "Above",
-and that row carries no hairline above it, so the figure sits tight against the
-prose on both sides. Figures inside the article carry no vertical margin of their
-own — the rows do that work.
+**Figures step out one size.** A chart or table leaves the 660px measure for a
+900px one, centred, so it reads as a figure rather than an image dropped in the
+text — not full-bleed. The chart title sits above the panel and the caption below
+it, both in the type-soft colour. 44px above a figure, 34px back to prose.
 
-**The scoreboard (9D).** At story points the same margin column holds the
-figures as they stood then: a 1.5px ink rule opens the rail, an "As of" eyebrow,
-the cumulative figure at 52px in the serif (it has no dark ground to carry it, so
-it goes up a size), a 10px mono sub-label, three or four hairline rows with
-ink-soft labels, and a single-series sparkline under 30px. The month the reader
-is at keeps its ink; the rest recede to the hairline value, which is the chart
-focus rule reused. This is the *no-card* version — the aubergine-card scoreboard
-was rejected because §9.1 reserves aubergine for full-width data surfaces. It
-does not scroll or swap; it is placed statically where the story reaches that
-moment.
-
-**Values snapped to the spacing scale.** The artboards used 36px row padding,
-56px column gap and 24px rail inset; the build uses 34, 44 and 26 so nothing is
-off-scale. Below 700px the margin collapses beneath the prose and empty margins
-disappear.
+**Values on the spacing scale.** The artboard used 32px column inset, 24/28px
+panel padding, 36px after a figure; the build uses 34, 26 and 34. Below 700px the
+column takes the page gutter, prose drops to 18px, and the four-up rules become
+two-up.
 
 ## 12. Don't
 

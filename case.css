@@ -337,120 +337,128 @@ tbody tr.lost td { color: var(--type-soft); }
 }
 .prose p a:hover { color: var(--type); border-bottom-color: var(--type); }
 
-/* ---- Article grid (Article Layout Ideas 9A/9B/9D) ------------------------
-   Prose stays at 46ch. Beside it, a 26ch mono margin holds figures, asides
-   and sources; the margin's hairline runs the full length whether or not
-   there is anything in it, so it reads as structure rather than boxes. At
-   story points the same column holds a scoreboard on a 1.5px ink rule.
-   Charts and tables break out to the full width and the margin resumes
-   underneath, carrying the caption. Roughly one margin item per two
-   paragraphs. Values snapped to the spacing scale: 34px row padding, 44px
-   column gap, 26px rail inset. */
+/* ---- Article column (Article Layout Ideas 10A) ----------------------------
+   One centred measure, 660px, everything in it. Asides become mono blocks in
+   the column between hairline rules; figures step out one size to 900px so
+   they read as figures rather than images dropped in the text. No side rail:
+   the measure is fixed in ch, so it holds at any monitor width. Values on the
+   spacing scale: 34px column inset, 26px between blocks, 44px above a figure,
+   34px after one. */
 
-.article { padding: 0 var(--gutter) var(--s9); }
+.article--centred { padding: var(--s10) 0; }
 
-.row2 {
-  display: grid;
-  /* Prose takes two-thirds of the width, the margin the final third, so the
-     page fills the screen on a laptop instead of leaving the right side
-     empty. The prose size grows with the viewport (below) so the line stays
-     near 80 characters as the column widens. */
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  column-gap: var(--s9);
-  padding: var(--s7) 0;
-  border-top: 1px solid var(--hairline);
-}
-
-.row2--wide { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
-
-/* The row after a chart or table carries its caption; no rule between them. */
-.row2--after { border-top: 0; }
-
-.row2__prose { display: flex; flex-direction: column; gap: var(--s4); }
-.row2__prose p {
-  margin: 0;
-  max-width: none;
-  /* 17px at 1000px wide, 22px from 1440px; the column is two-thirds of the
-     screen, so this holds the measure at roughly 80ch rather than 100ch. */
-  font-size: clamp(17px, 1.14vw + 5.6px, 22px);
-}
-
-.row2__margin {
-  margin: 0;
-  border-left: 1px solid var(--hairline);
-  padding-left: var(--s6);
+.col {
+  max-width: 660px;
+  margin: 0 auto;
+  padding: 0 var(--s7);
   display: flex;
   flex-direction: column;
-  gap: var(--s5);
-  min-width: 0;
+  gap: var(--s6);
 }
 
-/* 9D: the scoreboard opens on a structural rule and does not stretch. */
-.row2__margin--rule {
-  border-left: var(--rule);
-  align-self: start;
-  gap: var(--s3);
-}
-
-.m-label {
-  font: 500 10px/2 var(--mono);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--type-soft);
-  margin: 0 0 var(--s1);
-  max-width: none;
-}
-.m-label + * { margin-top: calc(var(--s5) * -1 + var(--s1)); }
-
-.m-rows { margin: 0; max-width: 36ch; }
-.m-lines, .m-note { max-width: 36ch; }
-.m-row {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--s3);
-  font: 400 11px/2 var(--mono);
-  color: var(--type);
-  border-top: 1px solid var(--hairline);
-}
-.m-row:last-child { border-bottom: 1px solid var(--hairline); }
-.m-row--dim span:first-child { color: var(--type-soft); }
-
-.m-lines { font: 400 11px/1.9 var(--mono); color: var(--type); margin: 0; }
-.m-note  { font: 400 11px/1.8 var(--mono); color: var(--type-soft); margin: 0; }
-
-.m-fig {
-  font: 400 52px/0.9 var(--serif);
-  letter-spacing: -0.02em;
-  color: var(--type);
+.col p {
   margin: 0;
   max-width: none;
-  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+  line-height: 1.65;
+  text-wrap: pretty;
 }
-.m-sub {
+
+/* A figure or table steps out one size. */
+.plot--step,
+.step {
+  max-width: 900px;
+  margin: var(--s9) auto 0;
+  padding: 0 var(--s7);
+}
+.plot--step + .col,
+.step + .col { margin-top: var(--s7); }
+
+.plot--step .panel { margin-inline: 0; padding: var(--s6); }
+
+.plot__caption {
   font: 400 10px/2 var(--mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--type-soft);
+  padding-top: var(--s3);
   margin: 0;
   max-width: none;
 }
 
+.step .scroll { margin: 0; }
+.step .fine { margin: var(--s3) 0 0; }
+
+/* ---- Notes in the flow --------------------------------------------------- */
+.m-label {
+  display: block;
+  font: 500 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--type-soft);
+}
+
+/* The record: a four-up stat rule. */
+.stat-rule {
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  padding: var(--s4) 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--s3);
+}
+
+.stat { display: flex; flex-direction: column; gap: var(--s1); min-width: 0; }
+.stat__l {
+  font: 400 10px/2 var(--mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--type-soft);
+}
+.stat__v {
+  font: 400 26px/1.1 var(--serif);
+  color: var(--type);
+  font-variant-numeric: tabular-nums;
+}
+.stat--big .stat__v { font-size: 36px; }
+
+/* An aside: one mono line under a rule. */
+.note-rule {
+  border-top: 1px solid var(--hairline);
+  padding-top: var(--s3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s1);
+}
+.note-line { font: 400 12px/1.9 var(--mono); color: var(--type); }
+
+/* The scoreboard, in the flow: the figures as they stood at that point. */
+.score-rule {
+  border-top: 1px solid var(--hairline);
+  padding-top: var(--s3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+}
+.score-rule__row {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, minmax(0, 1fr));
+  gap: var(--s3);
+  align-items: end;
+}
+
 /* Sparkline: the month you are reading about keeps its ink; the rest recede
-   to the hairline value. A single series under 60px, drawn on the field, is
-   the one chart the system allows off a panel (9.1). */
+   to the hairline value. Single series under 60px, on the page ground, which
+   is the one chart the system allows off a panel (9.1). */
 .m-spark { display: block; width: 100%; height: 30px; }
 .sp { fill: var(--hairline); }
 .sp--on { fill: var(--type); }
 
-/* Charts and tables inside the article: the rows above and below provide the
-   vertical rhythm, so the figure carries none of its own. */
-.article .plot { margin: 0; }
-.article .scroll { margin: 0; }
-.article .fine { margin: var(--s3) 0 0; }
-
 @media (max-width: 700px) {
-  .row2, .row2--wide { grid-template-columns: 1fr; row-gap: var(--s5); }
-  .row2__margin:empty { display: none; }
+  .col, .plot--step, .step { padding: 0 var(--gutter); }
+  .col p { font-size: 18px; }
+  .stat-rule, .score-rule__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat--big { grid-column: 1 / -1; }
   .opener__grid { grid-template-columns: 1fr; row-gap: var(--s6); }
   .opener__art { width: 200px; }
 }

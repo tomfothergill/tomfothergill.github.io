@@ -172,25 +172,26 @@ def monthly_svg():
             % (H, hatch, grid, bars, zero, ticks, ring, hits))
 
 
-# ---------------------------------------------------------------- margin
+# ---------------------------------------------------------------- notes in the flow
 def m_label(text):
-    return '<p class="m-label">%s</p>' % esc(text)
+    return '<span class="m-label">%s</span>' % esc(text)
 
 
-def m_rows(pairs, dim=False):
-    """Label/value rows with hairline rules (Article Layout Ideas 9A/9D)."""
-    cls = "m-row m-row--dim" if dim else "m-row"
-    return '<div class="m-rows">' + "".join(
-        '<div class="%s"><span>%s</span><span>%s</span></div>' % (cls, esc(a), esc(b))
-        for a, b in pairs) + '</div>'
+def stat(label, value, big=False):
+    return ('<div class="stat%s"><span class="stat__l">%s</span>'
+            '<span class="stat__v">%s</span></div>'
+            % (" stat--big" if big else "", esc(label), esc(value)))
 
 
-def m_lines(lines):
-    return '<p class="m-lines">%s</p>' % "<br>".join(esc(l) for l in lines)
+def stat_rule(pairs):
+    """The record as a four-up stat rule (Article Layout Ideas 10A)."""
+    return '<div class="stat-rule">' + "".join(stat(a, b) for a, b in pairs) + '</div>'
 
 
-def m_note(text):
-    return '<p class="m-note">%s</p>' % text
+def note_rule(label, text):
+    """An aside as a single mono line under a rule (10A)."""
+    return ('<div class="note-rule">%s<span class="note-line">%s</span></div>'
+            % (m_label(label), text))
 
 
 def as_of(date_str):
@@ -243,14 +244,15 @@ def sparkline(highlight):
             % (W, H, esc(highlight), "".join(out)))
 
 
-def scoreboard(label, date_str, month, rows):
-    """The no-card scoreboard (9D): rule, big serif figure, hairline rows,
-    sparkline. `rows` is a list of (label, value) after the cumulative figure."""
+def score_rule(label, date_str, month, rows):
+    """The scoreboard as an in-flow block: rule, label, the cumulative figure
+    large, three stats beside it, sparkline beneath."""
     v, n, roi = as_of(date_str)
-    return (m_label(label)
-            + '<p class="m-fig">%s</p><p class="m-sub">units, cumulative</p>' % money(v)
-            + m_rows(rows + [("Return to date", money(roi) + "%")], dim=True)
-            + sparkline(month))
+    stats = stat("units, cumulative", money(v), big=True)
+    stats += "".join(stat(a, b) for a, b in rows)
+    stats += stat("Return to date", money(roi) + "%")
+    return ('<div class="score-rule">%s<div class="score-rule__row">%s</div>%s</div>'
+            % (m_label(label), stats, sparkline(month)))
 
 
 # ---------------------------------------------------------------- tables
@@ -341,90 +343,72 @@ HTML = u"""<!doctype html>
     <span>Max drawdown @@dd@@ units</span>
   </div>
 
-  <div class="article">
+  <div class="article article--centred">
 
-    <div class="row2">
-      <div class="row2__prose">
-        <p>
-          Between March 2021 and April 2024 I placed @@bets@@ bets on low-level
-          table tennis, one unit on every one, and finished @@profit_plain@@ units up,
-          which is an @@roi@@% return on turnover. Only @@hit@@% of the bets won, at
-          an average price of @@mean@@, which tells you the model leaned towards
-          outsiders. It was never as simple as backing the longer price, though, and
-          the bets were only ever a small fraction of the matches on offer.
-        </p>
-      </div>
-      <aside class="row2__margin">@@m_record@@</aside>
+    <div class="col">
+      <p>
+        Between March 2021 and April 2024 I placed @@bets@@ bets on low-level
+        table tennis, one unit on every one, and finished @@profit_plain@@ units up,
+        which is an @@roi@@% return on turnover. Only @@hit@@% of the bets won, at
+        an average price of @@mean@@, which tells you the model leaned towards
+        outsiders. It was never as simple as backing the longer price, though, and
+        the bets were only ever a small fraction of the matches on offer.
+      </p>
+      @@m_record@@
+      <p>
+        It started in the middle of Covid. Nearly all proper sport had shut down,
+        and a smaller and much stranger set of sports started to thrive in its
+        place. Small Eastern European table tennis leagues sprang up to feed people
+        who needed something to bet on. Forbes ran
+        <a href="https://www.forbes.com/sites/barrycollins/2020/06/13/anyone-for-ukrainian-table-tennis-the-shady-sport-that-feeds-online-gambling/">a piece on it in June 2020</a>
+        that tells that side of the story better than I can.
+      </p>
+      <p>
+        I started watching. One player in red, one in blue, in an empty sports hall
+        with no crowd, and a referee sat to one side who at times looked on the
+        verge of falling asleep. The players were often extremely out of shape and
+        frequently around 60 years old. They were playing seven or eight matches a
+        day, and they did not appear to care much about them. When I had money on
+        someone I would sometimes look them up online, with results that did not
+        inspire confidence.
+      </p>
+      <p>
+        What I saw, because I'm like this, was a modelling opportunity. Thousands of
+        players. Random pairings. No tournament structure, no variance in
+        conditions. And matches all day, every day, in enormous volumes, with
+        enormous volumes of errant odds to pick off. In modelling terms it was close
+        to ideal. In every other sense it was odd.
+      </p>
+      <p>
+        The model I settled on was a simple Elo rating system, the same idea chess
+        uses to rank its players. Every player carries a rating, and the difference
+        between two players' ratings gives you an expected probability of each of
+        them winning. After a match, both ratings move by an amount proportional to
+        how far the result was from that expectation, scaled by a constant called
+        the K-factor, so a win that was expected shifts the ratings very little and
+        an upset shifts them a lot. I used a K-factor of 10, started every new
+        player at 1,500, updated on matches rather than individual games, and pooled
+        the ratings across all the leagues, because keeping them separate per league
+        threw away too much information. Once you have two ratings you have a
+        probability, and once you have a probability you have a price of your own to
+        set against the bookmaker's. Neither of you is obviously right about any one
+        match; you only find out who is more accurate over thousands of them.
+      </p>
+      @@m_settings@@
+      <p>
+        I set up a daily process. Each day's results went into the engine and the
+        ratings updated, the model then priced the next day's fixtures, and where my
+        price differed enough from the bookmaker's it emailed me to go and place the
+        bet. All of this ran in the cloud on PythonAnywhere. Every bet was tracked,
+        every result was logged, and the model was tweaked accordingly, which is why
+        this page has real numbers on it rather than remembered ones.
+      </p>
+      <!-- TODO: what "differed enough" meant in practice (the edge threshold), and
+           whether the bets were then placed by hand. -->
+      @@m_ranon@@
     </div>
 
-    <div class="row2">
-      <div class="row2__prose">
-        <p>
-          It started in the middle of Covid. Nearly all proper sport had shut down,
-          and a smaller and much stranger set of sports started to thrive in its
-          place. Small Eastern European table tennis leagues sprang up to feed people
-          who needed something to bet on. Forbes ran
-          <a href="https://www.forbes.com/sites/barrycollins/2020/06/13/anyone-for-ukrainian-table-tennis-the-shady-sport-that-feeds-online-gambling/">a piece on it in June 2020</a>
-          that tells that side of the story better than I can.
-        </p>
-        <p>
-          I started watching. One player in red, one in blue, in an empty sports hall
-          with no crowd, and a referee sat to one side who at times looked on the
-          verge of falling asleep. The players were often extremely out of shape and
-          frequently around 60 years old. They were playing seven or eight matches a
-          day, and they did not appear to care much about them. When I had money on
-          someone I would sometimes look them up online, with results that did not
-          inspire confidence.
-        </p>
-      </div>
-      <aside class="row2__margin">@@m_source@@</aside>
-    </div>
-
-    <div class="row2">
-      <div class="row2__prose">
-        <p>
-          What I saw, because I'm like this, was a modelling opportunity. Thousands of
-          players. Random pairings. No tournament structure, no variance in
-          conditions. And matches all day, every day, in enormous volumes, with
-          enormous volumes of errant odds to pick off. In modelling terms it was close
-          to ideal. In every other sense it was odd.
-        </p>
-        <p>
-          The model I settled on was a simple Elo rating system, the same idea chess
-          uses to rank its players. Every player carries a rating, and the difference
-          between two players' ratings gives you an expected probability of each of
-          them winning. After a match, both ratings move by an amount proportional to
-          how far the result was from that expectation, scaled by a constant called
-          the K-factor, so a win that was expected shifts the ratings very little and
-          an upset shifts them a lot. I used a K-factor of 10, started every new
-          player at 1,500, updated on matches rather than individual games, and pooled
-          the ratings across all the leagues, because keeping them separate per league
-          threw away too much information. Once you have two ratings you have a
-          probability, and once you have a probability you have a price of your own to
-          set against the bookmaker's. Neither of you is obviously right about any one
-          match; you only find out who is more accurate over thousands of them.
-        </p>
-      </div>
-      <aside class="row2__margin">@@m_settings@@</aside>
-    </div>
-
-    <div class="row2">
-      <div class="row2__prose">
-        <p>
-          I set up a daily process. Each day's results went into the engine and the
-          ratings updated, the model then priced the next day's fixtures, and where my
-          price differed enough from the bookmaker's it emailed me to go and place the
-          bet. All of this ran in the cloud on PythonAnywhere. Every bet was tracked,
-          every result was logged, and the model was tweaked accordingly, which is why
-          this page has real numbers on it rather than remembered ones.
-        </p>
-        <!-- TODO: what "differed enough" meant in practice (the edge threshold), and
-             whether the bets were then placed by hand. -->
-      </div>
-      <aside class="row2__margin">@@m_ranon@@</aside>
-    </div>
-
-    <figure class="plot">
+    <figure class="plot plot--step">
       <p class="plot__title">Cumulative profit, units</p>
       <div class="panel">
         <div class="panel__head">
@@ -436,80 +420,68 @@ HTML = u"""<!doctype html>
         </div>
         @@cum@@
       </div>
+      <figcaption class="plot__caption">Flat 1-unit stakes throughout. @@first@@ to @@last@@.
+      The dashed span is nine months in which no bets were placed at all.</figcaption>
     </figure>
 
-    <div class="row2 row2--after">
-      <div class="row2__prose">
-        <p>It worked, and it worked fairly evenly.</p>
+    <div class="col">
+      <p>It worked, and it worked fairly evenly.</p>
+    </div>
+
+    <div class="step">
+      <div class="scroll">
+        <table>
+          <thead><tr><th>League</th><th>First bet</th><th>Last bet</th><th class="n">Bets</th>
+          <th class="n">Units</th><th class="n">ROI</th></tr></thead>
+          <tbody>@@leaguerows@@</tbody>
+        </table>
       </div>
-      <aside class="row2__margin">@@m_above_cum@@</aside>
+      <p class="fine">Leagues with fewer than 100 bets are omitted.</p>
     </div>
 
-    <div class="scroll">
-      <table>
-        <thead><tr><th>League</th><th>First bet</th><th>Last bet</th><th class="n">Bets</th>
-        <th class="n">Units</th><th class="n">ROI</th></tr></thead>
-        <tbody>@@leaguerows@@</tbody>
-      </table>
-    </div>
-    <p class="fine">Leagues with fewer than 100 bets are omitted.</p>
-
-    <div class="row2 row2--after">
-      <div class="row2__prose">
-        <p>
-          Four of the six came back between 13% and 16%, which is remarkably
-          consistent for a model that had no idea which league it was looking at. On
-          the women's Setka Cup the identical approach produced essentially nothing:
-          630 bets, three units up. On the Czech Liga Pro it lost money. I didn't look
-          into why at the time and I'm not going to guess now.
-        </p>
-        <!-- TODO: any recollection of why the Czech and women's leagues behaved
-             differently, or confirm "I never looked" and leave the sentence as is. -->
-        <p>
-          The standard of play was rarely high, and I noticed a number of cases where
-          the odds behaved in ways I could not account for from the table tennis. A
-          player would be available at 3.00 before the match, win the first game, and
-          then drift out to 5.00 or 6.00, in a best-of-three format where winning the
-          first game should be a strong position. I never found out what was going on
-          in those matches, and I'll leave you to draw your own conclusions. It is also
-          worth saying that a player on their eighth match of the day, who does not
-          appear to care much whether they win it, is not well described by a rating.
-        </p>
-      </div>
-      <aside class="row2__margin"></aside>
-    </div>
-
-    <div class="row2 row2--wide">
-      <div class="row2__prose">
-        <p>
-          Then Russia invaded Ukraine. The TT Cup Ukraine, my second-largest league by
-          volume and my best by return, placed its last bet two days before the
-          invasion and never came back, the Russian Liga Pro followed within a
-          fortnight, and the Czech Liga Pro was gone a few weeks after that, replaced
-          by a new league, TT Cup. Within about six weeks I had gone from six leagues
-          to two, with the Setka Cup carrying most of the volume, and the return
-          roughly halved. After ten months like that, keeping it going stopped being
-          worth the effort and I switched it off.
-        </p>
-      </div>
-      <aside class="row2__margin row2__margin--rule">@@m_score_war@@</aside>
+    <div class="col">
+      <p>
+        Four of the six came back between 13% and 16%, which is remarkably
+        consistent for a model that had no idea which league it was looking at. On
+        the women's Setka Cup the identical approach produced essentially nothing:
+        630 bets, three units up. On the Czech Liga Pro it lost money. I didn't look
+        into why at the time and I'm not going to guess now.
+      </p>
+      <!-- TODO: any recollection of why the Czech and women's leagues behaved
+           differently, or confirm "I never looked" and leave the sentence as is. -->
+      <p>
+        The standard of play was rarely high, and I noticed a number of cases where
+        the odds behaved in ways I could not account for from the table tennis. A
+        player would be available at 3.00 before the match, win the first game, and
+        then drift out to 5.00 or 6.00, in a best-of-three format where winning the
+        first game should be a strong position. I never found out what was going on
+        in those matches, and I'll leave you to draw your own conclusions. It is also
+        worth saying that a player on their eighth match of the day, who does not
+        appear to care much whether they win it, is not well described by a rating.
+      </p>
+      <p>
+        Then Russia invaded Ukraine. The TT Cup Ukraine, my second-largest league by
+        volume and my best by return, placed its last bet two days before the
+        invasion and never came back, the Russian Liga Pro followed within a
+        fortnight, and the Czech Liga Pro was gone a few weeks after that, replaced
+        by a new league, TT Cup. Within about six weeks I had gone from six leagues
+        to two, with the Setka Cup carrying most of the volume, and the return
+        roughly halved. After ten months like that, keeping it going stopped being
+        worth the effort and I switched it off.
+      </p>
+      @@m_score_war@@
+      <p>
+        The nice thing about a model that emails you is that switching it off is
+        easy, and so is switching it back on, which I did the best part of a year
+        later for no better reason than that I fancied it again. The frustration
+        came back with it. The market I'd returned to was narrower still, almost
+        entirely Setka Cup, and while the model itself was fine, still returning
+        around 12%, there were far fewer places to point it.
+      </p>
+      @@m_score_restart@@
     </div>
 
-    <div class="row2 row2--wide">
-      <div class="row2__prose">
-        <p>
-          The nice thing about a model that emails you is that switching it off is
-          easy, and so is switching it back on, which I did the best part of a year
-          later for no better reason than that I fancied it again. The frustration
-          came back with it. The market I'd returned to was narrower still, almost
-          entirely Setka Cup, and while the model itself was fine, still returning
-          around 12%, there were far fewer places to point it.
-        </p>
-      </div>
-      <aside class="row2__margin row2__margin--rule">@@m_score_restart@@</aside>
-    </div>
-
-    <figure class="plot">
+    <figure class="plot plot--step">
       <p class="plot__title">Monthly profit and loss, units</p>
       <div class="panel">
         <div class="panel__head">
@@ -524,52 +496,44 @@ HTML = u"""<!doctype html>
         </div>
         @@mon@@
       </div>
+      <figcaption class="plot__caption">Losing months are hollow and hatched, hanging below
+      the zero line. Both sides share one scale. Hairlines mark months with no bets.</figcaption>
     </figure>
 
-    <div class="row2 row2--after">
-      <div class="row2__prose">
-        <p>
-          In the end my betting adventures were ruined by the (some might say immoral)
-          practices of betting companies. My accounts were limited to bets of a penny,
-          and that was that. The log stops there.
-        </p>
-      </div>
-      <aside class="row2__margin">@@m_above_mon@@</aside>
+    <div class="col">
+      <p>
+        In the end my betting adventures were ruined by the (some might say immoral)
+        practices of betting companies. My accounts were limited to bets of a penny,
+        and that was that. The log stops there.
+      </p>
+      <p>
+        It's only now, with the whole log in front of me, that I can see what it was
+        actually doing. My working theory while it ran, which I never got round to
+        testing properly, was that the outsiders were where the value was, and I put
+        it down to punters liking a favourite. The log agrees with me, which is
+        nice, right up to the point where it falls off a cliff.
+      </p>
     </div>
 
-    <div class="row2">
-      <div class="row2__prose">
-        <p>
-          It's only now, with the whole log in front of me, that I can see what it was
-          actually doing. My working theory while it ran, which I never got round to
-          testing properly, was that the outsiders were where the value was, and I put
-          it down to punters liking a favourite. The log agrees with me, which is
-          nice, right up to the point where it falls off a cliff.
-        </p>
+    <div class="step">
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Price band</th><th class="n">Bets</th><th class="n">Implied</th>
+          <th class="n">Actual</th><th class="n">Edge</th><th class="n">ROI</th></tr></thead>
+          <tbody>@@buckets@@</tbody>
+        </table>
       </div>
-      <aside class="row2__margin"></aside>
+      <p class="fine">Implied is the mean of 1/price across the band; actual is the realised
+      strike rate. Bands with fewer than 50 bets are omitted.</p>
     </div>
 
-    <div class="scroll">
-      <table>
-        <thead><tr><th>Price band</th><th class="n">Bets</th><th class="n">Implied</th>
-        <th class="n">Actual</th><th class="n">Edge</th><th class="n">ROI</th></tr></thead>
-        <tbody>@@buckets@@</tbody>
-      </table>
-    </div>
-    <p class="fine">Implied is the mean of 1/price across the band; actual is the realised
-    strike rate. Bands with fewer than 50 bets are omitted.</p>
-
-    <div class="row2 row2--after">
-      <div class="row2__prose">
-        <p>
-          Overall a particularly fun and enjoyable experience building this, and a
-          useful one: it's the only model I've built where I can point at @@bets@@
-          out-of-sample outcomes and say exactly where it was right and exactly where
-          it was not.
-        </p>
-      </div>
-      <aside class="row2__margin"></aside>
+    <div class="col">
+      <p>
+        Overall a particularly fun and enjoyable experience building this, and a
+        useful one: it's the only model I've built where I can point at @@bets@@
+        out-of-sample outcomes and say exactly where it was right and exactly where
+        it was not.
+      </p>
     </div>
 
   </div>
@@ -846,28 +810,22 @@ vals = {
     "cum": cumulative_svg(), "mon": monthly_svg(),
     "buckets": bucket_rows(), "leaguerows": league_rows(),
 
-    "m_record": m_label("The record") + m_rows([
+    "m_record": stat_rule([
         ("Bets", fmt(S["bets"])),
         ("Won", "%.2f%%" % S["hit_rate"]),
         ("Mean price", "%.2f" % S["mean_price"]),
         ("Net", money(S["profit"])),
     ]),
-    "m_source": m_label("Source") + m_note(
-        'Forbes, 13 June 2020 &mdash; &ldquo;Anyone For Ukrainian Table Tennis?&rdquo;'),
-    "m_settings": m_label("Settings") + m_lines([
-        "K-factor 10", "Start rating 1,500", "Updated per match", "Pooled across leagues"]),
-    "m_ranon": m_label("Ran on") + m_lines(["PythonAnywhere", "Daily", "Every bet logged"]),
-    "m_above_cum": m_label("Above") + m_note(
-        "Flat 1-unit stakes throughout. %s to %s. The dashed span is nine months in "
-        "which no bets were placed at all." % (S["first"], S["last"])),
-    "m_above_mon": m_label("Above") + m_note(
-        "Losing months are hollow and hatched, hanging below the zero line. Both sides "
-        "share one scale. Hairlines mark months with no bets."),
-    "m_score_war": scoreboard("As of 22 Feb 2022", "2022-02-22", "2022-02", [
+    "m_settings": note_rule("Settings",
+        "K-factor 10 &nbsp;&middot;&nbsp; Start rating 1,500 &nbsp;&middot;&nbsp; "
+        "Updated per match &nbsp;&middot;&nbsp; Pooled across leagues"),
+    "m_ranon": note_rule("Ran on",
+        "PythonAnywhere &nbsp;&middot;&nbsp; Daily &nbsp;&middot;&nbsp; Every bet logged"),
+    "m_score_war": score_rule("As of 22 Feb 2022", "2022-02-22", "2022-02", [
         ("Leagues live", "6 \u2192 2"),
         ("Active month", "%d / %d" % (active_month_index("2022-02"), S["active_months"])),
     ]),
-    "m_score_restart": scoreboard("As of Oct 2023", "2023-10-05", "2023-10", [
+    "m_score_restart": score_rule("As of Oct 2023", "2023-10-05", "2023-10", [
         ("Leagues live", "2"),
         ("Off for", "9 months"),
     ]),
