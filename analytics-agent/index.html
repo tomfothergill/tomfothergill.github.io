@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Implementing an analytics agent: from business definitions to live deployments — Thomas Fothergill</title>
+<meta name="description" content="A technical guide to implementing an analytics agent: business definitions, multi-agent orchestration, a single-agent tool loop, execution policies and live UAT deployments.">
+<meta name="theme-color" content="#330a37">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&amp;display=swap">
+<link rel="stylesheet" href="../styles.css?v=20260910-colour-scheme">
+<link rel="stylesheet" href="../case.css?v=20260910-contact-1a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='%23330a37'/></svg>">
+<link rel="stylesheet" href="article.css?v=20260910">
+<link rel="canonical" href="https://tomfothergill.github.io/analytics-agent/">
+</head>
+<body class="inverse">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="rule-bar">
+  <a class="rule-bar__name" href="../">Thomas Fothergill</a>
+  <nav class="rule-bar__nav" aria-label="Primary">
+    <a href="../#work">Work</a>
+    <a href="../#notes">Notes</a>
+    <a href="../#about">About</a>
+    <a href="../#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="opener">
+    <p class="eyebrow">Technical guide &middot; September 2026</p>
+    <h1 id="article-title">Implementing an analytics agent: from business definitions to live deployments</h1>
+    <div class="statement__pair">
+      <p class="statement__prose">How I implemented an analytics agent, from business definitions and investigation tools to live deployments.</p>
+      <p class="statement__meta">LLM analytics<br>Implementation guide</p>
+    </div>
+  </section>
+  <aside class="contact-bar" aria-label="Get in touch">
+    <span class="contact-bar__label">Get in touch</span>
+    <nav class="contact-bar__links" aria-label="Contact links">
+      <a href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
+      <a href="https://www.linkedin.com/in/tom-f-778358113/">Connect on LinkedIn &nearr;</a>
+    </nav>
+  </aside>
+  <article class="article article--centred article--rewrite article--technical" aria-labelledby="article-title">
+    <div class="col">
+<p>I've seen <a href="https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude">Anthropic's article on self-service data analytics</a> doing the rounds a lot. It also provided much of the basis for an analytics agent I built. This is a technical guide to how I implemented those ideas: organising the business context, running an investigation, controlling access to the warehouse, and keeping the resulting system manageable across deployments.</p>
+<p>The product takes a business question, queries a warehouse, investigates the results, and returns an explanation with charts, tables and the workings behind it. It has live deployments in user acceptance testing with some major retailers. I'll keep the clients and product anonymous, but describe the implementation in enough detail to make the design choices useful if you're building something similar.</p>
+<p>One question asked during UAT was, paraphrased: “Who are the most important customers for each store?” You could rank customers by spending, recent growth, or the range of products they buy. You also need to decide how to assign someone who shops at several stores, and whether every account represents an individual customer. Those choices can produce different, defensible lists from the same data. Giving a model access to the warehouse leaves all of them to be made.</p>
+<p>The implementation has three main layers: business definitions and policies in configuration, an investigation loop that uses them, and application code that executes tools and assembles the response. Keeping those responsibilities separate gives you room to change the model's behaviour without rebuilding everything around it.</p>
+<h2>Define the business context as a contract</h2>
+<p>A list of tables and columns only gets you so far when you're working with an unfamiliar dataset. You also need to know what each row represents, which records are excluded, and when a particular measure is appropriate. The agent needs the same context. It can produce perfectly valid SQL using the wrong definition of a metric.</p>
+<p>For the customer-ranking question, you need to establish what “important” means before treating the output as a repeatable ranking. Spending and growth can both be relevant, but combining them introduces choices about weighting and normalisation. Those choices need to be agreed, or presented as an exploratory method that the user can question.</p>
+<p>I put that knowledge into configuration: table documentation, metric definitions, domain guidance and access policies. The application loads and validates those files. Keeping them separate from the investigation code gives you somewhere explicit to record a business definition, review it, and change it when necessary.</p>
+<p>The configuration uses typed models to define the expected fields and reject unexpected ones. Table metadata records what each row represents, the scope of the data, exclusions and column definitions. Metric definitions and domain guidance describe how that data should be interpreted. Access policies define what can be queried. These are different concerns, even when they refer to the same table.</p>
+<p>The documentation is available in stages, following the same principle as the on-demand references in <a href="https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude">Anthropic's skills approach</a>. The agent starts with a compact description of the tables and can request the full documentation for whichever ones it needs. That includes column definitions, exclusions and rules about when to use them. Its instructions require it to read that detail before querying a table, so it has a chance to resolve those questions before writing SQL.</p>
+<p>You still need to check whether it follows that instruction. The documentation helps it decide what to query; separate checks in the application determine whether that query is allowed to run.</p>
+<h2>Give the investigation a bounded tool loop</h2>
+<p>In an earlier version, I split the investigation between a planner and a set of workers, each with a bounded task. As the models improved, I decided to move to a simpler arrangement for the main analysis: one agent with tools to query the warehouse, run calculations in Python, and load additional guidance. It can inspect a result and decide what to do next.</p>
+<p>The fixed plan was awkward for the more open-ended questions I wanted it to handle. With the customer-ranking example, an initial spending analysis might lead you to check purchases across stores, investigate unusually active accounts, or reconsider whether category breadth usefully separates the customers at the top. The agent needs to be able to make that sort of adjustment as it gathers evidence, while keeping the chosen ranking method explicit.</p>
+<p>I kept intake and clarification ahead of the investigation, and put limits around how much work the analysis agent can do. It has a budget for queries, Python runs and tool rounds, and it finishes by submitting a structured response containing its answer, findings and caveats. Other model calls still have roles in the product, but the investigation itself belongs to one agent.</p>
+<p>The main interfaces are small enough to describe directly:</p>
+<table>
+<caption>Investigation interfaces</caption>
+<thead>
+<tr>
+<th scope="col">Interface</th>
+<th scope="col">Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>load_table_metadata</code></td>
+<td>Return detailed documentation for a selected table.</td>
+</tr>
+<tr>
+<td><code>run_sql</code></td>
+<td>Execute proposed SQL through warehouse policies and record the result.</td>
+</tr>
+<tr>
+<td><code>run_python</code></td>
+<td>Run calculations over evidence already gathered, when a code interpreter is configured.</td>
+</tr>
+<tr>
+<td>Reference and skill tools</td>
+<td>Load additional analytical guidance when needed.</td>
+</tr>
+<tr>
+<td><code>submit_final_analysis</code></td>
+<td>Submit the structured answer, findings, caveats and selected supporting result.</td>
+</tr>
+</tbody>
+</table>
+<p>The application owns the tool session and its counters. Independent tool calls can execute concurrently, with budgets reserved under a lock so simultaneous calls cannot each spend the same remaining allowance. The results go back to the agent for its next decision. If a query depends on a previous result, that dependency naturally requires another round.</p>
+<p>I kept the output format consistent between the two approaches. That let me change the investigation without having to rebuild the interface, saved history or evidence displays around it. The earlier implementation is still available for comparison.</p>
+<h2>Enforce execution policy and retain the evidence</h2>
+<p>Before a query reaches the warehouse, it passes through a SQL parser and policy checks. Those restrict it to a single read-only statement, check access to approved tables and fields, and apply result limits. These are application controls, so the model doesn't get to waive them because a query seems useful.</p>
+<p>An allowed query can still make a poor comparison. You need to be able to look at how an answer was reached, whether you're developing the agent or using it to make a decision. The queries and results behind an investigation are retained, with supporting material available alongside the answer.</p>
+<p>Charts follow a similar principle. The model can suggest what a visual should communicate, while the application builds it from the returned data using defined chart rules. That gives the agent some say in how it presents a finding, with the actual rendering tied to the available columns and supported chart types.</p>
+<p>Anthropic also describes <a href="https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude">showing the source behind an answer in a provenance footer</a>. In this product, the distinction is whether the agent followed a documented business rule or made an interpretation of its own. I added a declaration for that when it runs a query. If it reports using its own judgement in part of an answer, the interface keeps that qualification visible alongside any documented rules it used elsewhere.</p>
+<p>You can't treat the declaration as independent verification, because it comes from the same model. It does, however, give you something specific to question. Was that interpretation reasonable? Is there a definition missing from the documentation? Should the analysis be rerun with a different assumption? Those are useful conversations to make possible in the interface.</p>
+<h2>Keep deployment boundaries explicit</h2>
+<p>The same product code needs to work with different business configurations. I separated the analysis logic from the warehouse and model adapters, with the API and deployment wiring outside that core. The warehouse adapter returns a common query-result structure, so response handling does not have to know which provider executed the query.</p>
+<p>Each backend deployment is bound to one client configuration and deployment stack. Requests that specify a different client or stack are rejected. This makes the boundary explicit in the application; selecting a client is not a decision delegated to the model.</p>
+<p>Operating across deployments also means being able to trace a reported problem. Requests carry a correlation identifier, and warehouse queries are annotated with that context. That gives you a way to connect an answer to its application logs and warehouse query history when you need to inspect what happened.</p>
+<p>Execution budgets and bounded concurrency address individual investigations. Establishing capacity for a larger user population also requires measuring concurrent demand, warehouse performance and model limits. The current UAT deployments provide an environment for that work; they do not, by themselves, establish a throughput benchmark.</p>
+<h2>Test application behaviour and analytical judgement separately</h2>
+<p>Tests cover the configuration, query controls, orchestration and chart behaviour. Replay cases pass known tool calls and warehouse results through the investigation, letting you check that a change hasn't broken how evidence is retained or how a result becomes a response.</p>
+<p>Checking a prescribed sequence doesn't tell you whether the model will choose a sensible sequence for a new question. For that, you need to review actual investigations: what it queried, which assumptions it made, and whether the conclusion follows. That is an important part of what I want to establish through user acceptance testing, alongside whether people find the product useful enough to return to.</p>
+<h2>Recheck the data before rerunning the analysis</h2>
+<p>I also built a way to pin an answered question and keep it under review. The agent can propose small checks based on SQL it actually ran during the investigation. The application validates those checks and runs them to establish a baseline; subsequent checks can then run without calling the model. If the data moves, that can trigger a decision about whether a fresh investigation is worthwhile.</p>
+<p>This lets you revisit useful questions without paying for a full analysis every time you check the data. Full reruns are capped, and failed checks appear separately from unchanged results, so a broken query doesn't quietly look like nothing has happened.</p>
+<p>If you're implementing a similar system, keep a complete investigation inspectable from the outset: the definitions it consulted, the queries it ran, the results it used and the answer it returned. Those records give you something concrete to work with when a user questions a result, a business definition changes, or you want to compare a new model with the existing one.</p>
+    </div>
+  </article>
+</main>
+<footer id="contact" class="contact">
+  <a class="contact__email" href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
+  <nav class="contact__links" aria-label="Elsewhere">
+    <a href="https://github.com/tomfothergill">GitHub</a>
+    <a href="https://www.linkedin.com/in/tom-f-778358113/">LinkedIn</a>
+  </nav>
+</footer>
+</body>
+</html>

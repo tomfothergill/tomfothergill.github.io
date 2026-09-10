@@ -1,0 +1,32 @@
+/* Technical article additions; shared article typography lives in case.css. */
+.opener .statement__pair { margin-top: var(--s7); }
+
+.article--technical code {
+  font: 400 12px/1.7 var(--mono);
+  overflow-wrap: anywhere;
+}
+
+.article--technical table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.article--technical th,
+.article--technical td {
+  text-align: left;
+  white-space: normal;
+  vertical-align: top;
+  padding: var(--s4) var(--s4) var(--s4) 0;
+  overflow-wrap: anywhere;
+}
+
+.article--technical th:first-child,
+.article--technical td:first-child { width: 38%; }
+
+.article--technical th:last-child,
+.article--technical td:last-child { padding-right: 0; }
+
+.article--technical td {
+  font: 400 18px/1.6 var(--read);
+}
