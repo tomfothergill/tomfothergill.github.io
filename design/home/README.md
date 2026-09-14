@@ -23,3 +23,12 @@ Article pages and shared article styles are independent of this homepage change.
 Verified the desktop and mobile layouts visually, including the footer, and
 checked 320, 390, 768, 1200 and 1440px widths for page overflow. All local links
 and assets resolve. Article HTML and shared CSS hashes are unchanged.
+
+## Floral vine replacement
+
+The user replaced the iris surround with the central floral band from
+`china-bottle-1-1600.jpg`. The original scan is retained unchanged at
+`assets/patterns/china-bottle.jpg`. `china-floral-vine.svg` embeds it in a
+cropped viewport (`14 208 1570 592`), excluding the upper scrollwork and lower
+striped and ornamental borders. It repeats at 800px wide and blends with the
+cream background. The bookplate, typography and mobile layout stay the same.

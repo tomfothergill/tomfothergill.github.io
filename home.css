@@ -1,7 +1,7 @@
 /* Round 11B: Endpaper. Homepage only; article styles are independent. */
 :root { color-scheme: only light; --paper:#F4EEE3; --ink:#1F1B17; --soft:#6B655C; }
 * { box-sizing:border-box; }
-body { margin:0; padding-bottom:96px; background:#1B2A45 url('assets/patterns/iris-border.png') left top / 200px auto repeat; color:var(--ink); font:400 17px/1.6 Newsreader,Georgia,serif; }
+body { margin:0; padding-bottom:96px; background:#F4EEE3 url('assets/patterns/china-floral-vine.svg') left top / 800px auto repeat; background-blend-mode:multiply; color:var(--ink); font:400 17px/1.6 Newsreader,Georgia,serif; }
 a { color:inherit; text-decoration:none; }
 a:hover { text-decoration:underline; text-underline-offset:4px; }
 a:focus-visible { outline:2px solid currentColor; outline-offset:5px; }

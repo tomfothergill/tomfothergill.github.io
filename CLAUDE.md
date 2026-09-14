@@ -3,7 +3,7 @@
 ## Current design updates — 14 September 2026
 
 The homepage uses the approved **Round 11B: Endpaper** design from `front page.zip`.
-See [homepage rules](design/home/README.md). Its iris surround, cream bookplate and
+See [homepage rules](design/home/README.md). Its floral vine surround (updated from the original iris), cream bookplate and
 typography supersede the older Tangerine homepage rules below. Keep its styling
 in `home.css`, loaded only by `index.html`.
 
