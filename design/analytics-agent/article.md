@@ -1,81 +1,101 @@
 # Building an analytics agent
 
-I've seen [Anthropic's article on self-service data analytics](https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude) doing the rounds a lot. It also provided much of the basis for an analytics agent I built. This is a technical guide to how I implemented those ideas: organising the business context, running an investigation, controlling access to the warehouse, and keeping the resulting system manageable across deployments.
+An analytics agent takes a question in ordinary language, investigates business data and returns an answer. The interesting part is what happens between the question and the answer: how the system interprets business terms, chooses an analytical approach, executes queries and decides whether it has enough evidence to respond. A useful implementation needs to make those steps flexible enough for unfamiliar questions and explicit enough to inspect when something looks wrong.
 
-The product takes a business question, queries a warehouse, investigates the results, and returns an explanation with charts, tables and the workings behind it. It has live deployments in user acceptance testing with some major retailers. I'll keep the clients and product anonymous, but describe the implementation in enough detail to make the design choices useful if you're building something similar.
+The application described here is built for retail analytics. Questions might concern differences between stores, changing sales or the most important customers in a particular location. It has a React and TypeScript frontend, a Python backend, models accessed through AWS Bedrock and a Snowflake data warehouse. The architecture separates business knowledge, agent behaviour and infrastructure integrations, allowing the same analytical workflow to support different business configurations and warehouse providers.
 
-One question asked during UAT was, paraphrased: “Who are the most important customers for each store?” You could rank customers by spending, recent growth, or the range of products they buy. You also need to decide how to assign someone who shops at several stores, and whether every account represents an individual customer. Those choices can produce different, defensible lists from the same data. Giving a model access to the warehouse leaves all of them to be made.
+## The application stack
 
-The implementation has three main layers: business definitions and policies in configuration, an investigation loop that uses them, and application code that executes tools and assembles the response. Keeping those responsibilities separate gives you room to change the model's behaviour without rebuilding everything around it.
+The React frontend, built with Vite, presents the conversation, investigation progress and supporting results. The Python backend manages the analysis, executes tools and assembles the response. Bedrock provides the model interface, while a warehouse adapter handles queries against Snowflake.
 
-## Define the business context as a contract
+The code is organised around those responsibilities. The core contains the agent, configuration models, analytical rules and response contracts. Adapters handle external services such as Bedrock and the warehouse. The application layer connects those components to requests, sessions and the frontend.
 
-A list of tables and columns only gets you so far when you're working with an unfamiliar dataset. You also need to know what each row represents, which records are excluded, and when a particular measure is appropriate. The agent needs the same context. It can produce perfectly valid SQL using the wrong definition of a metric.
+A question passes through intake and clarification before reaching the analysis agent. The agent investigates through tool calls, then submits a structured result. Application code processes the evidence, constructs supported visualisations and returns the response to the frontend. Progress events provide visibility while that work is running.
 
-For the customer-ranking question, you need to establish what “important” means before treating the output as a repeatable ranking. Spending and growth can both be relevant, but combining them introduces choices about weighting and normalisation. Those choices need to be agreed, or presented as an exploratory method that the user can question.
+## Business context and the semantic layer
 
-I put that knowledge into configuration: table documentation, metric definitions, domain guidance and access policies. The application loads and validates those files. Keeping them separate from the investigation code gives you somewhere explicit to record a business definition, review it, and change it when necessary.
+Consider the question “Who are the most important customers for each store?” Before writing SQL, there are several things to establish. “Important” might mean spending, growth or breadth of purchasing. A customer might buy from several stores, and an account might represent an individual or an entire business. Different interpretations can produce different rankings while every query involved runs successfully.
 
-The configuration uses typed models to define the expected fields and reject unexpected ones. Table metadata records what each row represents, the scope of the data, exclusions and column definitions. Metric definitions and domain guidance describe how that data should be interpreted. Access policies define what can be queried. These are different concerns, even when they refer to the same table.
+The semantic layer records the knowledge needed to interpret the data. It contains table documentation, column definitions, metric definitions and exclusions, alongside domain guidance about how the data should be used. Table documentation describes what a row represents and which population a table covers. Metric definitions explain how a measure is calculated. Domain guidance supplies the analytical context: when a measure is useful, which distinctions matter and what needs care when making a comparison.
 
-The documentation is available in stages, following the same principle as the on-demand references in [Anthropic's skills approach](https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude). The agent starts with a compact description of the tables and can request the full documentation for whichever ones it needs. That includes column definitions, exclusions and rules about when to use them. Its instructions require it to read that detail before querying a table, so it has a chance to resolve those questions before writing SQL.
+These definitions live in configuration files that the application loads and validates using Pydantic models. Validation catches missing or unexpected fields; the business meaning still needs to be correct. Keeping this material separate from the investigation code makes definitions easier to review and allows different deployments to supply their own business knowledge.
 
-You still need to check whether it follows that instruction. The documentation helps it decide what to query; separate checks in the application determine whether that query is allowed to run.
+The agent initially receives a compact description of the available tables. A `load_table_metadata` tool retrieves detailed documentation for a selected table, and the agent is instructed to read it before querying. Reference and skill tools make further analytical guidance available when needed. This staged approach keeps the initial context manageable while allowing the agent to retrieve specific instructions during an investigation.
 
-## Give the investigation a bounded tool loop
+Documentation can resolve an ambiguity when the business already has an agreed rule. Where no definition exists, clarification or an explicit interpretation is still necessary. For the customer-ranking question, the documentation might establish how accounts are assigned to stores without defining what makes a customer important. The system needs to recognise that remaining decision.
 
-In an earlier version, I split the investigation between a planner and a set of workers, each with a bounded task. As the models improved, I decided to move to a simpler arrangement for the main analysis: one agent with tools to query the warehouse, run calculations in Python, and load additional guidance. It can inspect a result and decide what to do next.
+## Bedrock and the investigation loop
 
-The fixed plan was awkward for the more open-ended questions I wanted it to handle. With the customer-ranking example, an initial spending analysis might lead you to check purchases across stores, investigate unusually active accounts, or reconsider whether category breadth usefully separates the customers at the top. The agent needs to be able to make that sort of adjustment as it gathers evidence, while keeping the chosen ranking method explicit.
+The backend uses Bedrock’s Converse interface to send the model its instructions, conversation and available tool definitions. Each tool has a schema describing the arguments it accepts. When the model requests an operation, the backend executes the corresponding application function and returns the result to the conversation.
 
-I kept intake and clarification ahead of the investigation, and put limits around how much work the analysis agent can do. It has a budget for queries, Python runs and tool rounds, and it finishes by submitting a structured response containing its answer, findings and caveats. Other model calls still have roles in the product, but the investigation itself belongs to one agent.
+The main investigation runs through a single agent. It can inspect metadata, query the warehouse, perform calculations in Python and request additional guidance. Each result becomes context for the next decision, allowing the investigation to develop as evidence arrives.
 
-The main interfaces are small enough to describe directly:
+For the customer-ranking question, an initial query might identify the highest-spending accounts. Those results could justify checking whether the accounts buy across several stores, examining unusually active accounts or considering whether category breadth adds anything useful to the ranking. The next step depends on what the earlier queries reveal.
 
-| Interface | Responsibility |
+The principal tool interfaces are:
+
+| Tool | Purpose |
 |---|---|
-| `load_table_metadata` | Return detailed documentation for a selected table. |
-| `run_sql` | Execute proposed SQL through warehouse policies and record the result. |
-| `run_python` | Run calculations over evidence already gathered, when a code interpreter is configured. |
-| Reference and skill tools | Load additional analytical guidance when needed. |
-| `submit_final_analysis` | Submit the structured answer, findings, caveats and selected supporting result. |
+| `load_table_metadata` | Retrieve detailed documentation for a selected table. |
+| `run_sql` | Submit SQL for policy checking and warehouse execution. |
+| `run_python` | Calculate over gathered evidence when a code interpreter is configured. |
+| Reference and skill tools | Retrieve additional analytical or domain guidance. |
+| `submit_final_analysis` | Submit the answer, findings, caveats and selected supporting result. |
 
-The application owns the tool session and its counters. Independent tool calls can execute concurrently, with budgets reserved under a lock so simultaneous calls cannot each spend the same remaining allowance. The results go back to the agent for its next decision. If a query depends on a previous result, that dependency naturally requires another round.
+The application owns execution and the tool budgets. Each investigation has limits on queries, Python runs and tool rounds. Independent calls can execute concurrently, with budget reservations protected by a lock so simultaneous calls cannot each consume the same remaining allowance. Operations that depend on an earlier result require another round.
 
-I kept the output format consistent between the two approaches. That let me change the investigation without having to rebuild the interface, saved history or evidence displays around it. The earlier implementation is still available for comparison.
+The agent completes the investigation by calling `submit_final_analysis`. Its arguments follow a JSON schema generated from a Pydantic model. That gives the backend a defined structure to validate and process, rather than leaving it to identify the answer, caveats and supporting evidence within an unrestricted text response.
 
-## Enforce execution policy and retain the evidence
+## Query controls and evidence
 
-Before a query reaches the warehouse, it passes through a SQL parser and policy checks. Those restrict it to a single read-only statement, check access to approved tables and fields, and apply result limits. These are application controls, so the model doesn't get to waive them because a query seems useful.
+Before proposed SQL reaches the warehouse, it passes through a parser and policy checks. These restrict execution to a single read-only statement, enforce access to approved tables and fields, and apply result limits. The model cannot waive those checks by explaining that a query would be useful.
 
-An allowed query can still make a poor comparison. You need to be able to look at how an answer was reached, whether you're developing the agent or using it to make a decision. The queries and results behind an investigation are retained, with supporting material available alongside the answer.
+Access policy and business guidance serve different purposes. A query can be permitted yet analytically inappropriate: it might compare incompatible periods, use the wrong customer population or aggregate at an unsuitable level. The semantic layer guides those choices, while the execution controls determine what may run.
 
-Charts follow a similar principle. The model can suggest what a visual should communicate, while the application builds it from the returned data using defined chart rules. That gives the agent some say in how it presents a finding, with the actual rendering tied to the available columns and supported chart types.
+Queries and their results are retained as evidence. That makes it possible to inspect which data supported an answer and follow the investigation beyond its final explanation. When a result is questioned, the useful detail is often in a filter, join or aggregation that the prose has summarised away.
 
-Anthropic also describes [showing the source behind an answer in a provenance footer](https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude). In this product, the distinction is whether the agent followed a documented business rule or made an interpretation of its own. I added a declaration for that when it runs a query. If it reports using its own judgement in part of an answer, the interface keeps that qualification visible alongside any documented rules it used elsewhere.
+The agent also declares whether a query follows documented business guidance or includes its own interpretation. The response preserves that distinction, including where an investigation uses an agreed definition for one finding and an inferred approach for another. This is a model-supplied declaration, so it needs to be read alongside the evidence. It can nevertheless expose a missing definition or an assumption worth revisiting.
 
-You can't treat the declaration as independent verification, because it comes from the same model. It does, however, give you something specific to question. Was that interpretation reasonable? Is there a definition missing from the documentation? Should the analysis be rerun with a different assumption? Those are useful conversations to make possible in the interface.
+## Warehouse portability
 
-## Keep deployment boundaries explicit
+Snowflake is accessed through a warehouse adapter rather than directly from the agent’s orchestration code. The repository also contains BigQuery and Databricks adapters implementing the same execution interface. Each accepts a query request and returns a common `QueryResult` containing column metadata, rows, execution information and any error.
 
-The same product code needs to work with different business configurations. I separated the analysis logic from the warehouse and model adapters, with the API and deployment wiring outside that core. The warehouse adapter returns a common query-result structure, so response handling does not have to know which provider executed the query.
+That shared result format allows evidence handling, chart construction and response assembly to operate independently of the provider. A table returned from Snowflake reaches those components in the same application-level structure as one returned from BigQuery or Databricks.
 
-Each backend deployment is bound to one client configuration and deployment stack. Requests that specify a different client or stack are rejected. This makes the boundary explicit in the application; selecting a client is not a decision delegated to the model.
+SQL still needs to reflect the target warehouse. The configured provider supplies guidance on object naming, identifier quoting, date functions and row limits. The SQL parser and policy checks use the corresponding dialect as well. Warehouse portability therefore depends on both the shared execution contract and provider-specific query handling.
 
-Operating across deployments also means being able to trace a reported problem. Requests carry a correlation identifier, and warehouse queries are annotated with that context. That gives you a way to connect an answer to its application logs and warehouse query history when you need to inspect what happened.
+Connecting a different warehouse also requires the appropriate credentials, policies and business metadata. The shared architecture means those changes can be concentrated around the connection and configuration while the investigation workflow and response handling remain consistent.
 
-Execution budgets and bounded concurrency address individual investigations. Establishing capacity for a larger user population also requires measuring concurrent demand, warehouse performance and model limits. The current UAT deployments provide an environment for that work; they do not, by themselves, establish a throughput benchmark.
+## Structured responses and the frontend
 
-## Test application behaviour and analytical judgement separately
+Pydantic contracts define the information passed through the backend, including query results, analysis outputs, chart specifications and the final response. These contracts allow the application to validate the shape of data before passing it to other components. They also give the frontend a predictable representation of an answer and its supporting material.
 
-Tests cover the configuration, query controls, orchestration and chart behaviour. Replay cases pass known tool calls and warehouse results through the investigation, letting you check that a change hasn't broken how evidence is retained or how a result becomes a response.
+The React interface renders those components as conversation content, tables, charts and disclosures. Charts use Recharts, with the backend supplying specifications derived from returned data and supported rendering capabilities. The model can propose what a chart should communicate, while application code determines how that proposal becomes a supported visual.
 
-Checking a prescribed sequence doesn't tell you whether the model will choose a sensible sequence for a new question. For that, you need to review actual investigations: what it queried, which assumptions it made, and whether the conclusion follows. That is an important part of what I want to establish through user acceptance testing, alongside whether people find the product useful enough to return to.
+Different questions merit different amounts of supporting material. A short factual answer may need little explanation, while a comparison across stores could benefit from a chart, a detailed table and access to the query. The structured response keeps those components available without requiring every answer to present them in the same way.
 
-## Recheck the data before rerunning the analysis
+During execution, progress events show the activity behind the investigation. Afterwards, the supporting work remains accessible alongside the answer. Saved conversations and exports can use the same defined response fields, preserving the relationship between the explanation and its evidence.
 
-I also built a way to pin an answered question and keep it under review. The agent can propose small checks based on SQL it actually ran during the investigation. The application validates those checks and runs them to establish a baseline; subsequent checks can then run without calling the model. If the data moves, that can trigger a decision about whether a fresh investigation is worthwhile.
+## Deployment and tracing
 
-This lets you revisit useful questions without paying for a full analysis every time you check the data. Full reruns are capped, and failed checks appear separately from unchanged results, so a broken query doesn't quietly look like nothing has happened.
+Each backend deployment is bound to one client configuration and deployment stack. Requests specifying a different client or stack are rejected. The model operates within the deployment’s configured context; selecting another client environment is not one of its responsibilities.
 
-If you're implementing a similar system, keep a complete investigation inspectable from the outset: the definitions it consulted, the queries it ran, the results it used and the answer it returned. Those records give you something concrete to work with when a user questions a result, a business definition changes, or you want to compare a new model with the existing one.
+Requests carry a correlation identifier through the application, and warehouse queries are annotated with that context. This connects an answer to its application logs and warehouse query history, providing a route from a reported problem to the operations that produced it.
+
+The separation between core behaviour, adapters and application wiring also helps contain changes. Updating a business definition belongs in configuration. Changing warehouse connection behaviour belongs in the adapter. Adjusting the investigation’s instructions or tool use belongs in the agent. Those boundaries make it easier to understand which parts of the system a change should affect.
+
+## Testing the system
+
+Automated tests cover configuration validation, query controls, orchestration, evidence handling and chart behaviour. Replay cases supply known tool calls and warehouse results, making it possible to check whether a code change has altered how an investigation is processed or assembled into a response.
+
+Analytical evaluation also needs to examine the decisions the model makes on real questions. Did it consult the relevant documentation? Did it choose suitable data and comparisons? Were its assumptions reasonable, and does the conclusion follow from the results? A replay can verify the handling of a prescribed sequence, but assessing the choice of sequence requires reviewing the investigation itself.
+
+User acceptance testing contributes questions grounded in how the business actually operates. These are useful for finding gaps in the semantic layer as well as weaknesses in the analysis. A technically coherent answer may still reveal that the system has misunderstood a term with a specific meaning to the people using it.
+
+## Keeping questions under review
+
+The application supports pinning an answered question and checking whether the underlying data has changed. During an investigation, the agent can propose small checks based on SQL it actually ran. The application validates and executes those checks to establish a baseline.
+
+Subsequent checks run without a model call. A change in the data can trigger a decision about whether to perform a fresh investigation, with full reruns capped. Failed checks are recorded separately from unchanged results, so an execution failure cannot be mistaken for evidence that nothing has moved.
+
+This extends the usefulness of an investigation beyond the initial answer. The system retains the definitions, queries and results that explain how it reached a conclusion, then uses some of that work to decide when the question may deserve another look. Those records also make the application easier to maintain: a disputed answer, a revised business definition or a change of model can be examined against the work the system actually performed.
