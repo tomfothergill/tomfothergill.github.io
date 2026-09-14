@@ -32,6 +32,7 @@ h1 { font:500 72px/1 'Cormorant Garamond',Georgia,serif; letter-spacing:-.02em; 
 .two-up { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:48px; }
 .two-up h2 { margin-bottom:10px; }
 .lede { font:400 17px/1.55 Newsreader,Georgia,serif; }
+.lede a { text-decoration:underline; text-underline-offset:3px; }
 .contact { display:flex; justify-content:space-between; align-items:baseline; gap:24px; padding-top:24px; border-top:1px solid var(--ink); }
 .contact__email { font:500 30px/1.1 'Cormorant Garamond',Georgia,serif; }
 .contact__links { color:var(--soft); }
