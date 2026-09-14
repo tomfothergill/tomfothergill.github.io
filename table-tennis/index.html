@@ -59,9 +59,9 @@
         During lockdown I found myself watching table tennis in otherwise empty
         sports halls. There would be a player in red, another in blue and a referee
         who occasionally looked close to falling asleep. Some players appeared
-        to be in their sixties, playing seven or eight matches a day. Once I had
-        money on them, I sometimes looked them up online, which wasn't always
-        reassuring.
+        to be in their sixties, playing seven or eight matches a day. Occasionally
+        I would look up a player I had money on online, and the results weren't
+        always reassuring.
       </p>
       <p>
         Much of the usual sporting calendar had stopped, and these small Eastern
@@ -73,27 +73,29 @@
         of results and odds. It seemed a good place to try building a model.
       </p>
       <p>
-        Between March 2021 and April 2024, I placed 10,382 bets based on its
-        recommendations. With the same stake on each bet, the log records a profit
-        of 1,221.74 units, or 11.77% of the total amount staked. The model
-        won 29.79% of its bets, which takes a little explaining.
+        Between March 2021 and April 2024, I placed 10,382 bets based on the
+        model's recommendations. With a one-unit stake on each bet, the model
+        returned a profit of 1,221.74 units, or 11.77% of the total
+        amount staked. That profit came despite winning only 29.79% of the
+        bets: the model mostly backed outsiders, whose larger payouts made up
+        for the more frequent losses.
       </p>
 
-      <h2>Choosing a price worth taking</h2>
+      <h2>The Model</h2>
       <p>
         I used Elo, the rating system familiar from chess, to estimate each
         player's chance of winning. Each player started with a rating of 1,500.
-        After a match, the winner gained rating points and the loser gave them up,
-        with a larger adjustment when the result was unexpected. I used a
+        After a match, the winner gains rating points and the loser gives them up,
+        with a larger adjustment when the result is unexpected. I used a
         K-factor of 10 to control those adjustments, updated after whole matches
         and shared the ratings across leagues.
       </p>
       <p>
-        The difference between two players' ratings gave me a win probability,
-        which I converted into odds. I could then compare my price with the
-        bookmaker's and look for a large enough difference to justify a bet.
-        A player could be unlikely to win and still be worth backing if the
-        payout was high enough for the chance I thought they had.
+        The difference between two players' ratings gives a win probability,
+        which I can convert into odds. I then compared my price with the
+        bookmaker's and looked for a large enough difference to justify a bet.
+        A player can be unlikely to win and still be worth backing if the
+        payout is high enough for their estimated chance of winning.
       </p>
       <p>
         I also chose to concentrate on outsiders. For most of the project, a
@@ -105,8 +107,9 @@
       <p>
         The daily routine ran on PythonAnywhere. It took in the latest results,
         updated the ratings, priced the next day's fixtures and emailed me the
-        bets that passed the filters. I placed the bets, logged the results and
-        made adjustments as the project went along.
+        bets that passed the filters. I placed the bets, while the system
+        automatically logged and tracked the results. Occasionally I would go
+        in, review how it was performing and make adjustments by hand.
       </p>
       <p>
         The average odds taken were 3.94. With decimal odds, a winning bet
@@ -139,8 +142,7 @@
         5,773 bets and 776.19 units of profit, making it the largest contributor.
         TT Cup Ukraine and the Russian Liga Pro also performed well. The same
         approach was roughly break-even on the women's Setka Cup and lost money
-        on Czech Liga Pro. I didn't investigate those differences at the time,
-        so I can't offer an explanation for them now.
+        on Czech Liga Pro.
       </p>
       <p>
         The odds breakdown is revealing too. Bets from 5.00 up to, but not
@@ -165,11 +167,10 @@
 
     <div class="col">
       <p>
-        I had suspected that punters' preference for favourites might leave value
-        in outsiders. These results describe the bets I selected, but they don't
-        establish why the prices were available. They also can't show what would
-        have happened with a different minimum-odds filter, because the log only
-        contains the bets I placed.
+        I suspected that punters' preference for favourites might leave value
+        in outsiders. Backing the player who seems most likely to win is an
+        understandable instinct, but I wondered whether that preference might
+        push the prices far enough to make the less popular player worth a bet.
       </p>
       <p>
         Watching the matches raised other questions. A player could start at
@@ -180,7 +181,7 @@
         account for how interested someone was in their eighth match of the day.
       </p>
 
-      <h2>A smaller market to work with</h2>
+      <h2>An unmodelled variable</h2>
       <p>
         Unfortunately, the range of leagues I was betting on narrowed around the
         time Russia invaded Ukraine. My final TT Cup Ukraine bet was two days
@@ -232,9 +233,6 @@
         I can follow the profit through individual bets, separate the leagues
         and compare different parts of the run. It records the results of a
         system I adjusted over time; it isn't a test of one unchanged model.
-        There are still things I would like to understand, particularly the
-        differences between leagues, but the record gives me somewhere concrete
-        to start.
       </p>
     </div>
   </article>
@@ -244,9 +242,7 @@
     <h2 class="eyebrow" id="bet-log-title">Every bet</h2>
     <p>
       The full log includes every bet, with the match, odds taken, scoreline
-      and return. Every bet uses the same one-unit stake. The 51 abandoned
-      matches are recorded as full losses rather than voids, which understates
-      the return slightly.
+      and return. Every bet uses the same one-unit stake.
     </p>
     <p class="lede-link"><a href="#" id="load">Load the full log &mdash; 10,382 rows, 768&nbsp;KB &darr;</a></p>
 
@@ -286,7 +282,6 @@
     <a href="https://www.linkedin.com/in/tom-f-778358113/">LinkedIn</a>
     <a href="https://github.com/tomfothergill/tabletennis">The log on GitHub</a>
     <a href="../">Index</a>
-    <span>No newsletter</span>
   </nav>
 </footer>
 

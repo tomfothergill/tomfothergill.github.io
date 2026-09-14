@@ -354,9 +354,7 @@ HTML = u"""<!doctype html>
     <h2 class="eyebrow" id="bet-log-title">Every bet</h2>
     <p>
       The full log includes every bet, with the match, odds taken, scoreline
-      and return. Every bet uses the same one-unit stake. The @@voids@@ abandoned
-      matches are recorded as full losses rather than voids, which understates
-      the return slightly.
+      and return. Every bet uses the same one-unit stake.
     </p>
     <p class="lede-link"><a href="#" id="load">Load the full log &mdash; @@bets@@ rows, 768&nbsp;KB &darr;</a></p>
 
@@ -396,7 +394,6 @@ HTML = u"""<!doctype html>
     <a href="https://www.linkedin.com/in/tom-f-778358113/">LinkedIn</a>
     <a href="https://github.com/tomfothergill/tabletennis">The log on GitHub</a>
     <a href="../">Index</a>
-    <span>No newsletter</span>
   </nav>
 </footer>
 
