@@ -6,4 +6,4 @@
 
 Public URL: <https://tomfothergill.github.io/frontend-without-frontend-experience/>
 
-The page uses the [patterned article layout](../article-layout/README.md) with the kiosk-tile theme. The Markdown copy is a reference; edits do not automatically update the static HTML.
+The page uses the [patterned article layout](../article-layout/README.md) with the Leaves and Fleurons theme. The Markdown copy is a reference; edits do not automatically update the static HTML.

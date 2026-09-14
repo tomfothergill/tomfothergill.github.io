@@ -90,8 +90,8 @@ template=(ROOT/'frontend-without-frontend-experience/index.html').read_text(enco
 old_title='Building a frontend without frontend experience'
 template=template.replace(old_title,'On the avoidance of slop')
 template=template.replace('frontend-without-frontend-experience/','on-the-avoidance-of-slop/')
-template=template.replace('article-page--kiosk','article-page--egyptian')
-template=template.replace('#F2EBD5','#F4EEE3')
+template=re.sub(r'article-page--(?:kiosk|fleurons)', 'article-page--egyptian', template)
+template=re.sub(r'(<meta name="theme-color" content=")[^"]+', r'\g<1>#F4EEE3', template)
 template=template.replace('article.css?v=20260914','article.css?v=20260914-egyptian')
 template=re.sub(r'<meta name="description" content="[^"]*">','<meta name="description" content="Building a personal website with AI, finding a visual identity, and making time for the details that keep generic output from creeping in.">',template)
 template=template.replace('How I use AI tools to build, design and test the frontend of an application I built myself.','Found ornament, shared motifs and the details that make an AI-assisted website feel considered.')
