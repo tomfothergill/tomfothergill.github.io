@@ -40,7 +40,7 @@
   --label: #3D7848; --link: #4A1C24; --type-soft: #8A5A62;
   --standfirst: #8A5A62; --rule-colour: #4A1C24;
   --hairline: rgba(74,28,36,.25);
-  --pattern: url("assets/patterns/from-you-headpiece-field.svg"); --tile-size: var(--strip-width);
+  --pattern: url("assets/patterns/china-vase-floral-cream.png"); --tile-size: var(--strip-width);
 }
 .article-page .rule-bar { padding: 22px 56px; border-bottom: var(--rule); }
 .article-page .rule-bar__name {
@@ -168,6 +168,6 @@
   .article-page .contact { padding: 34px 22px; flex-wrap: wrap; }
 }
 
-/* Keep the original scan intact; its white paper blends into the page ground. */
+/* Cream recolouring is baked into the floral crop; retain its full colour. */
 .article-page--headpiece .article-surface::before,
-.article-page--headpiece .article-surface::after { background-color: var(--ground); background-blend-mode: multiply; }
+.article-page--headpiece .article-surface::after { background-color: var(--ground); background-blend-mode: normal; }

@@ -1,0 +1,23 @@
+.article-page--egyptian {
+  --ground: #F4EEE3; --type: #292D26; --heading: #292D26;
+  --label: #99412D; --link: #436242; --type-soft: #686153;
+  --standfirst: #436242; --rule-colour: #292D26;
+  --hairline: rgba(41,45,38,.25);
+  --tile-size: var(--strip-width);
+}
+.article-page--egyptian .article-surface::before {
+  background-image: url('../assets/patterns/egyptian/left-small.svg');
+  border: 0;
+}
+.article-page--egyptian .article-surface::after {
+  background-image: url('../assets/patterns/egyptian/right-small.svg');
+  border: 0;
+}
+/* Keep complete specimens readable instead of squeezing them into thin strips. */
+@media (min-width: 1101px) {
+  .article-page--egyptian { --strip-width: clamp(180px, 16vw, 230px); }
+}
+@media (max-width: 900px) {
+  .article-page--egyptian .article-surface::before,
+  .article-page--egyptian .article-surface::after { display: none; }
+}

@@ -27,7 +27,7 @@ The homepage is explicitly outside this design's scope.
 | --- | --- | --- | --- | --- | --- |
 | Frontend | Kiosk tiles, Prisse d'Avennes, 1877 | `#F2EBD5` | `#23222B` | `#B93E29` | `#4C5A82` |
 | Analytics agent | Study of Leaves and Fleurons, Émile Prisse d’Avennes, 1877 | `#FAFCF1` | `#203D41` | `#386648` | `#245F80` |
-| Table tennis | Circular floral headpiece, John Sliegh, 1866 | `#F4EEE3` | `#4A1C24` | `#3D7848` | `#4A1C24` |
+| Table tennis | Floral scrollwork, Owen Jones, 1867 (adapted) | `#F4EEE3` | `#4A1C24` | `#3D7848` | `#4A1C24` |
 
 The kiosk label red and chintz label green are slightly darker than the handoff's
 `#C6432C` and `#3F7A4A` to meet its 4.5:1 label contrast requirement. Prose contrast
@@ -87,3 +87,16 @@ responsive strip visibility remain unchanged.
 Credit: [Two-Color Headpiece with Circular Pattern](https://www.oldbookillustrations.com/illustrations/from-you-headpiece/),
 John Sliegh, *Odes and sonnets, illustrated*, 1866. The homepage credit also
 reflects this replacement.
+
+## Selected cream floral vine
+
+The table tennis page now uses the upper panel of `china-vase-2-1600.jpg`,
+rotated into a vertical border. The pale blue areas were selectively recoloured
+to the article cream, retaining the scan texture and full-strength flowers and
+vines. The heavy navy framing bands are removed: the final 492 × 1568 PNG
+crops x=80..572 from the rotated cream preview. It repeats at the strip width
+without multiply blending. The page background and mobile visibility are unchanged.
+
+Source: [Borders with Scrolls and Floral Design](https://www.oldbookillustrations.com/illustrations/china-vase-2/),
+Owen Jones, *Examples of Chinese ornament*, 1867. The page credit marks it adapted.
+Earlier alternatives in `design/pattern-preview/` are local comparison pages.

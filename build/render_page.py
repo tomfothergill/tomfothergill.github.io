@@ -331,7 +331,7 @@ HTML = u"""<!doctype html>
 <link rel="stylesheet" href="../styles.css?v=20260910-colour-scheme">
 <link rel="stylesheet" href="../case.css?v=20260910-contact-1a">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='@@HASH@@ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='@@HASH@@330a37'/></svg>">
-<link rel="stylesheet" href="../article-layout.css?v=20260914-headpiece">
+<link rel="stylesheet" href="../article-layout.css?v=20260914-cream-vine">
 </head>
 <body class="article-page article-page--headpiece">
 <a class="skip" href="#main">Skip to content</a>
@@ -386,7 +386,7 @@ HTML = u"""<!doctype html>
     </div>
   </section>
 
-  <p class="pattern-credit">Pattern: <a href="https://www.oldbookillustrations.com/illustrations/from-you-headpiece/">Two-Color Headpiece with Circular Pattern</a> &middot; John Sliegh, 1866</p>
+  <p class="pattern-credit">Pattern: <a href="https://www.oldbookillustrations.com/illustrations/china-vase-2/">Borders with Scrolls and Floral Design</a> &middot; Owen Jones, 1867 (adapted)</p>
   </div>
 </main>
 
