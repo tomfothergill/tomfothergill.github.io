@@ -27,7 +27,7 @@ The homepage is explicitly outside this design's scope.
 | --- | --- | --- | --- | --- | --- |
 | Frontend | Kiosk tiles, Prisse d'Avennes, 1877 | `#F2EBD5` | `#23222B` | `#B93E29` | `#4C5A82` |
 | Analytics agent | Study of Leaves and Fleurons, Émile Prisse d’Avennes, 1877 | `#FAFCF1` | `#203D41` | `#386648` | `#245F80` |
-| Table tennis | Chintz, Japui & Son of Paris, M. Digby Wyatt, 1852 | `#F4EEE3` | `#4A1C24` | `#3D7848` | `#4A1C24` |
+| Table tennis | Circular floral headpiece, John Sliegh, 1866 | `#F4EEE3` | `#4A1C24` | `#3D7848` | `#4A1C24` |
 
 The kiosk label red and chintz label green are slightly darker than the handoff's
 `#C6432C` and `#3F7A4A` to meet its 4.5:1 label contrast requirement. Prose contrast
@@ -74,3 +74,16 @@ blue links. Both architecture diagrams use the same palette.
 
 Credit: [Study of Leaves and Fleurons](https://www.oldbookillustrations.com/illustrations/leaves-fleurons/),
 Émile Prisse d'Avennes, *L'art arabe*, 1877, plate 130.
+
+## Table tennis pattern replacement
+
+The user replaced the red chintz pattern on the table tennis article with `from-you-headpiece-1600.jpg`.
+The original 1600 × 600 JPEG is stored unchanged as `from-you-headpiece.jpg`.
+An SVG viewport presents the ornament vertically, with its outer whitespace
+cropped, repeated at the current strip width. CSS multiply blending matches the
+scan's white paper to the existing cream ground. Typography, article copy and
+responsive strip visibility remain unchanged.
+
+Credit: [Two-Color Headpiece with Circular Pattern](https://www.oldbookillustrations.com/illustrations/from-you-headpiece/),
+John Sliegh, *Odes and sonnets, illustrated*, 1866. The homepage credit also
+reflects this replacement.

@@ -1,5 +1,5 @@
 /* Claude Design: Article Layout Spec, 14 September 2026.
-   Loaded only by article pages; the homepage retains Tangerine. */
+   Loaded only by article pages; the homepage uses its separate Endpaper design. */
 .article-page {
   --serif: "Cormorant Garamond", Georgia, serif;
   --mono: "DM Mono", ui-monospace, monospace;
@@ -35,12 +35,12 @@
   --hairline: rgba(32,61,65,.25);
   --pattern: url("assets/patterns/leaves-fleurons-field.svg"); --tile-size: 416px;
 }
-.article-page--chintz {
+.article-page--headpiece {
   --ground: #F4EEE3; --type: #4A1C24; --heading: #4A1C24;
   --label: #3D7848; --link: #4A1C24; --type-soft: #8A5A62;
   --standfirst: #8A5A62; --rule-colour: #4A1C24;
   --hairline: rgba(74,28,36,.25);
-  --pattern: url("assets/patterns/chintz-field.png"); --tile-size: 400px;
+  --pattern: url("assets/patterns/from-you-headpiece-field.svg"); --tile-size: var(--strip-width);
 }
 .article-page .rule-bar { padding: 22px 56px; border-bottom: var(--rule); }
 .article-page .rule-bar__name {
@@ -73,7 +73,6 @@
 }
 .article-surface::before { left: 0; background-position: right top; border-right: var(--rule); }
 .article-surface::after { right: 0; background-position: left top; border-left: var(--rule); }
-.article-page--chintz .article-surface::after { transform: scaleX(-1); border-left: 0; border-right: var(--rule); }
 .article-page .article {
   width: var(--column-width); max-width: 100%; margin: 0 auto;
   padding: 40px 48px 0; border-top: var(--rule);
@@ -168,3 +167,7 @@
   .article-page .pattern-credit { max-width: none; margin-inline: 22px; }
   .article-page .contact { padding: 34px 22px; flex-wrap: wrap; }
 }
+
+/* Keep the original scan intact; its white paper blends into the page ground. */
+.article-page--headpiece .article-surface::before,
+.article-page--headpiece .article-surface::after { background-color: var(--ground); background-blend-mode: multiply; }
