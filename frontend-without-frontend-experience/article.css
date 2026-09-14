@@ -1,0 +1,2 @@
+/* Match the existing article opener using the shared spacing scale. */
+.opener .statement__pair { margin-top: var(--s7); }

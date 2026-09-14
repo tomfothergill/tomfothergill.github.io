@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="only light">
+<title>Building a frontend without frontend experience — Thomas Fothergill</title>
+<meta name="description" content="How I built an application’s frontend without frontend experience, using Claude Code, Codex, Claude Design and automated browser tests.">
+<meta name="theme-color" content="#330a37">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&amp;display=swap">
+<link rel="stylesheet" href="../styles.css?v=20260910-colour-scheme">
+<link rel="stylesheet" href="../case.css?v=20260910-contact-1a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='%23330a37'/></svg>">
+<link rel="stylesheet" href="article.css?v=20260914">
+<link rel="canonical" href="https://tomfothergill.github.io/frontend-without-frontend-experience/">
+</head>
+<body class="inverse">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="rule-bar">
+  <a class="rule-bar__name" href="../">Thomas Fothergill</a>
+  <nav class="rule-bar__nav" aria-label="Primary">
+    <a href="../#work">Work</a>
+    <a href="../#notes">Notes</a>
+    <a href="../#about">About</a>
+    <a href="../#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="opener">
+    <p class="eyebrow">Personal account &middot; September 2026</p>
+    <h1 id="article-title">Building a frontend without frontend experience</h1>
+    <div class="statement__pair">
+      <p class="statement__prose">How I use AI tools to build, design and test the frontend of an application I built myself.</p>
+      <p class="statement__meta">AI-assisted development<br>Working process</p>
+    </div>
+  </section>
+  <aside class="contact-bar" aria-label="Get in touch">
+    <span class="contact-bar__label">Get in touch</span>
+    <nav class="contact-bar__links" aria-label="Contact links">
+      <a href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
+      <a href="https://www.linkedin.com/in/tom-f-778358113/">Connect on LinkedIn &nearr;</a>
+    </nav>
+  </aside>
+  <article class="article article--centred article--rewrite" aria-labelledby="article-title">
+    <div class="col">
+<p>I've been using Claude Code and Codex to build the frontend for an application at work, despite having no experience in frontend development. By frontend, I mean the part of the application that someone sees and interacts with in their browser: the pages, menus, buttons, charts and everything that connects them. I haven't written any of that code by hand. I've worked through it by describing what I want, using the tools to build it, and spending time trying the result and making changes.</p>
+<p>The application is an analytics agent, which lets someone ask questions about their business data in ordinary language. A person working for a retailer might ask how sales have changed, which products are performing well, or what could explain a difference between stores. The application uses an AI model to work through the question, query the relevant data and return an explanation, with charts, tables and supporting detail where appropriate. There is quite a lot happening behind the scenes, but the person using it needs a straightforward way to ask their question and make sense of the answer.</p>
+<p>I've built the application myself with the help of AI coding tools, from the analysis logic and database connections through to the interface, testing and deployment. Being able to work across all of those parts has been one of the most useful things about using them. I can keep developing the underlying analysis while also building a way for people to use it, including parts of the application I have no prior experience of implementing.</p>
+<p>Most of my attention initially goes into that underlying behaviour, or the backend: how the application accesses data, carries out an analysis and puts together its response. I've written separately about <a href="https://tomfothergill.github.io/analytics-agent/">how I designed and built the backend</a> for anyone interested in the architecture. As I'm building that, I also get a functional frontend running so I can use the application properly. Over time, I've settled into a workflow that involves Claude Code or Codex for implementation, Claude Design for working through the appearance and layout, and automated tests to help check that everything continues to work as it changes.</p>
+<p>I generally keep the frontend and backend in the same code repository, which is the collection of files that makes up the project. Claude Code and Codex can work directly with those files, read the existing implementation, make changes and run checks. Having both parts together gives them access to the code that produces an answer as well as the code that displays it. When I'm adding something to the backend, I can ask for the corresponding frontend changes in the same place, with the surrounding implementation available as context.</p>
+<p>The first version of a feature is usually fairly functional. At that point, I want to be able to ask a question, see that the application is doing something and read what comes back. Working through it in a browser helps me understand what else the feature needs. An answer might be technically complete but difficult to follow on the page, or there might be information available from the backend that would be useful to make more accessible. Having something I can interact with makes it much easier to explain the next change.</p>
+<p>For this application, there are several different things to accommodate around an answer. Someone might want to read a short explanation and look at a chart, while another person might want to open the underlying data or inspect the database query used to retrieve it. There is also a record of the work the agent carried out, which can be useful while it is running and afterwards. Deciding where those things belong, and how much to show at once, is a substantial part of making the application comfortable to use.</p>
+<p>Once I have the feature working, I'll typically take it into Claude Design and spend some time exploring how it could be laid out. We have a company design system set up there, containing our fonts, colours, logos, icons and other assets, along with guidance about how they should be used. Claude Design's <a href="https://support.claude.com/en/articles/14604397-set-up-your-design-system-in-claude-design">design system feature</a> gives me a consistent starting point for that work. I can concentrate on the particular page or feature while drawing on design decisions that are already in place across the company.</p>
+<p>The application is rather more restrained than the tangerine and purple page you’re reading this on, which is perhaps a useful argument for having a company design system.</p>
+<p>I'll go back and forth with Claude Design on different ideas, looking at the overall layout and then the individual components. Sometimes I have a fairly clear idea of what I want; other times, seeing a proposed design helps me work it out. I can ask for a different arrangement, explain which information needs more emphasis, or explore how a particular interaction might work. Being able to see the alternatives is useful when I don't have the frontend experience or design vocabulary to specify everything in advance.</p>
+<p>The panel showing the agent's activity is a good example of the kind of detail involved. In the application, that information sits alongside the conversation on a larger screen and appears within it on a smaller one. There also needs to be a way to look back at the work behind an earlier answer once the conversation has moved on. These are fairly ordinary considerations from a user's point of view, but they affect several parts of the interface. Working through the design gives me space to consider them together.</p>
+<p>When I'm happy with a design, Claude Design has a <a href="https://support.claude.com/en/articles/14604416-get-started-with-claude-design">handoff feature for Claude Code</a> that packages it up for implementation. I bring that back into the repository and have Claude Code apply it to the working application. I've found that it reproduces the design very closely, which makes this a convenient way to move between exploring an idea and having it running as part of the product. I can then try it with the application's responses and continue making adjustments where needed.</p>
+<p>Alongside this, I've built up a suite of end-to-end frontend tests using Playwright. These run the application in a browser and carry out actions similar to those a person would take, such as submitting a question, opening a data table, returning to a saved conversation or downloading a report. The suite also includes cases where a request fails or an analysis returns no data, so I can check what someone sees in those situations. It has become a useful part of making changes, particularly as the number of features has grown.</p>
+<p>Most of those tests use fixtures, which are prepared responses supplied to the frontend in place of a real backend response. This lets me check that a particular answer, chart or error message is displayed correctly without making a live call to an AI model each time. The test can repeat the same interaction with the same response, making it easier to tell whether a frontend change has affected the behaviour. Testing whether the model has carried out a good analysis is a separate task; here, I'm checking how the interface handles the information it receives.</p>
+<p>The browser tests run automatically as part of the continuous integration setup I've put in place, which checks proposed code changes and updates to the main development branch. That gives me a regular check on the user journeys I've covered, alongside using the application myself. It doesn't remove the need to look carefully at a change or try an interaction that isn't covered by the suite, but it does help me keep track of existing functionality while I'm working on something new.</p>
+<p>This has become a practical way for me to take a feature through the whole application. I can work on how an analysis is carried out, decide how someone should interact with the result, and build and test that experience as part of the same process. The AI tools have made it possible for me to take on more of that work, while I continue to make the decisions about what the product needs and whether the result is useful. There is still plenty for me to learn as I go, but I can now explore an idea by building it into the application, including the parts I wouldn't previously have known how to implement.</p>
+    </div>
+  </article>
+</main>
+<footer id="contact" class="contact">
+  <a class="contact__email" href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
+  <nav class="contact__links" aria-label="Elsewhere">
+    <a href="https://github.com/tomfothergill">GitHub</a>
+    <a href="https://www.linkedin.com/in/tom-f-778358113/">LinkedIn</a>
+  </nav>
+</footer>
+</body>
+</html>
