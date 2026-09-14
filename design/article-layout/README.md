@@ -100,3 +100,7 @@ without multiply blending. The page background and mobile visibility are unchang
 Source: [Borders with Scrolls and Floral Design](https://www.oldbookillustrations.com/illustrations/china-vase-2/),
 Owen Jones, *Examples of Chinese ornament*, 1867. The page credit marks it adapted.
 Earlier alternatives in `design/pattern-preview/` are local comparison pages.
+
+## Article headers: 2B centred title page
+
+Selected from `Article Top Options.dc.html` in `Article header.zip` on 14 September 2026. All four articles use a full-width centred opener, 92px desktop title limited to 16ch, centred 44ch standfirst, and a full-width rule above the patterned article body. Desktop padding is 76px 56px 64px with 30px gaps. Titles scale down on narrower screens; mobile retains 22px gutters. The table-tennis opener no longer repeats the statistics shown immediately below. Article prose, patterns and homepage are unchanged.

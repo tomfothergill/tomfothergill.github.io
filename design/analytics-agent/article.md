@@ -1,4 +1,4 @@
-# Implementing an analytics agent: from business definitions to live deployments
+# Building an analytics agent
 
 I've seen [Anthropic's article on self-service data analytics](https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude) doing the rounds a lot. It also provided much of the basis for an analytics agent I built. This is a technical guide to how I implemented those ideas: organising the business context, running an investigation, controlling access to the warehouse, and keeping the resulting system manageable across deployments.
 

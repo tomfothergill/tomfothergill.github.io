@@ -51,21 +51,27 @@
   gap: 34px; font: 500 11px/1.8 var(--mono); letter-spacing: .18em;
 }
 .article-page .rule-bar__nav { color: var(--heading); }
-.article-page .opener { width: var(--column-width); max-width: 100%; padding: 72px 48px 56px; margin: 0 auto; }
+/* Article Top Options 2B: centred title page above a full-width rule. */
+.article-page .opener {
+  width: 100%; padding: 76px 56px 64px; margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center; gap: 30px;
+  text-align: center;
+}
+.article-page .opener .eyebrow { margin: 0; }
 .article-page .eyebrow {
   margin: 0 0 22px; font: 500 11px/1.8 var(--mono);
   letter-spacing: .18em; color: var(--label);
 }
 .article-page .opener h1 {
-  font: 500 60px/1 var(--serif); letter-spacing: -.015em;
-  text-wrap: balance; color: var(--heading); max-width: none; margin: 0 0 26px;
+  font: 500 clamp(60px, 7.67vw, 92px)/.98 var(--serif); letter-spacing: -.02em;
+  text-wrap: balance; color: var(--heading); max-width: 16ch; margin: 0;
 }
-.article-page .opener .statement__pair { margin: 0; gap: 24px; align-items: start; }
+.article-page .opener .statement__pair { margin: 0; max-width: 100%; justify-content: center; }
 .article-page .statement__prose {
-  font: italic 400 24px/1.35 var(--serif); color: var(--standfirst); max-width: 40ch; margin: 0;
+  font: italic 400 24px/1.35 var(--serif); color: var(--standfirst); max-width: 44ch; margin: 0;
 }
 .article-page .statement__meta { font: 500 10px/1.8 var(--mono); color: var(--label); letter-spacing: .16em; margin: 0; }
-.article-surface { position: relative; isolation: isolate; padding-bottom: 80px; }
+.article-surface { position: relative; isolation: isolate; padding-bottom: 80px; border-top: var(--rule); }
 .article-surface::before, .article-surface::after {
   content: ""; position: absolute; top: 0; bottom: 0; width: var(--strip-width);
   background-image: var(--pattern); background-size: var(--tile-size) auto;
@@ -75,7 +81,7 @@
 .article-surface::after { right: 0; background-position: left top; border-left: var(--rule); }
 .article-page .article {
   width: var(--column-width); max-width: 100%; margin: 0 auto;
-  padding: 40px 48px 0; border-top: var(--rule);
+  padding: 40px 48px 0; border-top: 0;
 }
 .article-page .col { max-width: none; margin: 0; padding: 0; gap: 24px; }
 .article-page .col p { font: 400 19px/1.65 var(--read); text-wrap: pretty; }
