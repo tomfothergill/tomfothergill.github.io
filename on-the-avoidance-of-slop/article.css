@@ -20,4 +20,16 @@
 @media (max-width: 900px) {
   .article-page--egyptian .article-surface::before,
   .article-page--egyptian .article-surface::after { display: none; }
+  .article-page--egyptian .article-surface::before {
+    display: block; position: relative; inset: auto; z-index: auto;
+    width: min(100%, 480px); height: 132px; margin: 0 auto;
+    border: 0;
+    background-image: url('../assets/patterns/egyptian/capital-14.png'),
+      url('../assets/patterns/egyptian/capital-13.png'),
+      url('../assets/patterns/egyptian/capital-11.png'),
+      url('../assets/patterns/egyptian/capital-16.png');
+    background-position: 12% center, 37% center, 63% center, 88% center;
+    background-size: auto 86px; background-repeat: no-repeat;
+  }
+  .article-page--egyptian .article { padding-top: 16px; }
 }

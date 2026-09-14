@@ -331,7 +331,7 @@ HTML = u"""<!doctype html>
 <link rel="stylesheet" href="../styles.css?v=20260910-colour-scheme">
 <link rel="stylesheet" href="../case.css?v=20260910-contact-1a">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='@@HASH@@ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='@@HASH@@330a37'/></svg>">
-<link rel="stylesheet" href="../article-layout.css?v=20260914-header-2b">
+<link rel="stylesheet" href="../article-layout.css?v=20260914-mobile-ornament">
 </head>
 <body class="article-page article-page--headpiece">
 <a class="skip" href="#main">Skip to content</a>

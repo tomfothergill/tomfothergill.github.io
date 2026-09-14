@@ -99,7 +99,7 @@ template=re.sub(r'(<div class="col">).*?(\s*</div>\s*</article>)',lambda m:m[1]+
 template=re.sub(r'<p class="pattern-credit">.*?</p>','<p class="pattern-credit">Ornament: <a href="https://www.oldbookillustrations.com/illustrations/egyptian-3/">Egyptian Capitals</a> &middot; Francis Bedford, lithographer &middot; Owen Jones, <i>The Grammar of Ornament</i>, 1868 (adapted).</p>',template)
 # Theme must follow the shared article stylesheet.
 template=re.sub(r'<link rel="stylesheet" href="article.css[^\n]+\n','',template)
-template=template.replace('</head>','<link rel="stylesheet" href="article.css?v=20260914-small-egyptian">\n</head>')
+template=template.replace('</head>','<link rel="stylesheet" href="article.css?v=20260914-mobile-egyptian">\n</head>')
 dest=ROOT/'on-the-avoidance-of-slop'; dest.mkdir(exist_ok=True)
 (dest/'index.html').write_text(template,encoding='utf-8')
 print(f'Rendered {len(paragraphs)} paragraphs and {len(polygons)} extracted illustrations.')

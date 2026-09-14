@@ -161,6 +161,13 @@
   .article-page .statement__pair { flex-direction: column; }
   .article-page .statement__meta { text-align: left; }
   .article-surface::before, .article-surface::after { display: none; }
+  /* Mobile ornament moves above the prose, preserving the reading width. */
+  .article-page .article-surface::before {
+    display: block; position: relative; inset: auto; z-index: auto;
+    width: 100%; height: 88px; border: 0; border-bottom: var(--rule);
+    background-position: center 24%; background-size: 280px auto;
+    background-repeat: repeat-x;
+  }
   .article-page .article { padding: 40px 22px 0; }
   .article-page .col p { font-size: 18px; }
   .article-page .step, .article-page .plot, .article-page .architecture-figure { width: 100%; margin-inline: 0; }
