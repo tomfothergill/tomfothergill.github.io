@@ -1,12 +1,6 @@
-  <section class="opener" style="--art: url(/table-tennis/player.png)">
-    <div class="opener__grid">
-      <div>
-        <p class="eyebrow">Case study &middot; 2021&ndash;2024</p>
-        <h1>Ten thousand table tennis bets.</h1>
-      </div>
-      <div class="opener__art" role="img"
-           aria-label="Line drawing of a table tennis player mid-forehand"></div>
-    </div>
+  <section class="opener">
+    <p class="eyebrow">Case study &middot; 2021&ndash;2024</p>
+    <h1 id="article-title">Ten thousand table tennis bets.</h1>
     <div class="statement__pair">
       <p class="statement__prose">
         I built a betting model during lockdown and kept it running, with a few
@@ -20,15 +14,14 @@
     </div>
   </section>
 
-  <aside class="contact-bar" aria-label="Get in touch">
-    <span class="contact-bar__label">Get in touch</span>
-    <nav class="contact-bar__links" aria-label="Contact links">
-      <a href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
-      <a href="https://www.linkedin.com/in/tom-f-778358113/">Connect on LinkedIn &nearr;</a>
-    </nav>
-  </aside>
-
-  <div class="article article--centred article--rewrite">
+<div class="article-surface">
+  <article class="article article--centred article--rewrite" aria-labelledby="article-title">
+    <div class="stat-rule">
+      <div class="stat"><span class="stat__l">Bets</span><span class="stat__v">@@bets@@</span></div>
+      <div class="stat"><span class="stat__l">Won</span><span class="stat__v">@@hit@@%</span></div>
+      <div class="stat"><span class="stat__l">Profit, units</span><span class="stat__v">@@profit@@</span></div>
+      <div class="stat"><span class="stat__l">Return</span><span class="stat__v">@@roi@@%</span></div>
+    </div>
     <div class="col">
       <p>
         During lockdown I found myself watching table tennis in otherwise empty
@@ -92,16 +85,16 @@
     </div>
 
     <figure class="plot plot--step">
-      <p class="plot__title">Profit across the full run</p>
+      <p class="plot__title"><span>Profit across the full run</span><span>Cumulative &middot; units</span></p>
       <div class="panel">
         <div class="panel__head">
-          <p class="legend">Cumulative profit &middot; units</p>
+          <p class="legend">One unit staked on every bet</p>
           <p class="readout" data-default-label="Final" data-default-value="@@profit@@">
             <span class="readout__label">Final</span>
             <span class="readout__value">@@profit@@</span>
           </p>
         </div>
-        @@cum@@
+        <div class="chart-scroll" tabindex="0" role="region" aria-label="Cumulative profit chart">@@cum@@</div>
       </div>
       <figcaption class="plot__caption">One unit staked on every bet, @@first@@ to @@last@@.
       Dashed lines bridge breaks in betting; the longest lasted about nine months.</figcaption>
@@ -212,4 +205,4 @@
         to start.
       </p>
     </div>
-  </div>
+  </article>

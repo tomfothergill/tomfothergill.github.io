@@ -283,9 +283,9 @@ def bucket_rows():
 def price_result_rows():
     """Include every price band, even the single shortest-priced bet."""
     return "".join(
-        '<tr><td>%s</td><td class="n">%s</td><td class="n">%.1f%%</td>'
+        '<tr class="%s"><td>%s</td><td class="n">%s</td><td class="n">%.1f%%</td>'
         '<td class="n">%s</td><td class="n">%s%%</td></tr>'
-        % (esc(b["label"]), fmt(b["bets"]), b["hit"],
+        % ("lost" if b["profit"] < 0 else "won", esc(b["label"]), fmt(b["bets"]), b["hit"],
            money(b["profit"]), money(b["roi"]))
         for b in S["buckets"])
 
@@ -324,15 +324,16 @@ HTML = u"""<!doctype html>
 <meta name="color-scheme" content="only light">
 <title>Ten thousand table tennis bets</title>
 <meta name="description" content="How I built and ran an Elo betting model: 10,382 table tennis bets, an 11.77% return, and the full record of how the results changed between 2021 and 2024.">
-<meta name="theme-color" content="#330a37">
+<meta name="theme-color" content="#F4EEE3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=DM+Mono:wght@400;500&amp;display=swap">
 <link rel="stylesheet" href="../styles.css?v=20260910-colour-scheme">
 <link rel="stylesheet" href="../case.css?v=20260910-contact-1a">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='@@HASH@@ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='@@HASH@@330a37'/></svg>">
+<link rel="stylesheet" href="../article-layout.css?v=20260914-patterns">
 </head>
-<body class="inverse">
+<body class="article-page article-page--chintz">
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="rule-bar">
@@ -349,8 +350,8 @@ HTML = u"""<!doctype html>
 
 @@article@@
 
-  <section class="prose">
-    <h2 class="eyebrow">Every bet</h2>
+  <section class="prose" aria-labelledby="bet-log-title">
+    <h2 class="eyebrow" id="bet-log-title">Every bet</h2>
     <p>
       The full log includes every bet, with the match, odds taken, scoreline
       and return. Every bet uses the same one-unit stake. The @@voids@@ abandoned
@@ -385,9 +386,11 @@ HTML = u"""<!doctype html>
     </div>
   </section>
 
+  <p class="pattern-credit">Pattern: Chintz pattern by Japui &amp; Son of Paris &middot; M. Digby Wyatt, Industrial Arts of the XIXth Century, 1852</p>
+  </div>
 </main>
 
-<footer class="contact">
+<footer id="contact" class="contact">
   <a class="contact__email" href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
   <nav class="contact__links" aria-label="Elsewhere">
     <a href="https://www.linkedin.com/in/tom-f-778358113/">LinkedIn</a>

@@ -1,5 +1,19 @@
 # CLAUDE.md
 
+## Current design updates — 14 September 2026
+
+The homepage uses the approved **Round 11B: Endpaper** design from `front page.zip`.
+See [homepage rules](design/home/README.md). Its iris surround, cream bookplate and
+typography supersede the older Tangerine homepage rules below. Keep its styling
+in `home.css`, loaded only by `index.html`.
+
+The three current article pages use the approved **Articles as found documents**
+handoff. [Article layout rules](design/article-layout/README.md) supersede the
+Tangerine article palette, typography, ornament and figure rules below. The
+homepage has its own separate Endpaper handoff. Keep
+article styles in `article-layout.css`, loaded only by the article pages; do not
+change `index.html` or its shared styles to apply the article design.
+
 This repo is Thomas Fothergill's personal site: plain HTML and CSS, no build step,
 no dependencies, served from GitHub Pages at <https://tomfothergill.github.io>.
 

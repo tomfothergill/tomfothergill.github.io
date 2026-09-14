@@ -12,6 +12,6 @@ The article is live at <https://tomfothergill.github.io/analytics-agent/>. The C
 
 Implemented from `Analytics Agent Diagrams.dc.html` in the September 10 handoff. The Python tool's missing return connector was restored. On narrow screens the diagrams scroll horizontally to retain readable labels.
 
-Follow the site's [design system](../../CLAUDE.md), with shared styles in [styles.css](../../styles.css) and [case.css](../../case.css). Article pages use an aubergine background, cream text and orange contact bar. Keep the diagrams anonymous and preserve the distinction between model roles and application controls.
+Follow the [patterned article layout](../article-layout/README.md), with article-only overrides in [article-layout.css](../../article-layout.css). This article uses the cream, blue and green Leaves and Fleurons theme. Keep the diagrams anonymous and preserve the distinction between model roles and application controls.
 
 The Markdown copy is a design reference. The published page is static HTML; editing this copy does not automatically update it.

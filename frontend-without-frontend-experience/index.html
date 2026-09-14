@@ -6,17 +6,18 @@
 <meta name="color-scheme" content="only light">
 <title>Building a frontend without frontend experience — Thomas Fothergill</title>
 <meta name="description" content="How I built an application’s frontend without frontend experience, using Claude Code, Codex, Claude Design and automated browser tests.">
-<meta name="theme-color" content="#330a37">
+<meta name="theme-color" content="#F2EBD5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=DM+Mono:wght@400;500&amp;display=swap">
 <link rel="stylesheet" href="../styles.css?v=20260910-colour-scheme">
 <link rel="stylesheet" href="../case.css?v=20260910-contact-1a">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='%23330a37'/></svg>">
 <link rel="stylesheet" href="article.css?v=20260914">
 <link rel="canonical" href="https://tomfothergill.github.io/frontend-without-frontend-experience/">
+<link rel="stylesheet" href="../article-layout.css?v=20260914-patterns">
 </head>
-<body class="inverse">
+<body class="article-page article-page--kiosk">
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="rule-bar">
@@ -35,19 +36,12 @@
     <h1 id="article-title">Building a frontend without frontend experience</h1>
     <div class="statement__pair">
       <p class="statement__prose">How I use AI tools to build, design and test the frontend of an application I built myself.</p>
-      <p class="statement__meta">AI-assisted development<br>Working process</p>
-    </div>
+</div>
   </section>
-  <aside class="contact-bar" aria-label="Get in touch">
-    <span class="contact-bar__label">Get in touch</span>
-    <nav class="contact-bar__links" aria-label="Contact links">
-      <a href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
-      <a href="https://www.linkedin.com/in/tom-f-778358113/">Connect on LinkedIn &nearr;</a>
-    </nav>
-  </aside>
+<div class="article-surface">
   <article class="article article--centred article--rewrite" aria-labelledby="article-title">
     <div class="col">
-<p>I've been using Claude Code and Codex to build the frontend for an application at work, despite having no experience in frontend development. By frontend, I mean the part of the application that someone sees and interacts with in their browser: the pages, menus, buttons, charts and everything that connects them. I haven't written any of that code by hand. I've worked through it by describing what I want, using the tools to build it, and spending time trying the result and making changes. The application itself is rather more restrained than the tangerine and purple page you’re reading this on. There’s probably something to be said for having someone tell you when you’ve gone far enough.</p>
+<p>I've been using Claude Code and Codex to build the frontend for an application at work, despite having no experience in frontend development. By frontend, I mean the part of the application that someone sees and interacts with in their browser: the pages, menus, buttons, charts and everything that connects them. I haven't written any of that code by hand. I've worked through it by describing what I want, using the tools to build it, and spending time trying the result and making changes.</p>
 <p>The application is an analytics agent, which lets someone ask questions about their business data in ordinary language. A person working for a retailer might ask how sales have changed, which products are performing well, or what could explain a difference between stores. The application uses an AI model to work through the question, query the relevant data and return an explanation, with charts, tables and supporting detail where appropriate. There is quite a lot happening behind the scenes, but the person using it needs a straightforward way to ask their question and make sense of the answer.</p>
 <p>I've built the application myself with the help of AI coding tools, from the analysis logic and database connections through to the interface, testing and deployment. Being able to work across all of those parts has been one of the most useful things about using them. I can keep developing the underlying analysis while also building a way for people to use it, including parts of the application I have no prior experience of implementing.</p>
 <p>Most of my attention initially goes into that underlying behaviour, or the backend: how the application accesses data, carries out an analysis and puts together its response. I've written separately about <a href="https://tomfothergill.github.io/analytics-agent/">how I designed and built the backend</a> for anyone interested in the architecture. As I'm building that, I also get a functional frontend running so I can use the application properly. Over time, I've settled into a workflow that involves Claude Code or Codex for implementation, Claude Design for working through the appearance and layout, and automated tests to help check that everything continues to work as it changes.</p>
@@ -64,6 +58,8 @@
 <p>This has become a practical way for me to take a feature through the whole application. I can work on how an analysis is carried out, decide how someone should interact with the result, and build and test that experience as part of the same process. The AI tools have made it possible for me to take on more of that work, while I continue to make the decisions about what the product needs and whether the result is useful. There is still plenty for me to learn as I go, but I can now explore an idea by building it into the application, including the parts I wouldn't previously have known how to implement.</p>
     </div>
   </article>
+  <p class="pattern-credit">Pattern: Faïences murales d’un kiosque, XVI<sup>e</sup> siècle &middot; Prisse d’Avennes, 1877</p>
+  </div>
 </main>
 <footer id="contact" class="contact">
   <a class="contact__email" href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>

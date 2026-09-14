@@ -6,18 +6,17 @@
 <meta name="color-scheme" content="only light">
 <title>Thomas Fothergill</title>
 <meta name="description" content="Thomas Fothergill’s personal website. Articles on building an analytics agent, frontend development with AI tools and a table tennis betting model.">
-<meta name="theme-color" content="#ff7a1a">
+<meta name="theme-color" content="#F4EEE3">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&display=swap">
-<link rel="stylesheet" href="styles.css?v=20260910-colour-scheme">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23ff7a1a'/><rect x='4' y='4' width='24' height='24' fill='%23330a37'/></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=DM+Mono:wght@500&family=Newsreader:opsz,wght@6..72,400&display=swap">
+<link rel="stylesheet" href="home.css?v=20260914-endpaper">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23F4EEE3'/><rect x='4' y='4' width='24' height='24' fill='%231B2A45'/></svg>">
 </head>
-<body>
+<body class="home-page">
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- 1 · Rule-bar ---------------------------------------------------- -->
 <header class="rule-bar">
   <a class="rule-bar__name" href="/">Thomas Fothergill</a>
   <nav class="rule-bar__nav" aria-label="Primary">
@@ -28,61 +27,45 @@
   </nav>
 </header>
 
-<main id="main">
+<div class="bookplate">
+<main id="main" tabindex="-1">
 
-  <!-- 2 · Statement ------------------------------------------------- -->
   <section class="statement">
+    <p class="eyebrow statement__meta">Personal website &middot; Work in progress</p>
     <h1>Introduction placeholder.</h1>
-    <div class="statement__pair">
+
       <p class="statement__prose">
         The three articles below are ready to read; I haven't written the
         introduction or about section yet.
       </p>
-      <p class="statement__meta">
-        Personal website<br>
-        Work in progress
-      </p>
-    </div>
-  </section>
-
-  <!-- 3 · Metadata band --------------------------------------------- -->
-  <aside class="contact-bar" aria-label="Get in touch">
-    <span class="contact-bar__label">Get in touch</span>
     <nav class="contact-bar__links" aria-label="Contact links">
       <a href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
       <a href="https://www.linkedin.com/in/tom-f-778358113/">Connect on LinkedIn &nearr;</a>
     </nav>
-  </aside>
+  </section>
 
-  <!-- 4 · Work index — three rows, deliberately ---------------------- -->
   <section id="work" class="work">
-    <h2 class="eyebrow">Selected work</h2>
+    <div class="work__heading"><h2 class="eyebrow">Selected work</h2><span class="eyebrow">Plates</span></div>
 
     <a class="row" href="table-tennis/">
-      <span class="row__num">01</span>
-      <span class="row__title">Ten thousand table tennis bets</span>
-      <span class="row__meta">Modelling · 2021&ndash;24</span>
-      <span class="row__summary">
-        How I built and ran a betting model, with results from all 10,382 bets. &rarr;
-      </span>
+      <span class="row__num">I</span>
+      <span class="row__body"><span class="row__title">Ten thousand table tennis bets</span><span class="row__summary">How I built and ran a betting model, with results from all 10,382 bets. &rarr;</span></span>
+      <span class="row__meta"><span>Modelling · 2021&ndash;24</span><span>Bound in chintz &middot; Japui &amp; Son, 1852</span></span>
     </a>
 
     <a class="row" href="analytics-agent/">
-      <span class="row__num">02</span>
-      <span class="row__title">Implementing an analytics agent</span>
-      <span class="row__meta">LLM analytics &middot; 2026</span>
-      <span class="row__summary">Business definitions, investigation tools and the architecture behind a working analytics agent. &rarr;</span>
+      <span class="row__num">II</span>
+      <span class="row__body"><span class="row__title">Implementing an analytics agent</span><span class="row__summary">Business definitions, investigation tools and the architecture behind a working analytics agent. &rarr;</span></span>
+      <span class="row__meta"><span>LLM analytics &middot; 2026</span><span>Bound in Leaves and Fleurons &middot; Prisse d’Avennes, 1877</span></span>
     </a>
 
     <a class="row" href="frontend-without-frontend-experience/">
-      <span class="row__num">03</span>
-      <span class="row__title">Building a frontend without frontend experience</span>
-      <span class="row__meta">AI development &middot; 2026</span>
-      <span class="row__summary">My workflow for building, designing and testing an application's frontend with AI tools. &rarr;</span>
+      <span class="row__num">III</span>
+      <span class="row__body"><span class="row__title">Building a frontend without frontend experience</span><span class="row__summary">My workflow for building, designing and testing an application's frontend with AI tools. &rarr;</span></span>
+      <span class="row__meta"><span>AI development &middot; 2026</span><span>Bound in kiosk tiles &middot; Prisse d’Avennes, 1877</span></span>
     </a>
   </section>
 
-  <!-- 5 · Two-up grid ------------------------------------------------ -->
   <section class="two-up">
 
     <div id="about">
@@ -99,7 +82,6 @@
 
 </main>
 
-<!-- 6 · Contact footer --------------------------------------------- -->
 <footer id="contact" class="contact">
   <a class="contact__email" href="mailto:tfothergill96@gmail.com">Email me &nearr;</a>
   <nav class="contact__links" aria-label="Elsewhere">
@@ -107,6 +89,7 @@
     <a href="https://www.linkedin.com/in/tom-f-778358113/">LinkedIn</a>
   </nav>
 </footer>
+</div>
 
 </body>
 </html>
