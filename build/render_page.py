@@ -330,11 +330,11 @@ HTML = u"""<!doctype html>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=DM+Mono:wght@400;500&amp;display=swap">
 <link rel="stylesheet" href="../styles.css?v=20260910-colour-scheme">
 <link rel="stylesheet" href="../case.css?v=20260910-contact-1a">
-<link rel="icon" href="/favicon.ico?v=red-t">
-<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/red-t-16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/red-t-32.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/red-t-192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/red-t-180.png">
+<link rel="icon" href="/favicon.ico?v=red-t-inverted">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/red-t-inverted-16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/red-t-inverted-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/red-t-inverted-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/red-t-inverted-180.png">
 <link rel="stylesheet" href="../article-layout.css?v=20260914-mobile-ornament">
 </head>
 <body class="article-page article-page--headpiece">
