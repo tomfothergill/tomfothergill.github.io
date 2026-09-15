@@ -1,0 +1,11 @@
+.article-page--coral {
+ --ground: #F4EEE3; --type: #422B27; --heading: #422B27;
+ --label: #99412D; --link: #99412D; --type-soft: #765E55;
+ --standfirst: #765E55; --rule-colour: #422B27;
+ --hairline: rgba(66,43,39,.25);
+ --pattern: url('china-vase-1.jpg'); --tile-size: 440px;
+}
+.article-page--coral .article-surface::before,
+.article-page--coral .article-surface::after {
+ background-color: var(--ground); background-blend-mode: multiply;
+}
