@@ -3,7 +3,7 @@
  --label: #99412D; --link: #99412D; --type-soft: #765E55;
  --standfirst: #765E55; --rule-colour: #422B27;
  --hairline: rgba(66,43,39,.25);
- --pattern: url('china-vase-1.jpg'); --tile-size: 440px;
+ --pattern: url('/design/article-layout/coral/china-vase-1.jpg'); --tile-size: 440px;
 }
 .article-page--coral .article-surface::before,
 .article-page--coral .article-surface::after {
