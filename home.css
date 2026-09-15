@@ -29,9 +29,6 @@ h1 { font:500 72px/1 'Cormorant Garamond',Georgia,serif; letter-spacing:-.02em; 
 .row__summary { font:400 16px/1.5 Newsreader,Georgia,serif; color:#4B463F; }
 .two-up { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:48px; }
 .two-up h2 { margin-bottom:10px; }
-.about-section { display:grid; grid-template-columns:200px minmax(0,1fr); gap:34px; align-items:start; }
-.about-portrait { display:block; width:100%; height:auto; border:1px solid var(--ink); }
-.about-section h2,.site-notes h2 { margin-bottom:10px; }
 .lede { font:400 17px/1.55 Newsreader,Georgia,serif; }
 .lede a { text-decoration:underline; text-underline-offset:3px; }
 .contact { display:flex; justify-content:space-between; align-items:baseline; gap:24px; padding-top:24px; border-top:1px solid var(--ink); }
@@ -53,7 +50,5 @@ h1 { font:500 72px/1 'Cormorant Garamond',Georgia,serif; letter-spacing:-.02em; 
   .row { grid-template-columns:24px minmax(0,1fr); column-gap:14px; }
   .row__title { font-size:29px; }
   .two-up { grid-template-columns:1fr; gap:30px; }
-  .about-section { grid-template-columns:1fr; gap:24px; }
-  .about-portrait { width:180px; max-width:100%; }
   .contact { flex-direction:column; gap:20px; }
 }
