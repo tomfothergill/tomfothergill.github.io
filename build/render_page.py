@@ -344,7 +344,7 @@ HTML = u"""<!doctype html>
   <a class="rule-bar__name" href="../">Thomas Fothergill</a>
   <nav class="rule-bar__nav" aria-label="Primary">
     <a href="../#work">Work</a>
-    <a href="../#notes">Notes</a>
+    <a href="../#notes">This site</a>
     <a href="../#about">About</a>
     <a href="../#contact">Contact</a>
   </nav>
