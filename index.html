@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&family=DM+Mono:wght@500&family=Newsreader:opsz,wght@6..72,400&display=swap">
-<link rel="stylesheet" href="home.css?v=20260914-simplified">
+<link rel="stylesheet" href="home.css?v=20260915-portrait">
 <link rel="icon" href="/favicon.ico?v=red-t-inverted">
 <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/red-t-inverted-16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/red-t-inverted-32.png">
@@ -66,10 +66,10 @@
     </a>
   </section>
 
-  <section class="two-up">
-
-    <div id="about">
-      <h2 class="eyebrow">About</h2>
+  <section id="about" class="about-section" aria-labelledby="about-title">
+    <img class="about-portrait" src="assets/portraits/thomas-fothergill.png" alt="Portrait of Thomas Fothergill" width="1122" height="1402" loading="lazy" decoding="async">
+    <div>
+      <h2 class="eyebrow" id="about-title">About</h2>
       <p class="lede">I’m a 29-year-old lead AI engineer at Hyperfinity,
         working in Leeds. In my day job I work primarily with retail companies,
         building applications that help people make sense of their business data.
@@ -78,15 +78,15 @@
         and implementing the frontend.</p>
     </div>
 
-    <div id="notes">
+  </section>
+
+  <section id="notes" class="site-notes">
       <h2 class="eyebrow">About this site</h2>
       <p class="lede">Some of these articles cover things I’ve built in my
         professional life; others are about personal projects. I write with
         AI’s help, working through the ideas and editing the drafts until I’m
         happy putting my name to them. The articles are a way of looking back
         at the work and explaining the decisions I made along the way.</p>
-    </div>
-
   </section>
 
 </main>
